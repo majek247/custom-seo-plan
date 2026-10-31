@@ -4,6 +4,7 @@ import Nav from "./components/Nav";
 import Footer from "./components/Footer";
 import { Seo } from "./components/Seo";
 import Home from "./pages/Home";
+import ThanksBen from "./samples/thanksben/ThanksBen";
 
 function ScrollTop() {
   const { pathname } = useLocation();
@@ -14,10 +15,18 @@ function ScrollTop() {
 }
 
 export default function App() {
+  const { pathname } = useLocation();
+
+  const isSamplePage =
+    pathname === "/samples" ||
+    pathname.startsWith("/samples/");
+
   return (
     <>
       <ScrollTop />
-      <Nav />
+    
+{!isSamplePage && <Nav />}
+
       <Routes>
 
         <Route
@@ -40,13 +49,28 @@ export default function App() {
               <Home />
             </>
           }
+
         />
 
- 
-
+        {/* THANKSBEN SAMPLE */}
+        <Route
+          path="/samples/thanksben"
+          element={
+            <>
+              <Seo
+                title="ThanksBen SEO Strategy & 90-Day Roadmap | GrowUp"
+                description="Explore a tailored B2B SaaS SEO strategy for ThanksBen, covering commercial search opportunities, competitor research, AI visibility and 90-day priorities."
+                path="/samples/thanksben"
+                type="website"
+              />
+              <ThanksBen />
+            </>
+          }
+        />
 
         <Route
           path="*"
+
           element={
             <>
 
@@ -63,7 +87,9 @@ export default function App() {
           }
         />
       </Routes>
-      <Footer />
+     
+{!isSamplePage && <Footer />}
+
     </>
   );
 }

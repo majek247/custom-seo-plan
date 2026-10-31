@@ -790,7 +790,7 @@ Missing = absent from a sampled answer. Weak mention = named without useful buyi
   );
 }
 export default function FreeSeoPlan({
-  heroImageSrc = "/images/seoplanhero.png",
+  heroImageSrc = "/images/freeseoplanimg.png",
   logoSrc,
   caseStudyHref = "https://www.seo-growup.com/#work",
   privacyHref = "https://www.seo-growup.com/privacy-policy",
@@ -2385,7 +2385,7 @@ const STYLES = `
 
 .sp-hero-art > img {
   display: block;
-  width: 112%;
+  width: 100%;
   max-width: none;
   height: auto;
   aspect-ratio: 1/1;
@@ -3848,9 +3848,9 @@ color: #011522;
   }
 
   .sp-hero-art > img {
-    width: 108%;
+    width: 100%;
   }
-
+    
   .sp-hero h1 {
     font-size: 46px;
   }

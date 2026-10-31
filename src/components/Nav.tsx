@@ -1,193 +1,184 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { SITE } from "../data/site";
+import { useEffect, useId, useRef, useState } from "react";
 
-
-const HERO_HEIGHT = 650; // scroll distance (px) before the nav turns solid
-
-
+// Change this to "/free-seo-plan" if the plan lives on a separate route.
+const PLAN_PATH = "/";
+const LOGO_SRC = "/images/growupblacklogotransparent.png";
 const LINKS = [
- { id: "work", label: "Portfolio" },
- { id: "approach", label: "Approach" },
- { id: "investment", label: "Investment" },
- { id: "faq", label: "FAQ" },
+  { id: "whats-inside", label: "What’s inside" },
+  { id: "results", label: "Our results" },
+  { id: "how-it-works", label: "How it works" },
 ];
 
+function Arrow() {
+  return (
+    <svg
+      width="19"
+      height="19"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M4 12h15m-6-6 6 6-6 6" />
+    </svg>
+  );
+}
 
 export default function Nav() {
- const [scrolled, setScrolled] = useState(false);
- const [active, setActive] = useState<string | null>(null);
- const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const menuId = useId();
+  const headerRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => {
+    if (!open) return;
+    const close = () => setOpen(false);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        close();
+        toggleRef.current?.focus();
+      }
+    };
+    const onResize = () => {
+      if (window.innerWidth >= 800) close();
+    };
+    const onOutside = (event: PointerEvent) => {
+      if (
+        event.target instanceof Node &&
+        !headerRef.current?.contains(event.target)
+      )
+        close();
+    };
+    const onFocus = (event: FocusEvent) => {
+      if (
+        event.target instanceof Node &&
+        !headerRef.current?.contains(event.target)
+      )
+        close();
+    };
+    window.addEventListener("keydown", onKey);
+    window.addEventListener("resize", onResize);
+    window.addEventListener("hashchange", close);
+    document.addEventListener("pointerdown", onOutside);
+    document.addEventListener("focusin", onFocus);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("hashchange", close);
+      document.removeEventListener("pointerdown", onOutside);
+      document.removeEventListener("focusin", onFocus);
+    };
+  }, [open]);
 
- // bar is solid when scrolled OR when the mobile menu is open
- const solid = scrolled || open;
+  const sectionHref = (id: string) => `${PLAN_PATH}#${id}`;
 
+  return (
+    <header ref={headerRef} className="growup-nav">
+      <style>{NAV_CSS}</style>
+      <div className="growup-nav__inner">
+        <a
+          href="https://www.seo-growup.com/"
+          className="growup-nav__brand"
+          aria-label="GrowUp home"
+        >
+          <img src={LOGO_SRC} alt="GrowUp" width="180" height="48" />
+        </a>
 
- useEffect(() => {
-   const onScroll = () => setScrolled(window.scrollY > HERO_HEIGHT);
-   onScroll();
-   window.addEventListener("scroll", onScroll, { passive: true });
-   return () => window.removeEventListener("scroll", onScroll);
- }, []);
+        <nav className="growup-nav__desktop" aria-label="Main navigation">
+          {LINKS.map(({ id, label }) => (
+            <a key={id} href={sectionHref(id)}>
+              {label}
+            </a>
+          ))}
+          <a className="growup-nav__cta" href={sectionHref("request-plan")}>
+            Get my free plan <Arrow />
+          </a>
+        </nav>
 
+        <button
+          ref={toggleRef}
+          type="button"
+          className="growup-nav__toggle"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls={menuId}
+          onClick={() => setOpen((value) => !value)}
+        >
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.7"
+            strokeLinecap="round"
+            aria-hidden="true"
+          >
+            {open ? (
+              <path d="m6 6 12 12M18 6 6 18" />
+            ) : (
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+      </div>
 
- useEffect(() => {
-   const onScrollSpy = () => {
-     let current: string | null = null;
-     for (const { id } of LINKS) {
-       const el = document.getElementById(id);
-       if (el && el.getBoundingClientRect().top <= 140) current = id;
-     }
-     setActive(current);
-   };
-   onScrollSpy();
-   window.addEventListener("scroll", onScrollSpy, { passive: true });
-   return () => window.removeEventListener("scroll", onScrollSpy);
- }, []);
-
-
- // close the mobile menu on Escape, or if the screen grows to desktop size
- useEffect(() => {
-   if (!open) return;
-   const onKey = (e: KeyboardEvent) => {
-     if (e.key === "Escape") setOpen(false);
-   };
-   const onResize = () => {
-     if (window.innerWidth >= 768) setOpen(false);
-   };
-   window.addEventListener("keydown", onKey);
-   window.addEventListener("resize", onResize);
-   return () => {
-     window.removeEventListener("keydown", onKey);
-     window.removeEventListener("resize", onResize);
-   };
- }, [open]);
-
-
- return (
-   <header
-     style={{ fontFamily: "'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif" }}
-     className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-       solid ? "pt-3 md:pt-4" : "pt-0"
-     }`}
-   >
-     {/* tap outside to close (mobile only) */}
-     {open && (
-       <div
-         className="fixed inset-0 -z-10 md:hidden"
-         onClick={() => setOpen(false)}
-         aria-hidden="true"
-       />
-     )}
-
-
-     <div
-       className={`pointer-events-none absolute inset-x-0 top-0 h-36 bg-gradient-to-b from-black/60 via-black/25 to-transparent transition-opacity duration-300 ${
-         solid ? "opacity-0" : "opacity-100"
-       }`}
-     />
-
-
-     <div
-       className={`relative mx-auto flex w-[min(1340px,calc(100%_-_32px))] items-center justify-between transition-all duration-300 md:w-[min(1340px,calc(100%_-_96px))] ${
-         solid ? "rounded-xl border border-[#cdeee8]/[.14] bg-[#041b1c]/90 px-4 py-2.5 shadow-[0_10px_30px_rgba(0,0,0,.25)] backdrop-blur-md md:px-8" : "py-4 md:py-6"
-       }`}
-     >
-       <a
-         href="https://www.seo-growup.com/"
-         target="_blank"
-         rel="noopener noreferrer"
-         className="flex items-center gap-2"
-       >
-         <img
-           src="/images/growupblacklogotransparent.png"
-           alt="GrowUp"
-           width="180"
-           height="48"
-           className="h-9 w-auto md:h-11"
-         />
-       </a>
-
-
-       {/* desktop links */}
-       <nav className="hidden items-center gap-9 text-[15px] md:flex">
-         {LINKS.map(({ id, label }) => (
-           <a
-             key={id}
-             href={`/#${id}`}
-             className={`font-semibold drop-shadow-[0_1px_4px_rgba(0,0,0,0.7)] transition ${
-               active === id ? "text-[#1F9FA1]" : "text-white hover:text-[#1F9FA1]"
-             }`}
-           >
-             {label}
-           </a>
-         ))}
-       </nav>
-
-
-       <div className="flex items-center gap-2 md:gap-0">
-         <a
-           href="https://www.seo-growup.com/get-in-touch"
-           target="_blank"
-           rel="noopener noreferrer"
-           className="rounded-full bg-[#167273] px-4 py-2.5 text-sm font-semibold text-white shadow-lg transition hover:bg-[#1d8f90] md:px-6 md:py-3 md:text-[15px]"
-         >
-           Let&rsquo;s talk
-         </a>
-
-
-         {/* hamburger (mobile only) */}
-         <button
-           type="button"
-           aria-label={open ? "Close menu" : "Open menu"}
-           aria-expanded={open}
-           aria-controls="mobile-menu"
-           onClick={() => setOpen((v) => !v)}
-           className="flex h-11 w-11 items-center justify-center rounded-full border border-white/25 text-white transition hover:border-white/50 md:hidden"
-         >
-           <svg
-             viewBox="0 0 24 24"
-             className="h-5 w-5"
-             fill="none"
-             stroke="currentColor"
-             strokeWidth="2"
-             strokeLinecap="round"
-             aria-hidden="true"
-           >
-             {open ? (
-               <path d="M6 6l12 12M18 6L6 18" />
-             ) : (
-               <path d="M4 7h16M4 12h16M4 17h16" />
-             )}
-           </svg>
-         </button>
-       </div>
-
-
-       {/* mobile dropdown */}
-       {open && (
-         <nav
-           id="mobile-menu"
-           className="absolute inset-x-0 top-full mt-2 rounded-2xl bg-[#041b1c] p-3 shadow-2xl ring-1 ring-white/10 md:hidden"
-         >
-           {LINKS.map(({ id, label }) => (
-             <a
-               key={id}
-               href={`/#${id}`}
-               onClick={() => setOpen(false)}
-               className={`block rounded-lg px-4 py-3.5 text-[15px] font-medium transition ${
-                 active === id
-                   ? "bg-white/5 text-[#8fd9cf]"
-                   : "text-[#cdeee8] hover:bg-white/5"
-               }`}
-             >
-               {label}
-             </a>
-           ))}
-         </nav>
-       )}
-     </div>
-   </header>
- );
+      <nav
+        id={menuId}
+        className="growup-nav__mobile"
+        aria-label="Mobile navigation"
+        hidden={!open}
+      >
+        {LINKS.map(({ id, label }) => (
+          <a key={id} href={sectionHref(id)} onClick={() => setOpen(false)}>
+            {label}
+          </a>
+        ))}
+        <a
+          className="growup-nav__cta"
+          href={sectionHref("request-plan")}
+          onClick={() => setOpen(false)}
+        >
+          Get my free plan <Arrow />
+        </a>
+      </nav>
+    </header>
+  );
 }
+
+const NAV_CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+.growup-nav { position:sticky; top:0; z-index:50; background:#052b2d; color:#fff; border-bottom:1px solid #ffffff12; font-family:'Montserrat',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; }
+.growup-nav * { box-sizing:border-box; }
+.growup-nav a { color:inherit; text-decoration:none; }
+.growup-nav a:focus-visible,.growup-nav button:focus-visible { outline:3px solid #81d4c6; outline-offset:5px; }
+.growup-nav__inner { width:min(1280px,calc(100% - 96px)); min-height:88px; margin-inline:auto; display:flex; align-items:center; justify-content:space-between; gap:24px; }
+.growup-nav__brand { display:inline-flex; align-items:center; flex-shrink:0; }
+.growup-nav__brand img { display:block; width:auto; height:43px; max-width:180px; object-fit:contain; }
+.growup-nav__desktop { display:flex; align-items:center; gap:34px; font-size:12px; font-weight:600; }
+.growup-nav__desktop>a { transition:color .2s,background .2s; }
+.growup-nav__desktop>a:hover { color:#abdcd3; }
+.growup-nav .growup-nav__cta { display:inline-flex; align-items:center; justify-content:center; gap:17px; min-height:46px; padding:11px 18px; border:1px solid #769c99; border-radius:3px; font-size:12px; font-weight:600; line-height:1.5; color:#fff; }
+.growup-nav .growup-nav__cta:hover { background:#ffffff0c; border-color:#abdcd3; }
+.growup-nav__toggle { display:none; align-items:center; justify-content:center; width:44px; height:44px; padding:10px; border:1px solid #769c99; border-radius:4px; color:#fff; background:transparent; cursor:pointer; }
+.growup-nav__mobile { display:none; }
+.growup-nav [hidden] { display:none!important; }
+/* Keep in-page destinations below the sticky navigation. */
+#whats-inside,#results,#how-it-works,#request-plan { scroll-margin-top:106px; }
+@media(min-width:1600px) { .growup-nav__inner { width:min(1340px,calc(100% - 120px)); } }
+@media(max-width:1100px) { .growup-nav__inner { width:calc(100% - 64px); } .growup-nav__desktop { gap:21px; } }
+@media(max-width:799px) {
+  .growup-nav__inner { width:calc(100% - 40px); min-height:76px; }
+  .growup-nav__brand img { height:36px; max-width:155px; }
+  .growup-nav__desktop { display:none; }
+  .growup-nav__toggle { display:inline-flex; }
+  .growup-nav__mobile { display:grid; gap:4px; padding:6px 20px 22px; max-height:calc(100dvh - 76px); overflow-y:auto; }
+  .growup-nav__mobile>a { padding:13px 4px; border-bottom:1px solid #ffffff15; font-size:13px; font-weight:600; }
+  .growup-nav__mobile>a:hover { color:#abdcd3; }
+  .growup-nav__mobile .growup-nav__cta { margin-top:12px; padding:13px 18px; }
+}
+@media(prefers-reduced-motion:reduce) { .growup-nav * { transition:none!important; } }
+`;

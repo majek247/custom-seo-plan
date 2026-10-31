@@ -1,4 +1,4 @@
-# GrowUp – Fintech Writing Portfolio
+# GrowUp – Custom SEO Plan
 
 Vite + React + TypeScript + Tailwind + React Router. Homepage plus 3 full article pages.
 

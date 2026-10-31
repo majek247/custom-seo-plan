@@ -24,12 +24,19 @@ export default function App() {
           path="/"
           element={
             <>
-              <Seo
-                title="GrowUp | Fintech & Financial Services Writing Portfolio"
-                description="See fintech content built for pipeline growth, from buyer guides and comparison pieces to research-led articles and customer stories."
-                path="/"
-                type="website"
-              />
+        
+
+
+
+<Seo
+  title="Free B2B SaaS SEO Plan & 90-Day Roadmap | GrowUp"
+  description="Get a free, tailored 90-day B2B SaaS SEO plan with priority keywords, recommended pages, competitor opportunities and a roadmap for growing qualified pipeline."
+  path="/"
+  type="website"
+/>
+
+
+
               <Home />
             </>
           }
@@ -42,12 +49,15 @@ export default function App() {
           path="*"
           element={
             <>
-              <Seo
-                title="Page not found | GrowUp"
-                description="This page doesn't exist. Return to the GrowUp fintech writing portfolio."
-                path="/"
-                type="website"
-              />
+
+
+            <Seo
+  title="Page Not Found | GrowUp"
+  description="This page doesn't exist. Return to GrowUp's free B2B SaaS SEO plan and explore your next 90 days of organic growth priorities."
+  path="/"
+  type="website"
+/>
+
               <Home />
             </>
           }

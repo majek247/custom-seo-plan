@@ -992,6 +992,20 @@ else {
 
 
 
+      // GA4 key event: fires only after a confirmed submission
+      try {
+        const gtag = (window as any).gtag;
+        if (typeof gtag === "function") {
+          gtag("event", "custom_seo_plan", {
+            form_name: "free_seo_plan",
+            growth_goal: request.goal,
+            page_location: window.location.href,
+          });
+        }
+      } catch {
+        /* never let analytics break the form */
+      }
+
       setStatus("success");
     } catch {
       setStatus("error");

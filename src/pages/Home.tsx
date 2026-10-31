@@ -205,7 +205,7 @@ const keywordSets = {
       "wise vs bank international transfer",
       "Compare Wise and traditional banks using landed transfer costs and exchange-rate markups.",
       
-      "Refresh",
+      "Improve",
       "Low",
     ],
   ],
@@ -238,7 +238,7 @@ const keywordSets = {
     [
       "how to pay overseas suppliers",
       "Compare supplier payment methods, banking charges and FX trade-offs with worked examples.",
-      "Refresh",
+      "Improve",
       "Low",
     ],
   ],
@@ -364,7 +364,7 @@ const metrics = [
 const testimonials = [
   {
     quote:
-      "Muiz wrote me the best SEO report I’ve ever seen. It was clear, commercially grounded, and incredibly easy to act on.",
+      "Muiz delivered the best SEO report I’ve seen. It was thorough without being overwhelming, clear about what needed fixing, and gave us practical recommendations we could act on without another round of meetings.",
     name: "Savas Vedova",
     role: "Founder, Stormkit",
     image:
@@ -372,7 +372,7 @@ const testimonials = [
   },
   {
     quote:
-      "I’ve been in growth roles for eight years, so I know when an agency’s just running through a template. This wasn’t that. Muiz showed us how our organic performance, messaging clarity, and trial experience were all undermining each other. That clarity alone gave us the most actionable growth roadmap we’ve had in years.",
+      "I’ve been in growth roles for eight years, so I can usually spot a templated audit. This was different. GrowUp connected our organic performance, positioning and trial experience, then showed us exactly where we needed to improve.",
     name: "Allyson",
     role: "Founder, AI PM Platform",
     image: null,
@@ -453,7 +453,7 @@ const aiVisibilityGaps = [
     intent: "Cost comparison",
     prompt:
       "Wise Business or Revolut Business: which would cost less for £50,000 a month in overseas supplier payments?",
-    visibility: "Weak mention",
+    visibility: "Weak",
     gap: "Names both providers but gives no worked example accounting for exchange-rate markups, transfer fees, payment frequency or recipient charges. Buyers cannot judge the actual cost difference.",
     contentTitle: "Show a consistent cost comparison",
     content:
@@ -481,7 +481,7 @@ const aiVisibilityGaps = [
     intent: "Business case",
     prompt:
       "Should we switch from our bank to Wise Business for international payments? Compare total costs and trade-offs.",
-    visibility: "Weak mention",
+    visibility: "Weak",
     gap: "Discusses potential FX savings but overlooks total payment costs, finance-team workload, migration effort and the assumptions needed to calculate a realistic payback period.",
     contentTitle: "Build the business case for switching",
     content:
@@ -512,41 +512,41 @@ const aiActionRecommendations = [
     priority: "High",
     gap: "Missing from Revolut alternatives",
     action:
-      "Build a comparison covering Wise, Revolut and Airwallex for international supplier payments.",
+      "Build a Wise vs Revolut vs Airwallex supplier-payments comparison, and request inclusion in existing “Revolut Business alternatives” roundups.",
     evidence:
-      "FX fee examples, supported currencies, payment limits and switching considerations.",
+      "FX fee examples, supported currencies, payment limits, switching considerations, plus a target list of roundups and the outreach angle for each.",
   },
   {
     priority: "High",
     gap: "Weak cost comparison",
     action:
-      "Improve Wise vs Revolut content with worked payment-cost scenarios at different monthly volumes.",
+      "Build worked payment-cost scenarios and earn citations by sharing the data with finance bloggers, accounting newsletters and comparison sites.",
     evidence:
-      "£10k, £50k and £100k payment models, fee assumptions and exchange-rate comparisons.",
+      "£10k, £50k and £100k payment models, fee assumptions, exchange-rate comparisons, and a linkable cost calculator or benchmark.",
   },
   {
     priority: "High",
     gap: "Missing from Xero-related recommendations",
     action:
-      "Strengthen integration content around supplier payments and finance reconciliation.",
+      "Publish detailed Xero integration content covering supplier payments and finance reconciliation, then get it listed on the Xero app marketplace. ",
     evidence:
-      "Xero setup steps, syncing behaviour, reconciliation examples and known limitations.",
+      "Xero setup steps, syncing behaviour, reconciliation examples, accountant testimonials and partner listings.",
   },
   {
     priority: "Medium",
     gap: "Incomplete switching business case",
     action:
-      "Publish a bank-vs-Wise cost analysis for finance teams considering a move.",
+      "Publish a bank-vs-Wise cost analysis, then run digital PR with original data (e.g. “what UK SMEs overpay on FX”) aimed at business and finance press.",
     evidence:
-      "Annual payment costs, administrative time, migration requirements and payback assumptions.",
+      "Annual payment costs, admin time, migration requirements, payback assumptions, and a quotable stat or study for journalists.",
   },
   {
     priority: "Medium",
     gap: "Missing from bulk payment comparisons",
     action:
-      "Expand product content covering high-volume international payouts and approval workflows.",
+      "Expand high-volume payout content, and seed it through expert quotes, finance-ops communities and review profiles (G2, Capterra, Trustpilot).",
     evidence:
-      "Batch payment examples, user permissions, API documentation and operational constraints.",
+      "Batch payment examples, user permissions, API docs, customer reviews from finance teams, and named expert commentary.",
   },
 ];
 
@@ -1233,7 +1233,7 @@ Get a free 90-day roadmap showing the exact keywords to prioritise, pages to pub
     <Eyebrow>02 / Competitor opportunities</Eyebrow>
 
     <h2>
- See how well your competitors answer those buying questions.
+ Find where competitors capture demand you’re missing.
     </h2>
 
     <p className="sp-lead">We check which competitors rank for the searches we’ve identified, how thoroughly their pages answer buyers’ questions, and where your business has room to compete with more relevant content.</p>
@@ -1298,7 +1298,7 @@ Get a free 90-day roadmap showing the exact keywords to prioritise, pages to pub
 
     <div className="sp-competitor-cta">
       <strong>
-        See where your content could outperform competitors.
+Find the competitor gaps worth targeting first.
       </strong>
 
       <Cta />
@@ -1499,6 +1499,7 @@ With the opportunities mapped, we organise the work into a realistic 90-day sche
      
      {/* 10 — FAQ */}
 <section
+  id="faq"
   className="sp-section sp-faq-section"
   aria-labelledby={`${uid}-faq-heading`}
 >
@@ -1511,8 +1512,7 @@ With the opportunities mapped, we organise the work into a realistic 90-day sche
       </h2>
 
       <p>
-        What’s included, what we’ll need and how your team
-        can use the plan.
+Exactly what we deliver, what we need from you, and the timeline for getting it done.
       </p>
     </header>
 
@@ -1553,8 +1553,8 @@ With the opportunities mapped, we organise the work into a realistic 90-day sche
         <section id="request-plan" className="sp-section sp-dark sp-final">
           <div className="sp-container sp-final-grid">
             <div>
-              <Eyebrow>Let’s map your next move</Eyebrow>
-              <h2>Make your next SEO investment a more informed one.</h2>
+              <Eyebrow>Get your free 90-day SEO plan</Eyebrow>
+              <h2>See which SEO opportunities are worth pursuing first.</h2>
            
          
 <div
@@ -3303,11 +3303,11 @@ color: #011522;
 }
 
 .sp-page .sp-faq-section > .sp-container {
-  width: min(1380px, calc(100% - 104px));
+  width: min(1280px, calc(100% - 96px));
   max-width: none;
   margin-inline: auto;
-  border-top: 1px solid #ecf5f2; /* Added border here */
-  padding-top: 90px; /* Added padding to account for the border */
+  border-top: 1px solid #ecf5f2;
+  padding-top: 90px;
   margin-top: -50px;
 }
 
@@ -3796,7 +3796,14 @@ color: #011522;
 }
 
 @media (min-width: 1600px) {
-  .sp-container {
+  .sp-container,
+  .sp-page .sp-proof > .sp-container,
+  .sp-page #whats-inside > .sp-container,
+  .sp-page .sp-competitor-dark > .sp-container,
+  .sp-page .sp-faq-section > .sp-container,
+  .sp-page .sp-ai-plan > .sp-container,
+  .sp-page .sp-plan-timeline > .sp-container,
+  .sp-page #request-plan > .sp-container {
     width: min(1340px, calc(100% - 120px));
   }
 }
@@ -4500,10 +4507,10 @@ color: #011522;
   background: #ffffff;
 }
 
-/* 02. Wider premium content layout */
+/* 02. Match hero/nav container width */
 .sp-page .sp-proof > .sp-container,
 .sp-page #whats-inside > .sp-container {
-  width: min(1380px, calc(100% - 104px));
+  width: min(1280px, calc(100% - 96px));
 }
 
 /* 03. Results strip */
@@ -4513,7 +4520,7 @@ color: #011522;
 
 .sp-page .sp-proof-grid {
   display: grid;
-  grid-template-columns: 1.1fr 1.1fr 1fr 1.18fr 1fr;
+  grid-template-columns: 1.2fr 1fr 1fr 1.1fr 1fr; /* Adjusted slightly so the text has room */
   align-items: center;
   gap: 0;
 }
@@ -4523,7 +4530,8 @@ color: #011522;
   line-height: 1.55;
   font-weight: 700;
   color: #082c35;
-  padding-right: 28px;
+  padding-right: 20px;
+  padding-left: 0; /* Ensures it touches the left edge */
 }
 
 .sp-page .sp-proof-grid > div {
@@ -4582,6 +4590,8 @@ color: #011522;
 .sp-page #whats-inside > .sp-container {
   border-top: 1px solid #d4e4e0;
   padding-top: 58px;
+  padding-left: 0; /* Forces alignment to the left edge */
+  padding-right: 0; /* Forces alignment to the right edge */
 }
 
 /* 05. Section heading */
@@ -4918,7 +4928,7 @@ color: #011522;
   padding-top: 21px;
   border-top: 1px solid #d6e4e1;
   color: #086467;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1.65;
 }
@@ -4983,9 +4993,9 @@ color: #011522;
   padding: 90px 0 85px;
 }
 
-/* Section width */
+/* Section width — match hero/nav */
 .sp-page .sp-competitor-dark > .sp-container {
-  width: min(1380px, calc(100% - 104px));
+  width: min(1280px, calc(100% - 96px));
 }
 
 /* Eyebrow */
@@ -5295,7 +5305,7 @@ color: #011522;
 
 /* One teal panel containing the entire section */
 .sp-page .sp-ai-plan > .sp-container {
-  width: min(1460px, calc(100% - 80px));
+  width: min(1280px, calc(100% - 96px));
   max-width: none;
   margin-inline: auto;
   padding: 60px 70px;
@@ -5880,29 +5890,31 @@ color: #011522;
 /* Visibility table column widths */
 
 .sp-page .sp-ai-gap-table thead th:nth-child(1) {
-  width: 6%;
+  width: 9%; /* Increased from 6% to give the numbers more room */
 }
 
 .sp-page .sp-ai-gap-table thead th:nth-child(2) {
-  width: 39%;
+  width: 41%; /* Adjusted from 39% */
 }
 
 .sp-page .sp-ai-gap-table thead th:nth-child(3) {
-  width: 17%;
+  width: 15%; /* Adjusted from 17% */
 }
 
 .sp-page .sp-ai-gap-table thead th:nth-child(4) {
-  width: 38%;
+  width: 35%; /* Adjusted from 38% */
 }
 
 /* Recommendations table column widths */
 
-.sp-page .sp-ai-action-table thead th:nth-child(1) {
-  width: 9%;
+.sp-page .sp-ai-action-table thead th:nth-child(1),
+.sp-page .sp-ai-action-table tbody td:nth-child(1) {
+  width: 12%; /* Increased slightly to hold the badge */
+  padding-right: 35px; /* Added spacing between Priority and Visibility Gap */
 }
 
 .sp-page .sp-ai-action-table thead th:nth-child(2) {
-  width: 44%;
+  width: 41%; /* Adjusted to balance the columns */
 }
 
 .sp-page .sp-ai-action-table thead th:nth-child(3) {
@@ -6537,7 +6549,7 @@ color: #011522;
 }
 
 .sp-page .sp-plan-timeline > .sp-container {
-  width: min(1380px, calc(100% - 104px));
+  width: min(1280px, calc(100% - 96px));
   max-width: none;
   margin-inline: auto;
 }
@@ -6964,11 +6976,11 @@ color: #011522;
 }
 
 .sp-page #request-plan > .sp-container {
-  width: min(1380px, calc(100% - 104px));
+  width: min(1280px, calc(100% - 96px));
   max-width: none;
   margin-inline: auto;
-  border-bottom: 1px solid rgba(143, 217, 207, .15); /* Added subtle border */
-  padding-bottom: 90px; /* Added padding to push the border down */
+  border-bottom: 1px solid rgba(143, 217, 207, .15);
+  padding-bottom: 90px;
 }
 
 .sp-page #request-plan .sp-final-grid {

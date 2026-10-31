@@ -4,9 +4,8 @@ import { useEffect, useId, useRef, useState } from "react";
 const PLAN_PATH = "/";
 const LOGO_SRC = "/images/growupblacklogotransparent.png";
 const LINKS = [
-  { id: "whats-inside", label: "What’s inside" },
-  { id: "results", label: "Our results" },
-  { id: "how-it-works", label: "How it works" },
+  { id: "whats-inside", label: "What’s included" },
+  { id: "faq", label: "FAQ" },
 ];
 
 function Arrow() {
@@ -167,7 +166,7 @@ const NAV_CSS = `
 .growup-nav__mobile { display:none; }
 .growup-nav [hidden] { display:none!important; }
 /* Keep in-page destinations below the sticky navigation. */
-#whats-inside,#results,#how-it-works,#request-plan { scroll-margin-top:106px; }
+#whats-inside,#faq,#request-plan { scroll-margin-top:106px; }
 @media(min-width:1600px) { .growup-nav__inner { width:min(1340px,calc(100% - 120px)); } }
 @media(max-width:1100px) { .growup-nav__inner { width:calc(100% - 64px); } .growup-nav__desktop { gap:21px; } }
 @media(max-width:799px) {

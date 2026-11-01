@@ -59,6 +59,53 @@ const PLATFORMS: { key: PlatformKey; name: string; short: string }[] = [
   { key: 'aio', name: 'AI Overviews', short: 'AIO' },
 ];
 
+
+const LOGO_DEV_PUBLIC_KEY = 'pk_KnI5jJk1QmKibGPEWPdFjw';
+
+const PLATFORM_LOGO_DOMAINS: Record<PlatformKey, string> = {
+  chatgpt: 'chatgpt.com',
+  gemini: 'gemini.google.com',
+  perplexity: 'perplexity.ai',
+  aio: 'google.com',
+};
+
+function PlatformLogo({
+  platform,
+}: {
+  platform: PlatformKey;
+}) {
+  const [failed, setFailed] = useState(false);
+
+  const domain = PLATFORM_LOGO_DOMAINS[platform];
+  const label = PLATFORMS.find((item) => item.key === platform);
+
+  const src =
+    `https://img.logo.dev/${domain}` +
+    `?token=${encodeURIComponent(LOGO_DEV_PUBLIC_KEY)}` +
+    '&size=48&format=png&retina=true&theme=light&fallback=404';
+
+  return (
+    <span className="av-platform-logo" aria-hidden="true">
+      {failed ? (
+        <span className="av-logo-fallback">
+          {label?.short}
+        </span>
+      ) : (
+        <img
+          src={src}
+          alt=""
+          width={24}
+          height={24}
+          loading="lazy"
+          decoding="async"
+          onError={() => setFailed(true)}
+        />
+      )}
+    </span>
+  );
+}
+
+
 const STAGES: Stage[] = [
   'Vendor shortlist',
   'Switching',
@@ -1143,8 +1190,6 @@ export default function AiVisibility() {
   };
 
   /* overview numbers */
-  const R = 46;
-  const C = 2 * Math.PI * R;
   const platformCover = PLATFORMS.map(
     (_, i) => PROMPTS.filter((p) => p.results[i].s !== 'absent').length,
   );
@@ -1160,122 +1205,106 @@ export default function AiVisibility() {
   return (
     <section className="tb-page-section tb-pad av-section" id="ai">
       <div className="tb-container">
-        <header className="tb-section-intro">
-          <div className="tb-eyebrow">
-            <span>04</span>AI SEARCH VISIBILITY &amp; AUTHORITY
-          </div>
-          <h2>Make Ben useful in the answers buyers ask AI to assemble.</h2>
-          <p>
-            {TOTAL} bottom-of-funnel prompts, phrased the way a buyer would
-            actually ask, each mapped to the keyword and page work in section
-            03. For every prompt: how Ben shows up across four AI platforms, what
-            the AI said where it does, and the content and authority moves that
-            would change the answer.
-          </p>
-        </header>
 
+<header className="av-intro">
+  <div className="av-intro-top">
+    <span className="av-eyebrow">
+      04 / AI SEARCH VISIBILITY &amp; AUTHORITY
+    </span>
+
+    <span className="av-sample-note">
+      Illustrative results — validate with live tests.
+    </span>
+  </div>
+
+  <h2>Help buyers find Ben in AI answers.</h2>
+
+  <p>
+    {TOTAL} buyer prompts, four platforms, and clear priorities
+    for content and supporting evidence.
+  </p>
+</header>
     
 
-        {/* ---------- Overview ---------- */}
-        <div className="av-overview">
-          <div className="av-card av-card-ring">
-            <div className="av-card-head">PROMPT COVERAGE</div>
-            <div className="av-ring-wrap">
-              <svg
-                viewBox="0 0 120 120"
-                className="av-ring"
-                role="img"
-                aria-label={`Ben appears on at least one platform for ${VISIBLE} of ${TOTAL} prompts`}
-              >
-                <circle cx="60" cy="60" r={R} className="av-ring-bg" />
-                <circle
-                  cx="60"
-                  cy="60"
-                  r={R}
-                  className="av-ring-fg"
-                  strokeDasharray={C}
-                  strokeDashoffset={C * (1 - VISIBLE / TOTAL)}
-                  transform="rotate(-90 60 60)"
-                />
-                <text x="60" y="58" className="av-ring-pct">
-                  {Math.round((VISIBLE / TOTAL) * 100)}%
-                </text>
-                <text x="60" y="76" className="av-ring-sub">
-                  {VISIBLE} of {TOTAL}
-                </text>
-              </svg>
-              <dl className="av-mini">
-                <div>
-                  <dt>Top-pick answers</dt>
-                  <dd>{TOP_PICKS}</dd>
-                </div>
-                <div>
-                  <dt>Cited as a source</dt>
-                  <dd>{CITED}</dd>
-                </div>
-                <div>
-                  <dt>Thin or hedged</dt>
-                  <dd>{HEDGED}</dd>
-                </div>
-                <div>
-                  <dt>No presence</dt>
-                  <dd>{TOTAL - VISIBLE}</dd>
-                </div>
-              </dl>
-            </div>
-            <p className="av-card-foot">
-              Prompts where Ben appears on at least one platform.
-            </p>
-          </div>
 
-          <div className="av-card">
-            <div className="av-card-head">BY PLATFORM</div>
-            <div className="av-bars">
-              {PLATFORMS.map((p, i) => (
-                <div className="av-bar" key={p.key}>
-                  <span>{p.name}</span>
-                  <div className="av-bar-track">
-                    <i style={{ width: `${(platformCover[i] / TOTAL) * 100}%` }} />
-                  </div>
-                  <b>
-                    {platformCover[i]}/{TOTAL}
-                  </b>
-                </div>
-              ))}
-            </div>
-            <p className="av-card-foot">Prompts where Ben is named at all.</p>
-          </div>
+{/* ---------- Overview ---------- */}
+<div className="av-summary">
+  <div className="av-summary-item">
+    <strong>{Math.round((VISIBLE / TOTAL) * 100)}%</strong>
+    <div>
+      <h3>Prompt coverage</h3>
+      <p>{VISIBLE} of {TOTAL} prompts</p>
+    </div>
+  </div>
 
-          <div className="av-card">
-            <div className="av-card-head">BY BUYING STAGE</div>
-            <div className="av-bars">
-              {stageCover.map((x) => (
-                <div className="av-bar" key={x.s}>
-                  <span>{x.s}</span>
-                  <div className="av-bar-track">
-                    <i
-                      className={x.hit === 0 ? 'zero' : ''}
-                      style={{ width: `${(x.hit / x.total) * 100}%` }}
-                    />
-                  </div>
-                  <b>
-                    {x.hit}/{x.total}
-                  </b>
-                </div>
-              ))}
-            </div>
-            <p className="av-card-foot">Where the biggest gaps sit.</p>
-          </div>
-        </div>
+  <div className="av-summary-item">
+    <strong>{TOP_PICKS}</strong>
+    <div>
+      <h3>Recommendations</h3>
+      <p>Across {CELLS.length} sample answers</p>
+    </div>
+  </div>
+
+  <div className="av-summary-item">
+    <strong>{CITED}</strong>
+    <div>
+      <h3>Source citations</h3>
+      <p>Across {CELLS.length} sample answers</p>
+    </div>
+  </div>
+
+  <div className="av-summary-item">
+    <strong>{TOTAL - VISIBLE}</strong>
+    <div>
+      <h3>Uncovered prompts</h3>
+      <p>No appearance on any platform</p>
+    </div>
+  </div>
+</div>
+
+<div className="av-platform-summary">
+  <strong>Platform coverage</strong>
+
+  <div className="av-platform-counts">
+    {PLATFORMS.map((platform, index) => (
+      <div key={platform.key}>
+    <span className="av-platform-name">
+  <PlatformLogo platform={platform.key} />
+  <span>{platform.name}</span>
+</span>
+        <b>{platformCover[index]}/{TOTAL}</b>
+      </div>
+    ))}
+  </div>
+</div>
+
+<details className="av-stage-disclosure">
+  <summary>View coverage by buying stage</summary>
+
+  <div className="av-stage-grid">
+    {stageCover.map((item) => (
+      <div key={item.s}>
+        <span>{item.s}</span>
+        <strong>{item.hit}/{item.total}</strong>
+      </div>
+    ))}
+  </div>
+
+  <p>
+    Coverage includes any mention of Ben. {HEDGED} sample
+    answers have a recorded evidence gap.
+  </p>
+</details>
+
 
         {/* ---------- Toolbar ---------- */}
         <div className="av-toolbar" ref={workRef}>
-          <div className="av-chips" role="tablist" aria-label="Buying stage">
+          <div className="av-chips" role="group" aria-label="Filter by buying stage">
             {(['All', ...STAGES] as const).map((s) => (
               <button
                 key={s}
-                role="tab"
-                aria-selected={stage === s}
+             type="button"
+aria-pressed={stage === s}
                 className={stage === s ? 'active' : ''}
                 onClick={() => setStage(s)}
               >
@@ -1372,7 +1401,13 @@ export default function AiVisibility() {
               </span>
               <small>Dots read GPT · GEM · PPX · AIO</small>
             </div>
-            <div className="av-list" ref={listRef} onKeyDown={onListKey} role="list">
+            <div
+  className="av-list"
+  ref={listRef}
+  onKeyDown={onListKey}
+  role="group"
+  aria-label="Buyer prompts. Use arrow keys to navigate."
+>
               {rows.length === 0 && (
                 <div className="av-empty">
                   <strong>No prompts match these filters.</strong>
@@ -1385,7 +1420,7 @@ export default function AiVisibility() {
               {rows.map((p) => (
                 <button
                   key={p.id}
-                  role="listitem"
+                  aria-pressed={sel?.id === p.id}
                   data-id={p.id}
                   type="button"
                   className={`av-item${sel?.id === p.id ? ' active' : ''}`}
@@ -1432,96 +1467,170 @@ export default function AiVisibility() {
                   </span>
                 </div>
 
-                <div className="av-chat">
-                  <div className="av-chat-meta">
-                    <span className="av-avatar">B</span>
-                    <small>
-                      BUYER PROMPT · {sel.buyer.toUpperCase()}
-                    </small>
-                  </div>
-                  <p>{sel.prompt}</p>
-                </div>
-                <div className="av-maps">
-                  <span>Maps to</span>
-                  {sel.keywords.map((k) => (
-                    <code key={k}>{k}</code>
-                  ))}
-                </div>
 
-                <div className="av-section-title">
-                  <h4>How Ben shows up</h4>
-                  <span>
-                    {hits === 0
-                      ? 'Not named on any of 4 platforms'
-                      : `Named on ${hits} of 4 platforms · cited on ${citedHits}`}
-                  </span>
-                </div>
 
-                <div className="av-results">
-                  {sel.results.map((r, i) => {
-                    const pl = PLATFORMS[i];
-                    if (r.s === 'absent') {
-                      return (
-                        <div className="av-res av-res--absent" key={pl.key}>
-                          <span className="av-badge">{pl.short}</span>
-                          <div>
-                            <strong>{pl.name}</strong>
-                            <small>Ben not mentioned</small>
-                          </div>
-                        </div>
-                      );
-                    }
-                    return (
-                      <article className="av-res" key={pl.key}>
-                        <header>
-                          <span className="av-badge">{pl.short}</span>
-                          <strong>{pl.name}</strong>
-                          <span className={`av-status av-status--${r.s}`}>
-                            {STATUS_LABEL[r.s]}
-                          </span>
-                        </header>
-                        {r.pos && <RankStrip pos={r.pos} />}
-                        <blockquote>
-                          <Highlight text={r.said ?? ''} />
-                        </blockquote>
-                        <div className="av-res-meta">
-                          {r.also && r.also.length > 0 && (
-                            <div>
-                              <span>Also named</span>
-                              {r.also.map((a) => (
-                                <em key={a}>{a}</em>
-                              ))}
-                            </div>
-                          )}
-                          <div>
-                            <span>Source</span>
-                            {r.cited ? (
-                              <code className="av-cited">{r.cited}</code>
-                            ) : (
-                              <em className="av-uncited">Ben not cited</em>
-                            )}
-                          </div>
-                        </div>
-                        {r.gap && (
-                          <p className="av-gap">
-                            <b>Gap</b>
-                            {r.gap}
-                          </p>
-                        )}
-                      </article>
-                    );
-                  })}
-                </div>
+<div className="av-prompt-heading">
+  <h3>{sel.prompt}</h3>
 
-                <div className="av-section-title">
-                  <h4>What to do about it</h4>
-                  <span>Content, then authority</span>
-                </div>
-                <p className="av-why">{sel.why}</p>
+  <div className="av-prompt-meta">
+    <span>
+      Buyer <strong>{sel.buyer}</strong>
+    </span>
+
+    <span className="av-maps">
+      Maps to
+      {sel.keywords.map((keyword) => (
+        <code key={keyword}>{keyword}</code>
+      ))}
+    </span>
+  </div>
+</div>
+
+
+
+<div className="av-section-title">
+  <h4>Platform results</h4>
+  <span>Sample responses · Not live measurements.</span>
+</div>
+
+<div className="av-table-wrap">
+  <table className="av-platform-table">
+    <caption className="av-sr">
+      Illustrative visibility results for the selected buyer prompt.
+    </caption>
+
+    <thead>
+      <tr>
+        <th scope="col">Platform</th>
+        <th scope="col">Ben’s presence</th>
+        <th scope="col">Position</th>
+        <th scope="col">Source</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {sel.results.map((result, index) => (
+        <tr key={PLATFORMS[index].key}>
+      <th scope="row">
+  <span className="av-platform-name">
+    <PlatformLogo platform={PLATFORMS[index].key} />
+    <span>{PLATFORMS[index].name}</span>
+  </span>
+</th>
+
+          <td>
+            <span className="av-table-status">
+              <i
+                className={`d d-${result.s}`}
+                aria-hidden="true"
+              />
+              {STATUS_LABEL[result.s]}
+            </span>
+          </td>
+
+          <td>
+            {result.pos ? (
+              <RankStrip pos={result.pos} />
+            ) : (
+              '—'
+            )}
+          </td>
+
+          <td>
+            {result.cited ? (
+              <span className="av-source-url">
+                {result.cited}
+              </span>
+            ) : (
+              '—'
+            )}
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<p className="av-result-count">
+  Appears on {hits} of {PLATFORMS.length} platforms
+  {' · '}
+  Cited on {citedHits}
+</p>
+
+<div className="av-section-title av-evidence-title">
+  <h4>Answer evidence</h4>
+</div>
+
+<div className="av-evidence-grid">
+  {sel.results.map((result, index) => {
+    if (result.s === 'absent') return null;
+
+    return (
+      <article
+        className="av-evidence"
+        key={PLATFORMS[index].key}
+      >
+        <header>
+          <strong className="av-platform-name">
+  <PlatformLogo platform={PLATFORMS[index].key} />
+  <span>{PLATFORMS[index].name}</span>
+</strong>
+
+          <span className={`av-status av-status--${result.s}`}>
+            {STATUS_LABEL[result.s]}
+          </span>
+        </header>
+
+        {result.said ? (
+          <blockquote>
+            <Highlight text={result.said} />
+          </blockquote>
+        ) : (
+          <p className="av-evidence-missing">
+            No sample excerpt recorded.
+          </p>
+        )}
+
+        {result.also && result.also.length > 0 && (
+          <div className="av-also">
+            <span>Also named</span>
+            <p>{result.also.join(' · ')}</p>
+          </div>
+        )}
+
+        {result.gap && (
+          <p className="av-gap">
+            <strong>Gap</strong>
+            {result.gap}
+          </p>
+        )}
+      </article>
+    );
+  })}
+
+  {hits === 0 && (
+    <div className="av-no-evidence">
+      <strong>No Ben mentions in this sample.</strong>
+      <p>
+        Run the prompt on each platform and save the
+        responses before confirming the visibility gap.
+      </p>
+    </div>
+  )}
+</div>
+
+
+
+
+      <div className="av-improvement">
+  <strong>What to improve</strong>
+  <p>{sel.why}</p>
+</div>
+
 
                 <div className="av-plan">
                   <div>
-                    <div className="av-plan-label">CONTENT TO CREATE OR FIX</div>
+                    <div className="av-plan-label">Content to create or improve</div>
                     <ul>
                       {sel.fix.map((f) => (
                         <li key={f.text}>
@@ -1537,7 +1646,7 @@ export default function AiVisibility() {
                     </ul>
                   </div>
                   <div>
-                    <div className="av-plan-label">AUTHORITY &amp; BACKLINKS</div>
+                    <div className="av-plan-label">Authority &amp; distribution</div>
                     <ul>
                       {sel.moves.map((m) => (
                         <li key={m.text}>

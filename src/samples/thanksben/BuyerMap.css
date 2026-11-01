@@ -18,17 +18,17 @@
   border-color: #82b9a8;
 }
 .bm-tabs button span {
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 800;
-  color: #8faea4;
+  color: #167273;
 }
 .bm-tabs button strong {
-  font-size: 14px;
+  font-size: 18px;
   letter-spacing: -0.03em;
 }
 .bm-tabs button small {
-  font-size: 10px;
-  color: #728a7f;
+  font-size: 13px;
+  color: #011522;
 }
 .bm-tabs button.active {
   background: #125f5b;
@@ -48,14 +48,17 @@
   padding: 34px;
 }
 .bm-panel-head h3 {
-  font-size: 28px;
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 24px;
+  font-weight: 500 !important;
   margin: 12px 0 12px;
 }
+
 .bm-titles {
-  font-size: 11px;
-  line-height: 1.9;
-  color: #5a706b;
-  max-width: 900px;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #011522;
+  max-width: 1200px;
 }
 .bm-titles b {
   color: #11302e;
@@ -68,7 +71,7 @@
   margin: 26px 0 30px;
 }
 .bm-jtbd small {
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.14em;
   font-weight: 800;
   color: #167273;
@@ -92,11 +95,12 @@
   min-width: 0;
 }
 .bm-col h4 {
-  font-size: 10px;
+  font-size: 12px;
+  font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin: 28px 0 12px;
-  color: #11302e;
+  color: #011522;
 }
 .bm-col > h4:first-child {
   margin-top: 0;
@@ -108,9 +112,9 @@
 .bm-list li {
   position: relative;
   padding-left: 18px;
-  font-size: 11px;
-  line-height: 1.8;
-  color: #516a68;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #011522;
 }
 .bm-list li:before {
   content: "→";
@@ -124,10 +128,10 @@
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 10px;
-  background: #fbfdfb;
+  background: transparent;
 }
 .bm-stage-label {
-  font-size: 9px;
+  font-size: 11px;
   letter-spacing: 0.12em;
   font-weight: 800;
   text-transform: uppercase;
@@ -141,17 +145,17 @@
 }
 .bm-queries code {
   font-family: inherit;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 600;
   background: #fff;
   border: 1px solid #cfe2da;
   border-radius: 5px;
-  padding: 5px 9px;
+  padding: 6px 10px;
   color: #203836;
 }
 .bm-lands {
-  font-size: 10px;
-  color: #6c8279;
+  font-size: 13px;
+  color: #011522;
   margin-top: 12px;
   line-height: 1.7;
 }
@@ -169,8 +173,8 @@
   display: grid;
   grid-template-columns: 120px 1fr;
   gap: 14px;
-  font-size: 11px;
-  line-height: 1.75;
+  font-size: 14px;
+  line-height: 1.7;
   padding-bottom: 12px;
   border-bottom: 1px solid #eaf0ed;
 }
@@ -196,13 +200,13 @@
   margin-bottom: 16px;
 }
 .bm-linkedin-head span {
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.14em;
   color: #9ce2cf;
 }
 .bm-linkedin-head small {
-  font-size: 10px;
+  font-size: 12px;
   color: #9dc5bc;
 }
 .bm-linkedin dl {
@@ -212,12 +216,12 @@
 }
 .bm-linkedin dl div {
   display: grid;
-  grid-template-columns: 128px 1fr;
+  grid-template-columns: 160px 1fr;
   gap: 12px;
-  padding: 9px 0;
+  padding: 10px 0;
   border-bottom: 1px solid #1f5654;
-  font-size: 11px;
-  line-height: 1.65;
+  font-size: 14px;
+  line-height: 1.6;
 }
 .bm-linkedin dt {
   color: #9ce2cf;
@@ -228,7 +232,7 @@
   color: #e2efec;
 }
 .bm-bool-label {
-  font-size: 10px;
+  font-size: 12px;
   color: #9dc5bc;
   margin-bottom: 8px;
 }
@@ -247,7 +251,7 @@
 }
 .bm-bool code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.7;
   color: #d4efe6;
   word-break: break-word;
@@ -258,8 +262,8 @@
   background: transparent;
   color: #9ce2cf;
   border-radius: 5px;
-  padding: 5px 10px;
-  font-size: 10px;
+  padding: 6px 12px;
+  font-size: 12px;
   font-weight: 800;
   flex-shrink: 0;
 }
@@ -267,30 +271,15 @@
   background: #123d3b;
 }
 .bm-tip {
-  font-size: 10px;
-  line-height: 1.85;
+  font-size: 13px;
+  line-height: 1.75;
   color: #b7d3cc;
   margin-top: 14px;
 }
-.bm-distrust {
-  border: 1px solid #f0d9d0;
-  background: #fdf6f2;
-  border-radius: 8px;
-  padding: 16px;
-  margin-top: 16px;
-}
-.bm-distrust small {
-  font-size: 9px;
-  letter-spacing: 0.14em;
-  font-weight: 800;
-  color: #a94d37;
-}
-.bm-distrust p {
-  font-size: 11px;
-  line-height: 1.85;
-  color: #6a504a;
-  margin-top: 6px;
-}
+ 
+
+
+
 .bm-assets {
   display: grid;
   gap: 8px;
@@ -361,4 +350,40 @@
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }
+}
+
+/* Widen the parent container for this section only */
+#buyers {
+  background: #fff;
+  padding-bottom: 40px !important; /* Prevents massive gap at bottom */
+}
+
+#buyers .tb-container {
+  max-width: 1500px !important;
+  /* Force the same exact padding as the Keyword section so they align */
+  padding-left: clamp(22px, 2.4vw, 44px) !important;
+  padding-right: clamp(22px, 2.4vw, 44px) !important;
+}
+
+/* The intro wrapper is what's capping the width of the title and paragraph */
+#buyers .tb-section-intro {
+  max-width: none !important;
+  width: 100% !important;
+}
+
+.bm-section-title {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: clamp(28px, 4vw, 42px) !important;
+  color: #011522 !important;
+  max-width: 900px !important;
+  width: 100% !important;
+}
+
+.bm-section-desc {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 18px !important;
+  color: #011522 !important;
+  line-height: 1.6 !important;
+  width: 100% !important;
+  max-width: 1200px !important;
 }

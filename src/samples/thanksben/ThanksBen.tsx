@@ -433,12 +433,11 @@ const citations = [
 ];
 
 const nav = [
-  ['overview', 'Executive overview'],
-  ['buyers', 'Buying committee'],
-  ['keywords', 'Search priorities'],
-  ['competition', 'Competitor opportunities'],
-  ['ai', 'AI visibility'],
-  ['roadmap', '90-day roadmap'],
+  ['buyers', 'Audience Mapping'],
+  ['keywords', 'Keyword Priorities'],
+  ['competition', 'Competitor Opportunities'],
+  ['ai', 'AI Visibility'],
+  ['roadmap', '90-day Roadmap'],
   ['measurement', 'Measurement'],
 ] as const;
 
@@ -681,138 +680,73 @@ export default function ThanksBen() {
         </div>
       </aside>
       <div className="tb-shell">
-        <header className="tb-topbar">
+    
+    
+    
+        <main>
+
+
+
+<section
+  id="overview"
+  className="tb-editorial-hero tb-page-section"
+>
+  <div className="tb-container">
+    <div className="tb-editorial-brandline">
+      <span>GrowUp</span>
+      <span aria-hidden="true">/</span>
+      <span>Plan for Ben</span>
+    </div>
+
+    <div className="tb-editorial-grid">
+      <div className="tb-editorial-copy">
+        <p className="tb-editorial-eyebrow">
+          90-DAY SEO PLAN
+        </p>
+
+               <h1 className="tb-editorial-title">
+          Build a stronger pipeline through <span>organic search</span>
+        </h1>
+
+
+        <p className="tb-editorial-description">
+This SEO plan sets out how Ben can reach more potential customers and create more opportunities for meaningful conversations with sales.
+        </p>
+
+        <div className="tb-editorial-actions">
           <button
-            className="tb-mobile-toggle"
-            onClick={() => setMenu(!menu)}
-            aria-label="Toggle navigation"
+            type="button"
+            className="tb-editorial-primary"
+            onClick={() => go('keywords')}
           >
-            ☰
+            Explore the plan
+            <Arrow />
           </button>
-         
-<div className="tb-breadcrumb">
-  GrowUp <span>/</span> <strong>Ben</strong>
+
+          <button
+            type="button"
+            className="tb-editorial-secondary"
+            onClick={() => window.print()}
+          >
+            Download PDF
+            <Download />
+          </button>
+        </div>
+      </div>
+
+  <div className="tb-plan-visual">
+  <img
+    src="/images/ben-hero-img-plan.png"
+    alt="GrowUp’s 90-day SEO plan for Ben"
+    className="tb-plan-visual-image"
+  />
 </div>
 
-          <div className="tb-top-actions">
-            <span className="tb-sample-label">
-              <span className="tb-status-dot" /> Illustrative strategy
-            </span>
-            <button onClick={() => window.print()} className="tb-icon-button">
-              Print / PDF <Download />
-            </button>
-          </div>
-        </header>
-        <main>
-          <section id="overview" className="tb-hero tb-page-section">
-            <div className="tb-container">
-              <div className="tb-hero-kicker">
-                <span>STRATEGY DOCUMENT 001</span>
-                <i /> <span>OCTOBER 2026 · RESEARCH-LED SAMPLE</span>
-              </div>
-              <div className="tb-hero-main">
-                <div>
-                  <div className="tb-hero-pretitle">
-                    An organic growth strategy for{' '}
-                    <span className="tb-ben-inline">ben.</span>
-                  </div>
-                  <h1>
-                    Turn enterprise benefits complexity into{' '}
-                    <em>qualified demand.</em>
-                  </h1>
-                  <p className="tb-hero-lead">
-                    A proposed 90-day search strategy for Ben: where to meet
-                    global reward, payroll and finance buyers; what evidence to
-                    build; and how to connect organic activity to opportunities,
-                    not just visits.
-                  </p>
-                  <div className="tb-hero-buttons">
-                    <button
-                      onClick={() => go('keywords')}
-                      className="tb-primary-btn"
-                    >
-                      Explore search priorities <Arrow />
-                    </button>
-                    <button
-                      onClick={() => window.print()}
-                      className="tb-outline-btn"
-                    >
-                      Export as PDF <Download />
-                    </button>
-                  </div>
-                </div>
-                <div className="tb-hero-art">
-                  <div className="tb-art-label">
-                    THE STRATEGIC THESIS <span>01 / 03</span>
-                  </div>
-                  <div className="tb-art-panel">
-                    <div className="tb-art-orbit">
-                      <div>
-                        GLOBAL
-                        <br />
-                        REWARD
-                      </div>
-                      <div>
-                        PAYROLL
-                        <br />
-                        OPS
-                      </div>
-                      <div>
-                        FINANCE
-                        <br />
-                        BUYER
-                      </div>
-                      <span className="tb-art-hub">ben.</span>
-                    </div>
-                    <div className="tb-art-caption">
-                      One story. Multiple buying decisions.
-                    </div>
-                  </div>
-                  <div className="tb-art-foot">
-                    <span>FROM PRODUCT CAPABILITIES</span>
-                    <Arrow />
-                    <span>TO BUYER EVIDENCE</span>
-                  </div>
-                </div>
-              </div>
-              <div className="tb-hero-meta">
-                <div>
-                  <small>FOCUS MARKET</small>
-                  <strong>Multinational enterprises</strong>
-                </div>
-                <div>
-                  <small>PRIMARY MOTION</small>
-                  <strong>High-intent organic discovery</strong>
-                </div>
-                <div>
-                  <small>DELIVERY HORIZON</small>
-                  <strong>Next 90 days</strong>
-                </div>
-                <div>
-                  <small>STATUS</small>
-                  <strong>Research hypotheses to validate</strong>
-                </div>
-              </div>
-            </div>
-          </section>
-          <section className="tb-context">
-            <div className="tb-container tb-context-flex">
-              <div className="tb-context-number">
-                THE
-                <br />
-                POINT
-              </div>
-              <p>
-                Ben already has a clear enterprise product story. The
-                opportunity is to make that story discoverable{' '}
-                <strong>
-                  at the precise moments buyers are comparing platforms, solving
-                  operational pain or justifying investment.
-                </strong>
-              </p>
-            </div>
-          </section>
 
+
+    </div>
+  </div>
+</section>
 
 <BuyerMap />
 

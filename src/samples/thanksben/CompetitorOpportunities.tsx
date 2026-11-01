@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { useRef, useState, type KeyboardEvent } from 'react';
 import './CompetitorOpportunities.css';
 
 /* ------------------------------------------------------------------ */
@@ -17,7 +17,14 @@ type Fmt =
 type Five = [number, number, number, number, number];
 type Wave = 1 | 2 | 3;
 
-type Serp = { d: string; t: string; f: Fmt; w?: string };
+type Serp = {
+  d: string;
+  t: string;
+  f: Fmt;
+  w?: string;
+  description?: string;
+  date?: string;
+};
 type Angle = { name: string; hook: string; format: string; proof: string };
 type Kw = {
   id: string;
@@ -43,83 +50,7 @@ type Kw = {
   verify: string;
 };
 
-/* ------------------------------------------------------------------ */
-/* Reference data                                                      */
-/* ------------------------------------------------------------------ */
 
-const THEMES: Theme[] = [
-  'Alternatives',
-  'Best of',
-  'Pricing',
-  'Feature',
-  'Comparison',
-];
-
-const DIMS = [
-  'Specificity',
-  'Proof & evidence',
-  'Original data',
-  'Interactivity',
-  'Freshness',
-];
-
-
-const BRIEFS: {
-  n: string;
-  theme: string;
-  who: string;
-  review: string;
-  opening: string;
-  evidence: string;
-  maps: string[];
-  note?: string;
-}[] = [
-  {
-    n: '01',
-    theme: 'Global administration',
-    who: 'Global Reward',
-    review:
-      'Inspect how shortlisted platforms document multi-market configuration, local rules, provider administration and ownership.',
-    opening:
-      'Show the exact operating workflow, not just a list of countries served.',
-    evidence: 'Screenshots, market scope, implementation and policy examples',
-    maps: ['BO-03', 'BO-13', 'FT-01'],
-  },
-  {
-    n: '02',
-    theme: 'Payroll accuracy',
-    who: 'Payroll Ops',
-    review:
-      'Compare whether competing pages explain the actual benefits-to-payroll handoff and exception resolution.',
-    opening:
-      'Own the reconciliation conversation with a concrete process walkthrough.',
-    evidence: 'Workflow diagram, sample exception log and integration boundaries',
-    maps: [],
-    note: 'No payroll keyword sits in the top 10. See JB-01 and FT-02 in the backlog.',
-  },
-  {
-    n: '03',
-    theme: 'Finance / ROI',
-    who: 'CFO / People',
-    review:
-      'Inspect business-case templates, pricing transparency and cost-of-admin assumptions.',
-    opening:
-      'Publish a practical, inspectable financial model with sensitivity scenarios.',
-    evidence: 'Transparent assumptions, cost categories and approved case evidence',
-    maps: ['PR-09', 'PR-07'],
-  },
-  {
-    n: '04',
-    theme: 'Implementation risk',
-    who: 'IT / HRIS',
-    review:
-      'Compare migration detail, UAT support, data responsibilities and time-to-live caveats.',
-    opening:
-      'Turn the published four-stage process into a procurement-grade guide.',
-    evidence: 'Requirements checklist, UAT plan and verified rollout examples',
-    maps: ['VS-12', 'FT-01'],
-  },
-];
 
 /* ------------------------------------------------------------------ */
 /* Keyword data                                                        */
@@ -149,13 +80,46 @@ const KW: Kw[] = [
     score: 83,
     intent: 'Finance evaluation',
     why: 'The easiest win on the list and the one a CFO forwards. The model you publish here also feeds PR-07, PR-08 and PR-10, so it is the best first asset to build links around.',
-    serp: [
-      s('selecthub.com', 'Employee Benefits Software Pricing Guide', 'Review hub', 'Generic ranges, no stated assumptions'),
-      s('capterra.com', 'Benefits Administration Software Pricing', 'Review hub', 'Starting-price filters built for SMB'),
-      s('forbes.com', 'Best Employee Benefits Platforms for Small Business', 'Publisher', 'PEPM bands that stop well below enterprise'),
-      s('reddit.com', 'What do you pay per head for benefits admin?', 'Forum', 'Anecdotes, no method'),
-      s('hrdive.com', 'Employer cost of benefits is rising again', 'Publisher', 'Premium cost, not platform cost: intent mismatch'),
-    ],
+  serp: [
+  {
+    d: 'https://www.joinforma.com/resources/how-much-do-benefits-cost-per-employee',
+    t: 'How much do benefits cost per employee',
+    f: 'Vendor blog',
+    description:
+      'Learn about the various types of benefits, average expenses, and effective strategies to manage costs while ensuring employee satisfaction.',
+  },
+  {
+    d: 'https://benepass.com/blog/what-is-the-average-cost-of-benefits-per-employee-the-complete-guide',
+    t: 'Employee Benefits Cost Per Employee in 2026',
+    f: 'Vendor blog',
+    date: '17 Jun 2026',
+    description:
+      'As a starting point, private industry employers spend an average of $14.01 per hour, or roughly $25,498 per year, per employee on benefits.',
+  },
+  {
+    d: 'https://hotalinginsurance.com/commercial/employee-benefits-cost-per-employee',
+    t: 'Employee Benefits Cost Per Employee (2026 BLS & KFF ...',
+    f: 'Broker',
+    date: '3 Mar 2026',
+    description:
+      'Employee benefits cost U.S. private employers an average of $14.07 per hour worked, or 30.0% of total compensation, according to the Bureau of ...',
+  },
+  {
+    d: 'https://www.theaccessgroup.com/en-gb/hr/software/employee-engagement/employee-benefits/how-much-do-employee-benefits-cost/',
+    t: 'How much do employee benefits cost',
+    f: 'Vendor page',
+    description:
+      "Research has indicated that businesses typically spend 1.25 to 1.4 times each employee's base salary on employee benefits, or simply add 20-50% to the ...",
+  },
+  {
+    d: 'https://hellopebl.com/resources/blog/how-much-do-benefits-cost-per-employee/',
+    t: 'How Much Do Benefits Cost per Employee?',
+    f: 'Vendor blog',
+    date: '14 Sept 2026',
+    description:
+      'Wondering how much benefits cost per employee? Compare benchmarks across five different countries, and learn top tips to manage expenses.',
+  },
+],
     says: [
       ['Pricing is quote-only (“contact sales”)', 6],
       ['SMB per-employee ranges applied to enterprise', 4],
@@ -223,17 +187,46 @@ const KW: Kw[] = [
     intent: 'Objection handling',
     why: 'This is the strongest objection in the deal, and nobody has published a neutral answer. A page that admits when the HRIS module is enough earns trust and links.',
     serp: [
-      s('rippling.com', 'HRIS vs benefits administration: why one system wins', 'Vendor blog', 'Suite-biased, never says when not to'),
-      s('workday.com', 'Workday Benefits', 'Vendor page', 'Product page, not a comparison'),
-      s('capterra.com', 'HRIS vs Benefits Administration Software', 'Review hub', 'Definitions, no decision threshold'),
-      s('bamboohr.com', 'Do you need benefits software with your HRIS?', 'Vendor blog', 'SMB framing'),
-      s('reddit.com', 'HRIS benefits module or separate tool?', 'Forum', 'Mixed opinions, no criteria'),
+      {
+        d: 'https://getebm.com/hris-vs-hcm-vs-benadmin-finding-the-right-solution-for-you/',
+        t: "HRIS vs. HCM vs. HRMS vs. BenAdmin: What's the difference?",
+        f: 'Vendor blog',
+        date: '4 Dec 2023',
+        description: 'Between HRIS, HRMS, HCM, and BenAdmin (Benefits Administration), figuring out the differences between each type of system gets confusing.',
+      },
+      {
+        d: 'https://selerix.com/blog/hris-vs-benefits-point-solutions/',
+        t: 'HRIS vs Benefits Point Solutions for ACA Compliance',
+        f: 'Vendor blog',
+        date: '25 Feb 2026',
+        description: 'See how HRIS vs benefits point solutions compare for ACA. Understand where HRIS benefits fall short, when to add a specialist, and how to...',
+      },
+      {
+        d: 'https://matchr.com/benefits-administration-and-hris/',
+        t: 'Benefits Administration and HRIS - Matchr',
+        f: 'Vendor blog',
+        description: 'Benefits administration is one of the most common elements of a HRIS solution. For some companies, benefits administration is the main reason for purchasing a...',
+      },
+      {
+        d: 'https://blog.onehcm.com/5-reasons-to-unify-benefits-and-hris-software',
+        t: '5 Reasons To Unify Benefits Administration Software & HRIS',
+        f: 'Vendor blog',
+        date: '16 Aug 2019',
+        description: 'Unifying benefits and HRIS Software means less paper, fewer spreadsheets, no more standing at the copy machine, no more manual distribution of...',
+      },
+      {
+        d: 'https://www.kbibenefits.com/the-role-of-hr-information-systems-in-modern-benefits-administration',
+        t: 'The Role of HR Information Systems in Modern Benefits ...',
+        f: 'Vendor blog',
+        date: '22 Apr 2025',
+        description: 'But a modern HRIS can transform how your company handles benefits administration—boosting efficiency, improving employee satisfaction, and ...',
+      },
     ],
     says: [
+      ['HRIS and benefits admin are often treated as the same thing', 7],
       ['Single-vendor simplicity is the default recommendation', 6],
-      ['HRIS modules are “good enough” for smaller firms', 5],
-      ['Dedicated tools add depth, never quantified', 4],
-      ['Multi-country rules treated as an edge case', 3],
+      ['Only ACA compliance is used as the differentiator', 4],
+      ['Dedicated tools add depth, but it is never quantified', 3],
     ],
     gaps: [
       'No decision threshold. Nobody says at how many entities or countries a module stops being enough.',
@@ -295,10 +288,39 @@ const KW: Kw[] = [
     intent: 'Switch consideration',
     why: 'Bring-your-own-broker is a genuine differentiator and the SERP is dominated by brokers defending themselves. An honest unbundling page has little real competition.',
     serp: [
-      s('gallagher.com', 'The value of your benefits broker', 'Broker', 'Defends the broker, no platform view'),
-      s('mercer.com', 'Benefits consulting and brokerage', 'Broker', 'Service page'),
-      s('aon.com', 'Benefits administration and advisory', 'Broker', 'Service page'),
-      s('benefitnews.com', 'Alternatives to using a broker', 'Publisher', 'US-centric: PEOs and marketplaces'),
+      {
+        d: 'https://matrixbenefits.co.uk/matrix-vs-traditional-brokers-which-is-right-for-you/',
+        t: 'Matrix vs Traditional Brokers: Which Is Right for You?',
+        f: 'Broker',
+        date: '22 Sept 2025',
+        description: 'Traditional brokers often stick to rigid plans and outdated approaches that may no longer meet the evolving needs of today’s diverse workforce.',
+      },
+      {
+        d: 'https://www.navabenefits.com/compare/traditional-brokers',
+        t: 'Nava Benefits brokers vs. Traditional brokers',
+        f: 'Broker',
+        description: 'Nava outperforms traditional brokers by offering more renewal options, handling eligibility and open enrollment, and providing personalized, 24/7 employee...',
+      },
+      {
+        d: 'https://lumainsurance.com.au/how-we-are-different/',
+        t: 'An Alternative to Traditional Insurance Brokers - Luma Insurance',
+        f: 'Broker',
+        description: 'Looking for an alternative to traditional insurance brokers? Luma removes the hidden commissions most brokers charge and that inflate your premium—with full...',
+      },
+      {
+        d: 'https://www.linkedin.com/posts/jggraham_employeebenefits-peo-hr-activity-7511441102961471489-0gJ_',
+        t: 'Employee Benefits Options: Direct, Broker, or PEO ...',
+        f: 'Publisher',
+        date: '1 month ago',
+        description: 'Use a traditional benefits broker. Or evaluate PEOs through PairPEO. At PairPEO, we compare pricing across leading PEOs. Alternative funding...',
+      },
+      {
+        d: 'https://www.ignitionbenefits.com/blog/find-benefits-brokers-small-business',
+        t: 'How to find benefit brokers for small business and best ...',
+        f: 'Publisher',
+        date: '27 Aug 2026',
+        description: 'Looking for an Alternative Benefit Broker? Compare the Best Benefits Brokers for Small Business: At a Glance Ignition Benefits: Alternative...',
+      },
     ],
     says: [
       ['The replacement for a broker is a PEO or marketplace', 5],
@@ -884,601 +906,628 @@ const KW: Kw[] = [
 /* Derived values and helpers                                          */
 /* ------------------------------------------------------------------ */
 
-const TOTAL = KW.length;
-const SUM_VOL = KW.reduce((a, k) => a + k.vol, 0);
-const AVG_DIFF = Math.round(KW.reduce((a, k) => a + k.diff, 0) / TOTAL);
-const AVG_SCORE = Math.round(KW.reduce((a, k) => a + k.score, 0) / TOTAL);
-const CREATE_N = KW.filter((k) => k.action === 'Create').length;
-const IMPROVE_N = TOTAL - CREATE_N;
-const MAX_VOL = Math.max(...KW.map((k) => k.vol));
 
-const themeVol = THEMES.map((t) => ({
-  t,
-  vol: KW.filter((k) => k.theme === t).reduce((a, k) => a + k.vol, 0),
-  n: KW.filter((k) => k.theme === t).length,
-})).filter((x) => x.n > 0);
-const MAX_THEME_VOL = Math.max(...themeVol.map((x) => x.vol));
+function getResultUrl(value: string): URL | null {
+  const input = value.trim();
 
-const diffLabel = (d: number) => (d < 30 ? 'Low' : d < 45 ? 'Moderate' : 'Hard');
-const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-');
+  if (!input) return null;
 
-type SortKey = 'order' | 'score' | 'vol' | 'easy';
-const SORTS: Record<SortKey, (a: Kw, b: Kw) => number> = {
-  order: (a, b) => a.order - b.order,
-  score: (a, b) => b.score - a.score || b.vol - a.vol,
-  vol: (a, b) => b.vol - a.vol,
-  easy: (a, b) => a.diff - b.diff,
+  try {
+    const normalised = input.startsWith('//')
+      ? `https:${input}`
+      : /^[a-z][a-z\d+.-]*:/i.test(input)
+        ? input
+        : `https://${input}`;
+
+    const url = new URL(normalised);
+
+    if (!['http:', 'https:'].includes(url.protocol)) return null;
+    if (!url.hostname.includes('.')) return null;
+
+    return url;
+  } catch {
+    return null;
+  }
+}
+
+const SITE_NAMES: Record<string, string> = {
+    'joinforma.com': 'Forma',
+  'hotalinginsurance.com': 'Hotaling Insurance Services',
+  'theaccessgroup.com': 'The Access Group',
+  'hellopebl.com': 'Pebl',
+    'seamlesshr.com': 'SeamlessHR',
+  'punchng.com': 'Punch Newspapers',
+  'ribirewards.com': 'RibiRewards',
+  'benepass.com': 'Benepass',
+  'www.benepass.com': 'Benepass',
+  'business.org': 'Business.org',
+  'selecthub.com': 'SelectHub',
+  'capterra.com': 'Capterra',
+  'forbes.com': 'Forbes',
+  'reddit.com': 'Reddit',
+  'hrdive.com': 'HR Dive',
+  'thanksben.com': 'Ben',
 };
 
-const csvCell = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
+function siteName(value: string): string {
+  const url = getResultUrl(value);
+  if (!url) return value;
 
-function exportCsv(rows: Kw[]) {
-  const head = [
-    'Write order',
-    'ID',
-    'Wave',
-    'Theme',
-    'Keyword',
-    'Asset',
-    'Action',
-    'Vol. est.',
-    'Difficulty',
-    'Score',
-    'Why now',
-    'Gaps in the top 10',
-    'Outrank angles',
-    'Page blueprint',
-  ];
-  const lines = rows.map((k) =>
-    [
-      k.order,
-      k.id,
-      k.wave,
-      k.theme,
-      k.keyword,
-      k.asset,
-      k.action,
-      k.vol,
-      k.diff,
-      k.score,
-      k.why,
-      k.gaps.join(' | '),
-      k.angles.map((a) => `${a.name}: ${a.hook}`).join(' | '),
-      k.blueprint.join(' | '),
-    ]
-      .map(csvCell)
-      .join(','),
-  );
-  const blob = new Blob(
-    ['\uFEFF' + [head.map(csvCell).join(','), ...lines].join('\r\n')],
-    { type: 'text/csv;charset=utf-8' },
-  );
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'competitor-opportunities-sample.csv';
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const hostname = url.hostname.replace(/^www\./, '');
+
+  return SITE_NAMES[hostname] ?? hostname;
 }
 
-/* ------------------------------------------------------------------ */
-/* Small components                                                    */
-/* ------------------------------------------------------------------ */
+function resultBreadcrumb(value: string): string {
+  const url = getResultUrl(value);
+  if (!url) return value;
 
-function Field({
-  label,
-  value,
-  onChange,
-  options,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  options: [string, string][];
-}) {
-  return (
-    <label className="co-field">
-      <span>{label}</span>
-      <select value={value} onChange={(e) => onChange(e.target.value)}>
-        {options.map(([v, t]) => (
-          <option key={v} value={v}>
-            {t}
-          </option>
-        ))}
-      </select>
-    </label>
-  );
+  const segments = url.pathname
+    .split('/')
+    .filter(Boolean)
+    .map((segment) => {
+      try {
+        return decodeURIComponent(segment);
+      } catch {
+        return segment;
+      }
+    });
+
+  return [
+    `${url.protocol}//${url.hostname}`,
+    ...segments,
+  ].join(' › ');
 }
 
-function OpportunityMap({
-  selectedId,
-  onPick,
-}: {
-  selectedId: string | undefined;
-  onPick: (id: string) => void;
-}) {
-  const W = 320;
-  const H = 200;
-  const x = (d: number) => 34 + ((d - 20) / 40) * (W - 56);
-  const y = (v: number) => H - 30 - (v / 500) * (H - 52);
+function ResultFavicon({ value }: { value: string }) {
+  const url = getResultUrl(value);
+  const hostname = url?.hostname ?? '';
+  const [failedHost, setFailedHost] = useState<string | null>(null);
+
+  const showImage = hostname && failedHost !== hostname;
+
   return (
-    <svg
-      viewBox={`0 0 ${W} ${H}`}
-      className="co-map"
-      role="img"
-      aria-label="Opportunity map: difficulty against estimated monthly volume"
-    >
-      {[0, 250, 500].map((v) => (
-        <g key={v}>
-          <line x1="34" x2={W - 22} y1={y(v)} y2={y(v)} className="co-map-grid" />
-          <text x="28" y={y(v) + 3} className="co-map-tick" textAnchor="end">
-            {v}
-          </text>
-        </g>
-      ))}
-      {[20, 40, 60].map((d) => (
-        <text key={d} x={x(d)} y={H - 14} className="co-map-tick" textAnchor="middle">
-          {d}
-        </text>
-      ))}
-      <text x={W / 2} y={H - 2} className="co-map-axis" textAnchor="middle">
-        DIFFICULTY →
-      </text>
-      <text x="6" y="12" className="co-map-axis">
-        VOLUME ↑
-      </text>
-      {KW.map((k) => (
-        <g
-          key={k.id}
-          className={`co-dot co-dot--w${k.wave}${selectedId === k.id ? ' sel' : ''}`}
-          transform={`translate(${x(k.diff)} ${y(k.vol)})`}
-          tabIndex={0}
-          role="button"
-          aria-label={`${k.keyword}, write order ${k.order}`}
-          onClick={() => onPick(k.id)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              onPick(k.id);
-            }
-          }}
+    <span className="co-serp-fav" aria-hidden="true">
+      {showImage ? (
+        <img
+          key={hostname}
+          src={
+            `https://a.favicon.im/${encodeURIComponent(hostname)}` +
+            '?larger=true&throw-error-on-404=true'
+          }
+          alt=""
+          width={20}
+          height={20}
+          loading="lazy"
+          decoding="async"
+          referrerPolicy="no-referrer"
+          onError={() => setFailedHost(hostname)}
+        />
+      ) : (
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
-          <title>{`${k.order}. ${k.keyword} · vol ${k.vol} · diff ${k.diff}`}</title>
-          <circle r="11" />
-          <text y="3.5" textAnchor="middle">
-            {k.order}
-          </text>
-        </g>
-      ))}
-    </svg>
+          <circle cx="12" cy="12" r="9" />
+          <path d="M3 12h18" />
+          <path d="M12 3a17 17 0 0 1 0 18 17 17 0 0 1 0-18Z" />
+        </svg>
+      )}
+    </span>
   );
 }
 
-/* ------------------------------------------------------------------ */
-/* Component                                                           */
-/* ------------------------------------------------------------------ */
+
+
+const diffLabel = (value: number) =>
+  value < 30 ? 'Low' : value < 45 ? 'Moderate' : 'Hard';
+
+type DetailSection = 'landscape' | 'direction' | 'validation';
 
 export default function CompetitorOpportunities() {
-  const [theme, setTheme] = useState<'All' | Theme>('All');
-  const [wave, setWave] = useState<'all' | '1' | '2' | '3'>('all');
-  const [sort, setSort] = useState<SortKey>('order');
-  const [query, setQuery] = useState('');
   const [selectedId, setSelectedId] = useState('PR-09');
+  const [activeSection, setActiveSection] =
+    useState<DetailSection>('landscape');
+
   const listRef = useRef<HTMLDivElement>(null);
-  const workRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
+ 
 
-  const rows = useMemo(() => {
-    const q = query.trim().toLowerCase();
-    return KW.filter((k) => {
-      if (theme !== 'All' && k.theme !== theme) return false;
-      if (wave !== 'all' && String(k.wave) !== wave) return false;
-      if (
-        q &&
-        !`${k.id} ${k.keyword} ${k.asset} ${k.theme} ${k.kind}`
-          .toLowerCase()
-          .includes(q)
-      )
-        return false;
-      return true;
-    })
-      .slice()
-      .sort(SORTS[sort]);
-  }, [theme, wave, sort, query]);
-
-  const selIndex = Math.max(
+  const rows = [...KW].sort((a, b) => a.order - b.order);
+  const selectedIndex = Math.max(
     0,
-    rows.findIndex((r) => r.id === selectedId),
+    rows.findIndex((row) => row.id === selectedId),
   );
-  const sel: Kw | undefined = rows[selIndex];
 
-  const filtersActive = theme !== 'All' || wave !== 'all' || query !== '';
+  const selected = rows[selectedIndex];
+  const lead = selected.angles[0];
+  const isPricingExample = selected.id === 'PR-09';
 
-  const reset = () => {
-    setTheme('All');
-    setWave('all');
-    setQuery('');
-  };
+  const format = isPricingExample
+    ? 'Calculator + downloadable sheet'
+    : lead?.format ?? selected.kind;
 
-  const pick = (id: string) => {
+  const why = isPricingExample
+    ? 'Build a reusable pricing model that supports related cost and pricing pages.'
+    : selected.why;
+
+  const opening = isPricingExample
+    ? 'An editable enterprise cost model with transparent assumptions.'
+    : selected.gaps[0] ?? selected.asset;
+
+  const valueAngles = isPricingExample
+    ? [
+        {
+          title: 'Make costs inspectable',
+          text: 'Editable assumptions, fee categories and sensitivity scenarios.',
+        },
+        {
+          title: 'Price the status quo',
+          text: 'A worksheet for internal admin time and error-correction costs.',
+        },
+        {
+          title: 'Explain the quote',
+          text: 'An anonymised sample showing which fees change the total.',
+        },
+      ]
+    : selected.angles.map((angle) => ({
+        title: angle.name,
+        text: angle.hook,
+      }));
+
+  const outline = isPricingExample
+    ? [
+        'The short answer, with caveats',
+        'Pricing models and fee categories',
+        'An annotated sample quote',
+        'The editable cost calculator',
+        'Three workforce-size scenarios',
+        'Questions for your RFP',
+      ]
+    : selected.blueprint;
+
+  const questions = isPricingExample
+    ? [
+        'What is a typical cost per employee?',
+        'What drives the total platform cost?',
+        'Are implementation fees separate?',
+      ]
+    : selected.paa;
+
+ 
+
+  function pick(id: string, scrollToDetail = false) {
     setSelectedId(id);
-    if (typeof window !== 'undefined' && window.innerWidth <= 1100) {
-      detailRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    setActiveSection('landscape');
+
+    if (scrollToDetail) {
+      requestAnimationFrame(() => {
+        detailRef.current?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      });
     }
-  };
+  }
 
-  const jump = (id: string) => {
-    reset();
-    setSelectedId(id);
-    workRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  function onListKey(event: KeyboardEvent<HTMLDivElement>) {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
 
-  const onListKey = (e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
-    e.preventDefault();
-    const next = rows[selIndex + (e.key === 'ArrowDown' ? 1 : -1)];
+    event.preventDefault();
+
+    const nextIndex =
+      selectedIndex + (event.key === 'ArrowDown' ? 1 : -1);
+    const next = rows[nextIndex];
+
     if (!next) return;
-    setSelectedId(next.id);
-    requestAnimationFrame(() =>
-      listRef.current
-        ?.querySelector<HTMLButtonElement>(`[data-id="${next.id}"]`)
-        ?.focus(),
-    );
-  };
 
-  const fmtMix = sel
-    ? Array.from(
-        sel.serp.slice(0, 5).reduce((m, r) => m.set(r.f, (m.get(r.f) ?? 0) + 1), new Map<Fmt, number>()),
-      ).sort((a, b) => b[1] - a[1])
-    : [];
-  const weakCount = sel ? sel.serp.slice(0, 5).filter((r) => r.w).length : 0;
+    pick(next.id);
+
+    requestAnimationFrame(() => {
+      listRef.current
+        ?.querySelector<HTMLButtonElement>(
+          `[data-id="${next.id}"]`,
+        )
+        ?.focus();
+    });
+  }
+
+ 
 
   return (
-    <section className="tb-page-section tb-pad co-section" id="competition">
+    <section
+      className="tb-page-section tb-pad co-section"
+      id="competition"
+    >
       <div className="tb-container">
-        <header className="tb-section-intro">
-          <div className="tb-eyebrow">
-            <span>04</span>COMPETITOR OPPORTUNITIES
+        <header className="co-intro">
+          <div className="co-intro-top">
+            <div className="co-eyebrow">
+              04 <span>/</span> COMPETITOR OPPORTUNITIES
+            </div>
           </div>
-          <h2>Find the unanswered questions inside the buying process.</h2>
-          <p>
-            What the top 10 results say for the ten highest-scoring keywords,
-            where they stop short, and the angles that would make a Ben page the
-            better answer. Ordered by what to write first.
+
+          <h2>Find the gaps. Build the better answer.</h2>
+
+          <p className="co-intro-copy">
+            Ten priority searches, the questions competing pages leave
+            unanswered, and what Ben should publish next.
           </p>
         </header>
 
-     
-
-      
-
-       
-
-        
-
-        {/* ---------- Workspace ---------- */}
         <div className="co-workspace">
-          <div className="co-list-card">
+          <aside className="co-list-card">
             <div className="co-list-head">
-              <span>TOP 10 KEYWORDS</span>
-              <span>{rows.length} SHOWN</span>
+              <h3>Priority searches</h3>
+              <span>{rows.length} searches</span>
             </div>
-            <div className="co-list" ref={listRef} onKeyDown={onListKey} role="list">
-              {rows.length === 0 && (
-                <div className="co-empty">
-                  <strong>No keywords match these filters.</strong>
-                  <p>Loosen a filter or reset to see all ten.</p>
-                  <button type="button" className="co-reset" onClick={reset}>
-                    Reset filters
-                  </button>
-                </div>
-              )}
-              {rows.map((k) => (
+
+            <div
+              className="co-list"
+              ref={listRef}
+              onKeyDown={onListKey}
+              role="group"
+              aria-label="Priority searches. Use arrow keys to navigate."
+            >
+              {rows.map((keyword) => (
                 <button
-                  key={k.id}
-                  role="listitem"
-                  data-id={k.id}
+                  key={keyword.id}
+                  data-id={keyword.id}
                   type="button"
-                  className={`co-item${sel?.id === k.id ? ' active' : ''}`}
-                  onClick={() => pick(k.id)}
+                  className={`co-item${
+                    selected.id === keyword.id ? ' active' : ''
+                  }`}
+                  aria-pressed={selected.id === keyword.id}
+                  onClick={() =>
+                    pick(
+                      keyword.id,
+                      window.matchMedia('(max-width: 900px)').matches,
+                    )
+                  }
                 >
-                  <span className={`co-item-n co-w${k.wave}`}>{k.order}</span>
-                  <span className="co-item-main">
-                    <small>
-                      {k.id} · {k.theme} · {k.action}
-                    </small>
-                    <strong>{k.keyword}</strong>
+                  <span className="co-item-n">
+                    {String(keyword.order).padStart(2, '0')}
                   </span>
-                  <span className="co-item-score">
-                    <b>{k.score}</b>
-                    <small>{k.vol} /mo</small>
+
+                  <span className="co-item-main">
+                    <strong>{keyword.keyword}</strong>
+                    <small>
+                      {keyword.id} · {keyword.theme} · {keyword.action}
+                    </small>
+                  </span>
+
+                  <span
+                    className="co-item-score"
+                    aria-label={`Opportunity score ${keyword.score} out of 100`}
+                  >
+                    <b>{keyword.score}</b>
+                    <small>/100</small>
                   </span>
                 </button>
               ))}
             </div>
-            <div className="co-list-foot">Use ↑ ↓ to move between keywords.</div>
-          </div>
+          </aside>
 
-          <div className="co-detail" ref={detailRef} aria-live="polite">
-            {!sel ? (
-              <div className="co-empty">
-                <strong>Select a keyword</strong>
-                <p>The SERP review and outrank plan appear here.</p>
+          <div className="co-detail" ref={detailRef}>
+            <div className="co-detail-top">
+              <span className="co-detail-meta">
+                {String(selected.order).padStart(2, '0')} OF{' '}
+                {rows.length} <span>/</span> {selected.id}{' '}
+                <span>/</span> {selected.theme}
+              </span>
+
+              <span className="co-wave">Wave {selected.wave}</span>
+            </div>
+
+            <h3 className="co-query-title">{selected.keyword}</h3>
+
+            <p className="co-format">
+              Recommended format: {format}
+            </p>
+
+            <div className="co-metrics">
+              <div>
+                <span>Est. volume</span>
+                <strong>
+                  {selected.vol}
+                  <small>/mo</small>
+                </strong>
               </div>
-            ) : (
-              <>
-                <div className="co-detail-top">
-                  <span className="tb-overline">
-                    WRITE {sel.order} OF {TOTAL} · {sel.theme.toUpperCase()} · {sel.kind.toUpperCase()}
-                  </span>
-                  <span className={`co-wave co-wave--${sel.wave}`}>
-                    Wave {sel.wave}
-                  </span>
-                </div>
 
-                <div className="co-query">
-                  <div className="co-query-meta">
-                    <svg viewBox="0 0 20 20" aria-hidden="true">
-                      <circle cx="8.5" cy="8.5" r="5.5" />
-                      <path d="M13 13l4.5 4.5" />
-                    </svg>
-                    <small>SIMULATED GOOGLE SEARCH · {sel.intent.toUpperCase()}</small>
-                  </div>
-                  <p>{sel.keyword}</p>
-                </div>
-                <div className="co-asset">
-                  <span>{sel.action} · {sel.id}</span>
-                  <strong>{sel.asset}</strong>
-                </div>
+              <div>
+                <span>Difficulty</span>
+                <strong>
+                  {selected.diff}
+                  <small>/100</small>
+                  <em>{diffLabel(selected.diff)}</em>
+                </strong>
+              </div>
 
-                <div className="co-metrics">
-                  <div>
-                    <small>Volume est.</small>
-                    <b>{sel.vol}</b>
-                    <div className="co-meter">
-                      <i style={{ width: `${(sel.vol / MAX_VOL) * 100}%` }} />
-                    </div>
-                  </div>
-                  <div>
-                    <small>Difficulty</small>
-                    <b>
-                      {sel.diff}
-                      <em>{diffLabel(sel.diff)}</em>
-                    </b>
-                    <div className="co-meter co-meter--warm">
-                      <i style={{ width: `${sel.diff}%` }} />
-                    </div>
-                  </div>
-                  <div>
-                    <small>Score</small>
-                    <b>{sel.score}</b>
-                    <div className="co-meter">
-                      <i style={{ width: `${sel.score}%` }} />
-                    </div>
-                  </div>
-                  <div>
-                    <small>Write order</small>
-                    <b>
-                      #{sel.order}
-                      <em>of {TOTAL}</em>
-                    </b>
-                    <div className="co-meter">
-                      <i style={{ width: `${((TOTAL - sel.order + 1) / TOTAL) * 100}%` }} />
-                    </div>
-                  </div>
-                </div>
+              <div>
+                <span>Opportunity</span>
+                <strong>
+                  {selected.score}
+                  <small>/100</small>
+                </strong>
+              </div>
 
-                <p className="co-why">
-                  <b>Why now</b>
-                  {sel.why}
-                </p>
+              <div>
+                <span>Write order</span>
+                <strong>
+                  #{selected.order}
+                  <small>of {rows.length}</small>
+                </strong>
+              </div>
+            </div>
 
-                {/* SERP */}
-                           <div className="co-section-title">
-                  <h4>What ranks today</h4>
-                  <span>
-                    Top 5 · {weakCount} flagged weak spots
-                  </span>
-                </div>
-                <div className="co-mix" aria-label="Page types in the top 10">
-                  <div className="co-mix-bar">
-                    {fmtMix.map(([f, n]) => (
-                      <i
-                        key={f}
-                        className={`co-fmt-${slug(f)}`}
-                        style={{ flex: n }}
-                        title={`${f}: ${n}`}
-                      />
-                    ))}
-                  </div>
-                  <div className="co-mix-key">
-                    {fmtMix.map(([f, n]) => (
-                      <span key={f}>
-                        <i className={`co-fmt-${slug(f)}`} />
-                        {f} · {n}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <ol className="co-serp">
-                  {sel.serp.slice(0, 5).map((r, i) => (
-                    <li key={r.d + r.t} className={r.w ? 'has-weak' : ''}>
-                      <span className="co-pos">{i + 1}</span>
-                      <div className="co-serp-main">
-                        <code>{r.d}</code>
-                        <strong>{r.t}</strong>
-                        {r.w && (
-                          <p>
-                            <b>Weak spot</b>
-                            {r.w}
-                          </p>
-                        )}
-                      </div>
-                      <span className={`co-fmt co-fmt-${slug(r.f)}`}>{r.f}</span>
-                    </li>
-                  ))}
-                  <li className="co-target">
-                    <span className="co-pos">★</span>
-                    <div className="co-serp-main">
-                      <code>thanksben.com</code>
-                      <strong>{sel.asset}</strong>
-                      <p>
-                        <b>Target</b>
-                        The page this plan builds.
-                      </p>
+            <p className="co-estimate-note">Planning estimates.</p>
+
+            <div className="co-callout">
+              <strong>Why start here</strong>
+              <p>{why}</p>
+            </div>
+
+            <nav
+              className="co-section-nav"
+              role="tablist"
+              aria-label="Opportunity sections"
+            >
+              {(
+                [
+                  ['landscape', 'Search landscape'],
+                  ['direction', 'Content direction'],
+                  ['validation', 'Validation'],
+                ] as const
+              ).map(([id, label]) => (
+                <button
+                  key={id}
+                  type="button"
+                  role="tab"
+                  id={`co-tab-${id}`}
+                  aria-selected={activeSection === id}
+                  aria-controls={`co-panel-${id}`}
+                  className={activeSection === id ? 'active' : ''}
+                  onClick={() => setActiveSection(id)}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
+
+                    {activeSection === 'landscape' && (
+              <div
+                className="co-panel"
+                role="tabpanel"
+                id="co-panel-landscape"
+                aria-labelledby="co-tab-landscape"
+              >
+                <div className="co-serp">
+                  <div className="co-serp-bar">
+                    <div className="co-serp-search">
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        aria-hidden="true"
+                      >
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-3.5-3.5" />
+                      </svg>
+                      <span>{selected.keyword}</span>
                     </div>
-                    <span className="co-fmt co-fmt-ben">Ben</span>
-                  </li>
-                </ol>
+          
+                  </div>
 
-                {/* Says + gaps */}
-                <div className="co-section-title">
-                  <h4>What they say, and where they stop</h4>
-                  <span>Messaging themes · gaps</span>
-                </div>
-                <div className="co-two">
-                  <div>
-                    <div className="co-label">WHAT THE TOP 5 SAYS</div>
-                    <ul className="co-says">
-                      {sel.says.map(([t, n]) => (
-                        <li key={t}>
-                          <span>{t}</span>
-                          <div className="co-says-bar" aria-hidden="true">
-                            {Array.from({ length: 10 }, (_, i) => (
-                              <i key={i} className={i < n ? 'on' : ''} />
-                            ))}
+                  <div className="co-serp-tabs" aria-hidden="true">
+                    <span className="on">All</span>
+                    <span>Images</span>
+                    <span>News</span>
+                    <span>Videos</span>
+                  </div>
+
+                  <ol className="co-serp-list">
+                    {selected.serp.slice(0, 5).map((result, index) => (
+                      <li
+                        className="co-serp-item"
+                        key={`${result.d}-${result.t}`}
+                      >
+                        <span className="co-serp-rank">{index + 1}</span>
+
+                        <div className="co-serp-body">
+                          <div className="co-serp-site">
+ 
+<ResultFavicon value={result.d} />
+
+<span className="co-serp-site-text">
+  <strong>{siteName(result.d)}</strong>
+
+  <small title={resultBreadcrumb(result.d)}>
+    {resultBreadcrumb(result.d)}
+  </small>
+</span>
+
+                            <span className="co-serp-type">{result.f}</span>
                           </div>
-                          <b>{n}/10</b>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <div className="co-label co-label--warm">GAPS TO EXPLOIT</div>
-                    <ul className="co-gaps">
-                      {sel.gaps.map((g) => (
-                        <li key={g}>{g}</li>
-                      ))}
-                    </ul>
-                  </div>
+<h4 className="co-serp-title">
+  {/^https?:\/\//i.test(result.d) && getResultUrl(result.d) ? (
+    <a
+      href={getResultUrl(result.d)!.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${result.t} (opens in a new tab)`}
+    >
+      {result.t}
+    </a>
+  ) : (
+    result.t
+  )}
+</h4>
+{result.description && (
+  <p className="co-serp-description">
+    {result.date && (
+      <span className="co-serp-date">
+        {result.date} —{' '}
+      </span>
+    )}
+    {result.description}
+  </p>
+)}
+
+
+                        </div>
+                      </li>
+                    ))}
+
+
+
+                  </ol>
+                </div>
+              </div>
+            )}
+
+
+            {activeSection === 'direction' && (
+              <div
+                className="co-panel"
+                role="tabpanel"
+                id="co-panel-direction"
+                aria-labelledby="co-tab-direction"
+              >
+                <div className="co-section-heading">
+                  <h4>Where Ben can add value</h4>
                 </div>
 
-                {/* Angles */}
-                <div className="co-section-title">
-                  <h4>How to outrank it</h4>
-                  <span>Lead with the first angle</span>
-                </div>
-                <div className="co-angles">
-                  {sel.angles.map((a, i) => (
-                    <article className={`co-angle${i === 0 ? ' lead' : ''}`} key={a.name}>
-                      <div className="co-angle-top">
-                        <span>{i === 0 ? 'LEAD ANGLE' : `ANGLE ${i + 1}`}</span>
-                        <em>{a.format}</em>
-                      </div>
-                      <h5>{a.name}</h5>
-                      <p className="co-hook">“{a.hook}”</p>
-                      <div className="co-proof">
-                        <span>Proof asset</span>
-                        {a.proof}
+                <div className="co-value-grid">
+                  {valueAngles.map((angle, index) => (
+                    <article className="co-value" key={angle.title}>
+                      <span>{String(index + 1).padStart(2, '0')}</span>
+                      <div>
+                        <h5>{angle.title}</h5>
+                        <p>{angle.text}</p>
                       </div>
                     </article>
                   ))}
                 </div>
 
-                {/* Blueprint + PAA */}
-                <div className="co-two co-two--top">
+                {lead && (
+                  <article className="co-lead">
+                    <span className="co-lead-label">
+                      Recommended lead angle
+                    </span>
+
+                    <h4>
+                      {isPricingExample
+                        ? 'A cost calculator buyers can actually inspect.'
+                        : lead.name}
+                    </h4>
+
+                    <p>{lead.hook}</p>
+
+                    <div className="co-lead-proof">
+                      <strong>Proof needed</strong>
+                      <span>{lead.proof}</span>
+                    </div>
+                  </article>
+                )}
+
+                <div className="co-bottom-grid">
                   <div>
-                    <div className="co-label">PAGE BLUEPRINT</div>
-                    <ol className="co-blueprint">
-                      {sel.blueprint.map((b) => (
-                        <li key={b}>{b}</li>
+                    <h4>Page outline</h4>
+
+                    <ol className="co-outline">
+                      {outline.map((item, index) => (
+                        <li key={item}>
+                          <span>{String(index + 1).padStart(2, '0')}</span>
+                          <p>{item}</p>
+                        </li>
                       ))}
                     </ol>
                   </div>
+
                   <div>
-                    <div className="co-label">QUESTIONS TO ANSWER IN THE PAGE</div>
-                    <ul className="co-paa">
-                      {sel.paa.map((q) => (
-                        <li key={q}>{q}</li>
+                    <h4>Questions to answer</h4>
+
+                    <ul className="co-questions">
+                      {questions.map((question) => (
+                        <li key={question}>{question}</li>
                       ))}
                     </ul>
                   </div>
                 </div>
+              </div>
+            )}
 
-                {/* Scorecard */}
-                <div className="co-section-title">
-                  <h4>Quality bar to clear</h4>
-                  <span>Typical top-10 page vs Ben’s target</span>
-                </div>
-                <div className="co-score">
-                  {DIMS.map((d, i) => (
-                    <div className="co-score-row" key={d}>
-                      <span>{d}</span>
-                      <div className="co-score-track">
-                        <i
-                          className="top"
-                          style={{ width: `${(sel.card.top[i] / 5) * 100}%` }}
-                          title={`Typical top-10 page: ${sel.card.top[i]}/5`}
-                        />
-                        <i
-                          className="ben"
-                          style={{ width: `${(sel.card.ben[i] / 5) * 100}%` }}
-                          title={`Ben target: ${sel.card.ben[i]}/5`}
-                        />
-                      </div>
-                      <b>
-                        {sel.card.top[i]} → {sel.card.ben[i]}
-                      </b>
-                    </div>
-                  ))}
-                  <div className="co-score-key">
-                    <span>
-                      <i className="top" />
-                      Typical top-10 page (sample rating)
-                    </span>
-                    <span>
-                      <i className="ben" />
-                      Ben target
-                    </span>
-                  </div>
-                </div>
-
-                <div className="co-retest">
-                  <small>HOW TO VALIDATE</small>
-                  <p>
-                    {sel.verify} Capture the query, country, date, ranking URL
-                    and page evidence for each result before turning this
-                    direction into a verified opportunity.
-                  </p>
-                </div>
-
-                <div className="co-pager">
-                  <button
-                    type="button"
-                    disabled={selIndex === 0}
-                    onClick={() => setSelectedId(rows[selIndex - 1].id)}
-                    aria-label="Previous keyword"
-                  >
-                    ←
-                  </button>
+            {activeSection === 'validation' && (
+              <div
+                className="co-panel"
+                role="tabpanel"
+                id="co-panel-validation"
+                aria-labelledby="co-tab-validation"
+              >
+                <div className="co-section-heading">
+                  <h4>Validation</h4>
                   <span>
-                    {selIndex + 1} / {rows.length}
+                    What to log before treating any of this as a verified gap.
                   </span>
-                  <button
-                    type="button"
-                    disabled={selIndex === rows.length - 1}
-                    onClick={() => setSelectedId(rows[selIndex + 1].id)}
-                    aria-label="Next keyword"
-                  >
-                    →
-                  </button>
                 </div>
-              </>
+
+                <ul className="co-checklist">
+                  <li>Query and country searched</li>
+                  <li>Date of the search</li>
+                  <li>Ranking URL for each result</li>
+                  <li>Pricing assumptions shown on the page</li>
+                  <li>Page last-updated dates</li>
+                </ul>
+
+                <div className="co-callout co-opening">
+                  <strong>Check for this search</strong>
+                  <p>{selected.verify}</p>
+                </div>
+              </div>
             )}
           </div>
         </div>
 
- 
+        <footer className="co-footer">
+          <p>
+            Illustrative competitor observations and planning estimates.
+            Validate live results before production.
+          </p>
+
+          <div className="co-pager">
+            <button
+              type="button"
+              disabled={selectedIndex === 0}
+              onClick={() =>
+                pick(rows[selectedIndex - 1].id, true)
+              }
+            >
+              <span aria-hidden="true">←</span> Previous
+            </button>
+
+            <span aria-live="polite">
+              {selectedIndex + 1} / {rows.length}
+            </span>
+
+            <button
+              type="button"
+              disabled={selectedIndex === rows.length - 1}
+              onClick={() =>
+                pick(rows[selectedIndex + 1].id, true)
+              }
+            >
+              Next <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </footer>
       </div>
     </section>
   );

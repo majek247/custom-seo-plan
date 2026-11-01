@@ -10,12 +10,10 @@ type Persona = {
   jtbd: { when: string; want: string; so: string };
   triggers: string[];
   searches: { stage: Stage; queries: string[]; lands: string }[];
-  find: { label: string; items: string }[];
   filters: [string, string][];
   boolean: string[];
   tip: string;
   distrust: string;
-  assets: { action: 'Create' | 'Improve'; name: string }[];
 };
 
  
@@ -73,28 +71,7 @@ const personas: Persona[] = [
         lands: '/rfp, new comparison and scorecard pages',
       },
     ],
-    find: [
-      {
-        label: 'Events',
-        items:
-          'Employee Benefits Live (UK), WorldatWork Total Rewards (US), UNLEASH, plus Ben’s own roundtables and briefings',
-      },
-      {
-        label: 'Communities',
-        items:
-          'Reward & Employee Benefits Association (REBA), LinkedIn Groups for “total rewards” and “compensation & benefits”, r/humanresources',
-      },
-      {
-        label: 'Reading',
-        items:
-          'Employee Benefits magazine, HR Magazine, Personnel Today, plus Mercer / WTW / Aon / Gallagher benchmark reports they cite in decks',
-      },
-      {
-        label: 'Search research',
-        items:
-          'Reddit and LinkedIn threads under “benefits across countries”; People Also Ask for the problem-aware queries above',
-      },
-    ],
+
     filters: [
       ['Seniority level', 'Director, Vice President, CXO'],
       ['Function', 'Human Resources'],
@@ -189,28 +166,7 @@ const personas: Persona[] = [
         lands: 'New HRIS integration guides and implementation page',
       },
     ],
-    find: [
-      {
-        label: 'Communities',
-        items:
-          'r/humanresources, CIPD community and branch events (UK), SHRM Connect (US), Workday and SuccessFactors user groups',
-      },
-      {
-        label: 'Events',
-        items:
-          'Open-enrolment webinars from brokers and consultancies, plus HR operations meetups; Ben’s own webinars and briefings',
-      },
-      {
-        label: 'Where they actually post',
-        items:
-          'Rarely on LinkedIn. Find them via the company page: People tab, then search “benefits” and filter by HR function',
-      },
-      {
-        label: 'Search research',
-        items:
-          'Reddit threads on “benefits admin nightmare” or “enrolment errors”; use their wording as H2s',
-      },
-    ],
+ 
     filters: [
       ['Seniority level', 'Experienced Manager, Director, Senior'],
       ['Function', 'Human Resources, Operations'],
@@ -303,28 +259,7 @@ const personas: Persona[] = [
         lands: 'New payroll integration and validation page',
       },
     ],
-    find: [
-      {
-        label: 'Communities',
-        items:
-          'CIPP (UK), Payroll World, r/Payroll, LinkedIn Groups for global payroll',
-      },
-      {
-        label: 'Events',
-        items:
-          'Payroll vendor client conferences (ADP, Dayforce, Zalaris), CIPP events, global payroll roundtables',
-      },
-      {
-        label: 'Where they sit',
-        items:
-          'Payroll reports into Finance at some companies and HR at others, so run two saved searches',
-      },
-      {
-        label: 'Search research',
-        items:
-          'r/Payroll threads on benefit deductions and garnishments show the exact error language to mirror',
-      },
-    ],
+ 
     filters: [
       ['Seniority level', 'Experienced Manager, Director, Vice President'],
       ['Function', 'Finance (run a second search with Human Resources)'],
@@ -412,28 +347,7 @@ const personas: Persona[] = [
         lands: '/pricing, new TCO template',
       },
     ],
-    find: [
-      {
-        label: 'Reach them through',
-        items:
-          'The Head of Reward. They rarely respond to cold outreach, so arm your champion with a business case they can forward',
-      },
-      {
-        label: 'Communities',
-        items:
-          'CFO Connect, ACCA and ICAEW events, FP&A practitioner groups on LinkedIn',
-      },
-      {
-        label: 'Reading',
-        items:
-          'FT, CFO Magazine, finance newsletters; they also read consultancy cost benchmarks from Mercer, WTW and Aon',
-      },
-      {
-        label: 'Closer than the CFO',
-        items:
-          'HR Finance Business Partners sit between HR and Finance and do the actual spreadsheets',
-      },
-    ],
+ 
     filters: [
       ['Seniority level', 'Director, Vice President, CXO'],
       ['Function', 'Finance'],
@@ -518,27 +432,7 @@ const personas: Persona[] = [
         lands: 'Trust centre, with product pages linking to it',
       },
     ],
-    find: [
-      {
-        label: 'Communities',
-        items:
-          'Workday Community, SAP SuccessFactors community, r/Workday, ISACA chapters, vendor-risk practitioner groups',
-      },
-      {
-        label: 'Events',
-        items: 'HR Technology Conference, UNLEASH, HRIS user-group days',
-      },
-      {
-        label: 'Where the work happens',
-        items:
-          'They’re in the evaluation thread, not on LinkedIn. Your assets must be forwardable: a PDF or doc the Head of Reward can drop into the review',
-      },
-      {
-        label: 'Review sites',
-        items:
-          'G2 and similar listings; integration and security questions in reviews tell you what to document',
-      },
-    ],
+ 
     filters: [
       ['Seniority level', 'Experienced Manager, Director, Senior'],
       [
@@ -611,16 +505,11 @@ export default function BuyerMap() {
       <div className="tb-container">
         <header className="tb-section-intro">
           <div className="tb-eyebrow">
-            <span>01</span>BUYING COMMITTEE
+            <span>01</span>SEARCH AUDIENCE MAPPING
           </div>
-          <h2>Five people decide this. Here’s how to find each one.</h2>
-          <p>
-            Each persona below has the job they’re hiring a platform to do, what
-            triggers the search, the Google queries they run at each stage,
-            where they spend time, and the LinkedIn filters to build the list.
-            Queries and communities are research hypotheses: confirm volume and
-            fit in Search Console and Sales Navigator before committing
-            production.
+          <h2 className="bm-section-title">Understand exactly who searches for your platform and their intent.</h2>
+          <p className="bm-section-desc">
+This framework breaks down the five core decision makers defining your exact target audience. For each role, you will find their primary motivations, search triggers, and the exact Google queries they use throughout the buying journey.  
           </p>
         </header>
 
@@ -687,15 +576,7 @@ export default function BuyerMap() {
                 </div>
               ))}
 
-              <h4>Where to find them</h4>
-              <dl className="bm-find">
-                {p.find.map((f) => (
-                  <div key={f.label}>
-                    <dt>{f.label}</dt>
-                    <dd>{f.items}</dd>
-                  </div>
-                ))}
-              </dl>
+ 
             </div>
 
             <div className="bm-col">
@@ -724,24 +605,9 @@ export default function BuyerMap() {
                 <p className="bm-tip">{p.tip}</p>
               </div>
 
-              <div className="bm-distrust">
-                <small>WHAT THEY DISTRUST</small>
-                <p>{p.distrust}</p>
-              </div>
+ 
 
-              <h4>Content to build or fix for them</h4>
-              <ul className="bm-assets">
-                {p.assets.map((a) => (
-                  <li key={a.name}>
-                    <em
-                      className={a.action === 'Create' ? 'create' : 'improve'}
-                    >
-                      {a.action}
-                    </em>
-                    {a.name}
-                  </li>
-                ))}
-              </ul>
+  
             </div>
           </div>
         </article>

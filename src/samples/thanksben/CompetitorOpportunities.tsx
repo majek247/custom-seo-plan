@@ -1,4 +1,4 @@
-import { useRef, useState, type KeyboardEvent } from 'react';
+import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
 import './CompetitorOpportunities.css';
 
 /* ------------------------------------------------------------------ */
@@ -47,7 +47,6 @@ type Kw = {
   blueprint: string[];
   paa: string[];
   card: { top: Five; ben: Five };
-  verify: string;
 };
 
 
@@ -79,7 +78,7 @@ const KW: Kw[] = [
     diff: 26,
     score: 83,
     intent: 'Finance evaluation',
-    why: 'The easiest win on the list and the one a CFO forwards. The model you publish here also feeds PR-07, PR-08 and PR-10, so it is the best first asset to build links around.',
+    why: 'Publish an editable calculator separating employee benefit expenditure, platform licensing, implementation and ongoing administration. Model costs across countries, entities and headcount, with assumptions finance teams can adjust before requesting vendor quotes.',
   serp: [
   {
     d: 'https://www.joinforma.com/resources/how-much-do-benefits-cost-per-employee',
@@ -121,17 +120,13 @@ const KW: Kw[] = [
   },
 ],
     says: [
-      ['Pricing is quote-only (“contact sales”)', 6],
-      ['SMB per-employee ranges applied to enterprise', 4],
-      ['Premium cost confused with platform cost', 3],
-      ['Implementation fees mentioned, never sized', 5],
-    ],
+  ['Benepass and Hotaling cite US compensation benchmarks, without separating employee benefit expenditure from software costs.', 2],
+  ['Forma explains healthcare, retirement, and voluntary benefit spending, but offers no platform licensing cost breakdown.', 1],
+  ['Pebl compares benefits expenditure across five countries, without modelling the software administration costs separately.', 1],
+],
     gaps: [
-      'No page prices a multi-entity programme, so per-entity and per-country fees are invisible.',
-      'Implementation, integration and renewal uplift are named but never quantified.',
-      'No cost-of-admin baseline, so a buyer cannot see what the status quo costs.',
-      'No sensitivity scenarios. Every range is a single static figure.',
-    ],
+  'Separate benefits expenditure from platform costs in a practical enterprise pricing model.',
+],
     angles: [
       {
         name: 'The inspectable model',
@@ -166,8 +161,7 @@ const KW: Kw[] = [
       'Are implementation fees charged separately?',
     ],
     card: { top: [2, 1, 1, 1, 3], ben: [5, 5, 4, 5, 5] },
-    verify:
-      'Record which top-10 pages show any figure at all, whether any states assumptions, and each page’s last-updated date.',
+
   },
 
   /* ---------------- 2 ---------------- */
@@ -185,7 +179,7 @@ const KW: Kw[] = [
     diff: 27,
     score: 81,
     intent: 'Objection handling',
-    why: 'This is the strongest objection in the deal, and nobody has published a neutral answer. A page that admits when the HRIS module is enough earns trust and links.',
+    why: 'Publish a decision framework assessing country coverage, eligibility complexity, payroll integrations and local provider management. Include worked scenarios showing when an HRIS module is sufficient, when specialist software becomes necessary and what changes operationally.',
     serp: [
       {
         d: 'https://getebm.com/hris-vs-hcm-vs-benadmin-finding-the-right-solution-for-you/',
@@ -222,18 +216,15 @@ const KW: Kw[] = [
         description: 'But a modern HRIS can transform how your company handles benefits administration—boosting efficiency, improving employee satisfaction, and ...',
       },
     ],
-    says: [
-      ['HRIS and benefits admin are often treated as the same thing', 7],
-      ['Single-vendor simplicity is the default recommendation', 6],
-      ['Only ACA compliance is used as the differentiator', 4],
-      ['Dedicated tools add depth, but it is never quantified', 3],
-    ],
-    gaps: [
-      'No decision threshold. Nobody says at how many entities or countries a module stops being enough.',
-      'Exception handling is never compared (life events, mid-year moves, local plan rules).',
-      'No total-cost view across both options.',
-      'Almost every page is written from the vendor’s side of the argument.',
-    ],
+   says: [
+  ['EBM distinguishes HRIS from specialist benefits administration through configurability, but provides limited multinational deployment guidance.', 1],
+  ['Selerix examines eligibility rules, payroll discrepancies and ACA compliance, primarily through a US regulatory lens.', 1],
+  ['OneHCM promotes unified enrolment and payroll workflows, without establishing when separate benefits technology becomes necessary.', 1],
+],
+    
+gaps: [
+  'Establish when multinational benefits requirements justify a dedicated platform alongside an existing HRIS.',
+],
     angles: [
       {
         name: 'Draw the line',
@@ -268,8 +259,6 @@ const KW: Kw[] = [
       'Can an HRIS handle benefits in multiple countries?',
     ],
     card: { top: [2, 2, 1, 1, 3], ben: [5, 4, 3, 5, 5] },
-    verify:
-      'Note whether any ranking page states a threshold, names a failure mode or includes a non-vendor voice.',
   },
 
   /* ---------------- 3 ---------------- */
@@ -286,7 +275,7 @@ const KW: Kw[] = [
     diff: 28,
     score: 81,
     intent: 'Switch consideration',
-    why: 'Bring-your-own-broker is a genuine differentiator and the SERP is dominated by brokers defending themselves. An honest unbundling page has little real competition.',
+    why: 'Publish a responsibility matrix separating insurance placement, local advisory, eligibility administration, payroll coordination and reporting. Compare broker-led, platform-led and hybrid models, showing who owns each workflow and where responsibilities overlap across countries.',
     serp: [
       {
         d: 'https://matrixbenefits.co.uk/matrix-vs-traditional-brokers-which-is-right-for-you/',
@@ -322,18 +311,16 @@ const KW: Kw[] = [
         description: 'Looking for an Alternative Benefit Broker? Compare the Best Benefits Brokers for Small Business: At a Glance Ignition Benefits: Alternative...',
       },
     ],
+
     says: [
-      ['The replacement for a broker is a PEO or marketplace', 5],
-      ['Brokers defend advisory and placement value', 3],
-      ['Outsourced admin is framed as the only upgrade path', 3],
-      ['No split between advisory and administration', 6],
-    ],
-    gaps: [
-      'Nobody unbundles the broker’s jobs into advisory, placement and administration.',
-      'The platform-plus-broker model, where the broker stays, is not explained anywhere.',
-      'US-centric throughout, with no multi-country perspective.',
-      'No transition plan or renewal-timed checklist.',
-    ],
+  ['Matrix positions flexible benefits and real-time analytics against traditional brokers, without explaining operational ownership boundaries.', 1],
+  ['Nava compares automated eligibility, billing audits and employee support against brokers through vendor-led capability tables.', 1],
+  ['Ignition details broker selection and renewal processes for smaller employers, rather than multinational administration models.', 1],
+],
+   gaps: [
+  'Show which benefits responsibilities should remain with brokers and which belong on a platform.',
+],
+
     angles: [
       {
         name: 'Unbundle the broker',
@@ -368,8 +355,6 @@ const KW: Kw[] = [
       'How much does a benefits broker cost?',
     ],
     card: { top: [2, 2, 1, 1, 3], ben: [5, 4, 3, 4, 5] },
-    verify:
-      'Confirm how many top-10 results are broker-owned and whether any is non-US.',
   },
 
   /* ---------------- 4 ---------------- */
@@ -387,24 +372,57 @@ const KW: Kw[] = [
     diff: 35,
     score: 83,
     intent: 'Budget planning',
-    why: 'Higher volume than PR-09 with a SERP of review-site price bands. Ship it right after the calculator so it can link to a real model.',
-    serp: [
-      s('capterra.com', 'Benefits Administration Software Pricing', 'Review hub', 'Starting-price filter, no enterprise'),
-      s('g2.com', 'Best Benefits Administration Software', 'Review hub', 'Ranked by reviews, not price'),
-      s('selecthub.com', 'Benefits Administration Pricing Guide', 'Review hub', 'Generic bands'),
-      s('softwareadvice.com', 'Benefits Software Pricing', 'Review hub'),
+    why: 'Publish an enterprise pricing framework separating licensing, implementation, payroll integrations, country configuration and ongoing support. Include an annotated sample quote showing recurring charges, one-off costs and the commercial assumptions buyers should verify before procurement.',
+       serp: [
+      {
+        d: 'https://www.ease.com/pricing/',
+        t: 'Ease Product Pricing',
+        f: 'Vendor page',
+        description:
+          'Ease benefits administration and HRIS software prices are based upon three subscription levels for insurance brokers to use for their clients.',
+      },
+      {
+        d: 'https://www.capterra.com/benefits-administration-software/',
+        t: 'Best Benefits Administration Software 2026',
+        f: 'Review hub',
+        date: '23 Oct 2026',
+        description:
+          'Pricing can be divided into three pricing tiers based on the starting prices: Price ranges*: $4 - $7 $7 - $46 $46+ *The pricing included is for ...',
+      },
+      {
+        d: 'https://www.employeenavigator.com/pricing/',
+        t: 'Employee Navigator Pricing | Compare Plans & Features',
+        f: 'Vendor page',
+        description:
+          'Explore benefits administration software pricing with plans designed for brokers and HR teams. Elite $0.45 PEPM*',
+      },
+      {
+        d: 'https://www.paylocity.com/why-paylocity/compare/lists/benefits-administration-software/',
+        t: 'Best Benefits Administration Software: Top 10 Picks for 2026',
+        f: 'Vendor blog',
+        date: '20 Oct 2026',
+        description:
+          'Compare the top benefits administration software, including Paylocity, ADP, and Gusto. See features, pricing, and integrations. Pricing: Custom ...',
+      },
+      {
+        d: 'https://www.indeed.com/recruitment/c/info/benefits-admin-software-tools',
+        t: '16 Benefits Admin Software Tools to Consider',
+        f: 'Publisher',
+        date: '3 Aug 2026',
+        description:
+          'Pricing is based on a per-employee, per-pay period model. Submit your information here to schedule a call for a customized quote based on your ...',
+      },
     ],
+
+
     says: [
-      ['Price ranges by company size (SMB bands)', 6],
-      ['“Request a quote” on vendor pages', 5],
-      ['Feature tiers listed without any fees', 4],
-      ['Hidden costs named in general terms', 3],
+      ['Ease publishes three broker subscription tiers and individual add-on charges, without disclosing base subscription prices.', 6],
+      ['Employee Navigator discloses $0.45 PEPM EDI fees, while its broader subscription tiers require sales enquiries.', 5],
+      ['Capterra presents $4–$46+ monthly pricing bands derived from 2020 data, rather than current enterprise quotations.', 4],
     ],
+    
     gaps: [
-      'No per-entity or per-country fee logic anywhere.',
-      'Renewal uplift, integration and change-request fees are never addressed.',
-      'No worked multi-entity example a finance reader can reuse.',
-      'No list of questions to demand answers to before the demo.',
+      'Break down the full cost of enterprise benefits administration beyond headline subscription fees.',
     ],
     angles: [
       {
@@ -440,8 +458,6 @@ const KW: Kw[] = [
       'What hidden costs come with benefits software?',
     ],
     card: { top: [2, 1, 1, 1, 3], ben: [5, 4, 4, 4, 5] },
-    verify:
-      'Log which pages show any numeric price, and whether any breaks fees out by entity or country.',
   },
 
   /* ---------------- 5 ---------------- */
@@ -458,25 +474,58 @@ const KW: Kw[] = [
     diff: 44,
     score: 84,
     intent: 'Switch intent',
-    why: 'The highest score on the list. Searchers name the incumbent, so a page that separates recognition from administration intercepts them at the moment of doubt.',
-    serp: [
-      s('g2.com', 'Top Reward Gateway Alternatives & Competitors', 'Review hub', 'Feature grid, no job-to-be-done split'),
-      s('capterra.com', 'Best Reward Gateway Alternatives', 'Review hub', 'Same vendor set as every list'),
-      s('benefex.com', 'Looking for a Reward Gateway alternative?', 'Vendor page', 'Self-promotional'),
-      s('forbes.com', 'Best Employee Recognition Software', 'Publisher', 'Recognition focus, not administration'),
+    why: 'Publish a comparison framework separating employee recognition, benefits eligibility, provider management, payroll integrations and reporting. Show which platforms address each requirement, where capabilities overlap and when multinational employers need more than an engagement-focused solution.',
+      serp: [
+      {
+        d: 'https://www.gartner.com/reviews/product/reward-gateway-employee-engagement-platform/alternatives',
+        t: 'Reward Gateway Employee Engagement Platform',
+        f: 'Review hub',
+        description:
+          'Reward Gateway Employee Engagement Platform Alternatives · 1. Workhuman Social Recognition · 2. Awardco Platform · 3. WorkTango Platform · 4. Achievers Platform.',
+      },
+      {
+        d: 'https://360-wellbeing.co.uk/top-reward-gateway-alternatives-finding-the-best-employee-benefit-platform-for-2026/',
+        t: 'Top Reward Gateway Alternatives: Finding the Best ...',
+        f: 'Vendor blog',
+        date: '5 Sept 2026',
+        description:
+          "360 Wellbeing stands out among Reward Gateway alternatives as a partner deeply invested in the long-term success of your team. We don't just ...",
+      },
+      {
+        d: 'https://www.softwarereviews.com/categories/158/products/5281/alternatives',
+        t: 'Reward Gateway Alternatives and Competitors | Employee ...',
+        f: 'Review hub',
+        description:
+          'Best Alternatives and Competitors to Reward Gateway · AdvantageClub.ai · Bucketlist · Kudos · Bonusly · Applauz Recognition · Vantage Recognition & Rewards.',
+      },
+      {
+        d: 'https://www.perkbox.com/resources/blog/reward-gateway-competitors',
+        t: 'Top 5 Reward Gateway Competitors & Alternatives',
+        f: 'Vendor blog',
+        date: '14 Apr 2023',
+        description:
+          '5 Reward Gateway alternatives & competitors · 1. Perkbox · 2. Bonusly · 3. Achievers · 4. Sodexo · 5. Edenred. Edenred have developed a number ...',
+      },
+      {
+        d: 'https://www.incentivesmart.com/blog/reward-gateway-alternatives/',
+        t: '6 Best Reward Gateway Alternatives & Competitors UK',
+        f: 'Vendor blog',
+        date: '10 Sept 2026',
+        description:
+          "We've compared six leading Reward Gateway alternatives, looking at their strengths, Boostworks Terryberry Bonusly Kudos",
+      },
     ],
-    says: [
-      ['Treats Reward Gateway as a recognition and perks tool', 7],
-      ['Alternatives are other recognition platforms', 6],
-      ['No guidance on switching or migration', 7],
-      ['Administration depth is never compared', 5],
-    ],
-    gaps: [
-      'No page separates the recognition job from the benefits-administration job.',
-      'Nothing covers what changes in payroll, eligibility and provider admin when you switch.',
-      'No switch checklist: data export, contract end, employee comms.',
-      'Nobody says when staying put is the right answer.',
-    ],
+
+
+says: [
+      ['Gartner compares Reward Gateway against Workhuman, Awardco and Achievers, primarily through recognition capabilities and ratings.', 7],
+      ['SoftwareReviews ranks AdvantageClub, Kudos and Bonusly using user sentiment, without evaluating multinational benefits administration requirements.', 6],
+      ['Perkbox compares engagement features, rewards and employee discounts, with limited examination of benefits administration workflows.', 7],
+       ],    
+    
+       gaps: [
+      'Distinguish recognition platforms from benefits administration software when evaluating Reward Gateway alternatives for enterprises.',
+       ],
     angles: [
       {
         name: 'Which job needs doing?',
@@ -511,8 +560,7 @@ const KW: Kw[] = [
       'How do I switch employee benefits platforms?',
     ],
     card: { top: [3, 2, 1, 1, 3], ben: [5, 4, 3, 5, 5] },
-    verify:
-      'Capture whether each ranking page is a real comparison or a template list, and what it assumes Reward Gateway is for.',
+    
   },
 
   /* ---------------- 6 ---------------- */
@@ -529,31 +577,54 @@ const KW: Kw[] = [
     diff: 37,
     score: 80,
     intent: 'Regional shortlist',
-    why: 'Ben’s strongest existing AI answer sits on this theme. Pair a published scoring method with the UK-to-Europe expansion angle that UK incumbents barely cover.',
+    why: 'Publish an enterprise evaluation scorecard covering country availability, eligibility configuration, payroll integrations, provider management and consolidated reporting. Assess each platform against defined requirements, using documented capabilities, product evidence and clear limitations rather than generic rankings.',
     serp: [
-      s('benefex.com', 'Best employee benefits platforms UK', 'Vendor page', 'Self-ranked first'),
-      s('peoplemanagement.co.uk', 'Employee benefits platforms compared', 'Publisher', 'No criteria shown'),
-      s('hrmagazine.co.uk', 'HR tech: benefits platforms', 'Publisher', 'Editorial, light on detail'),
-      s('g2.com', 'Best Benefits Software in the UK', 'Review hub'),
-      s('capterra.co.uk', 'Best Benefits Administration Software UK', 'Review hub', 'Feature filters, UK SMB'),
-      s('employeebenefits.co.uk', 'Employee benefits awards', 'Publisher', 'Awards list, no methodology'),
-      s('benify.com', 'Benefits platform for UK employers', 'Vendor page'),
-      s('rewardgateway.com', 'UK employee benefits platform', 'Vendor page', 'Perks-led positioning'),
-      s('personneltoday.com', 'Choosing a benefits platform', 'Publisher'),
-      s('gartner.com', 'Benefits administration reviews', 'Analyst', 'Paywalled'),
+      {
+        d: 'https://kota.io/blog/7-best-employee-benefits-platforms-in-2026',
+        t: 'The 10 Best Employee Benefits Platforms in the UK (2026)',
+        f: 'Vendor blog',
+        date: '15 Jan 2026',
+        description:
+          'This guide compares 10 top employee benefits platforms used across the UK. Zest is an award-winning UK employee benefits solution. Benifex is ...',
+      },
+      {
+        d: 'https://www.perkiq.co.uk/find-a-provider/platform',
+        t: 'Employee Benefits Platforms UK | Compare Providers',
+        f: 'Publisher',
+        description:
+          'Compare UK employee benefits platforms that bring perks, discounts and benefits admin into one place. See how Perkbox, Heka, Pluxee and others fit SMEs.',
+      },
+      {
+        d: 'https://www.achievers.com/blog/employee-rewards-software/',
+        t: '15 best employee rewards software platforms in the UK',
+        f: 'Vendor blog',
+        date: '6 May 2026',
+        description:
+          'Achievers is a comprehensive employee rewards software platform designed to help organisations motivate performance, reinforce values, and drive ...',
+      },
+      {
+        d: 'https://www.bravobenefits.co.uk/blog/employee-benefits-providers-in-the-uk-how-to-compare-platforms/',
+        t: 'Employee benefits providers in the UK: How to compare ...',
+        f: 'Vendor blog',
+        description:
+          'The most effective way to compare employee benefits platforms is to focus on how they perform in real-world use, not just how they look on paper. Two platforms ...',
+      },
+      {
+        d: 'https://thephagroup.com/blog/employee-benefits-platforms-five-of-the-best/',
+        t: 'Employee benefits platforms: Five of the best',
+        f: 'Publisher',
+        description:
+          'Employee benefits platforms: Five of the best · Xexec · Juno · Vivup · Bravo Benefits · Hawk Incentives · More From Us:',
+      },
     ],
     says: [
-      ['UK vendors self-rank at number one', 4],
-      ['Awards and shortlists with no criteria', 3],
-      ['UK-only delivery is the main selling point', 5],
-      ['Expansion into Europe barely covered', 2],
+      ['Kota compares ten platforms across features, pricing and scalability, without systematically testing multinational administration capabilities.', 4],
+      ['PerkIQ lists seven UK providers, including Ben, but primarily frames selection around SME requirements.', 3],
+      ['Bravo Benefits evaluates usability, employee engagement and support, without providing comparable evidence of enterprise configuration.', 5],
     ],
     gaps: [
-      'The UK company expanding into Europe is an unserved scenario.',
-      'No published scoring method, so rankings cannot be checked.',
-      'No UK customer proof tied to multi-country rollout.',
-      'Cross-border data handling and local rules are glossed over.',
-    ],
+      'Compare UK benefits platforms against the operational requirements of large and multinational employers.',
+      ],
     angles: [
       {
         name: 'The expansion lens',
@@ -588,8 +659,6 @@ const KW: Kw[] = [
       'What should UK enterprises look for in benefits software?',
     ],
     card: { top: [3, 2, 1, 1, 3], ben: [5, 4, 4, 4, 5] },
-    verify:
-      'Record how many ranking pages disclose methodology and whether any addresses European expansion.',
   },
 
   /* ---------------- 7 ---------------- */
@@ -606,31 +675,57 @@ const KW: Kw[] = [
     diff: 41,
     score: 81,
     intent: 'Shortlisting',
-    why: 'This keyword is the clearest match for Ben’s core claim. “Global” is asserted everywhere and evidenced nowhere, so an auditable coverage table is the differentiator.',
+    why: 'Publish a ranked comparison of multinational benefits platforms, assessing country coverage, local provider management, eligibility configuration, payroll integrations and reporting. Include evidence-backed capability comparisons, enterprise fit assessments and clear limitations to help buyers shortlist vendors against their operational requirements.',
     serp: [
-      s('g2.com', 'Best Global Benefits Software', 'Review hub', 'Mixed categories'),
-      s('capterra.com', 'Top Benefits Administration Software', 'Review hub', 'Not multinational-specific'),
-      s('benefex.com', 'Global employee benefits platform', 'Vendor page', 'Country count, no configuration proof'),
-      s('alight.com', 'Global benefits administration', 'Vendor page', 'Outsourced model'),
-      s('mercer.com', 'Global benefits consulting', 'Broker', 'Advisory, not software'),
-      s('selecthub.com', 'Global Benefits Software', 'Review hub'),
-      s('forbes.com', 'Best Benefits Platforms', 'Publisher', 'US-centric'),
-      s('reddit.com', 'Benefits platform for multi-country?', 'Forum', 'Anecdotes'),
-      s('benify.com', 'Benefits for multinational companies', 'Vendor page'),
-      s('gartner.com', 'Global benefits platforms', 'Analyst', 'Paywalled'),
+      {
+        d: 'https://www.deel.com/blog/best-global-employee-benefits-platforms-compared-2026/',
+        t: 'Best Global Employee Benefits Platforms Compared (2026)',
+        f: 'Vendor blog',
+        date: '19 Oct 2026',
+        description:
+          'Compare top global employee benefits software: Deel, Remote, Oyster HR, and TriNet. Find the right platform for your international team.',
+      },
+      {
+        d: 'https://www.recruiterslineup.com/best-global-employee-benefits-platforms/',
+        t: 'The 12 Best Global Employee Benefits Platforms in 2026',
+        f: 'Publisher',
+        date: '29 Jul 2026',
+        description:
+          'Papaya Global provides payroll, payments, Employer of Record, workforce management, and benefits services for multinational organizations.',
+      },
+      {
+        d: 'https://monday.com/blog/project-management/benefits-management-software/',
+        t: '12 top benefits management tools HR teams need in 2026',
+        f: 'Vendor blog',
+        date: '13 Oct 2025',
+        description:
+          'Discover the top benefits management platforms transforming HR in 2026. Compare features and find your perfect fit — start optimizing today.',
+      },
+      {
+        d: 'https://www.indeed.com/recruitment/c/info/benefits-admin-software-tools',
+        t: '16 Benefits Admin Software Tools to Consider',
+        f: 'Publisher',
+        date: '3 Aug 2026',
+        description:
+          'UKG Pro is a global human capital management solution and benefits software suite that connects employees with HR through surveys, talent ...',
+      },
+      {
+        d: 'https://www.hoppier.com/blog/top-global-employee-benefits-platforms',
+        t: 'Top 5 Global Employee Benefits Platforms',
+        f: 'Vendor blog',
+        date: '24 Nov 2025',
+        description:
+          '5. Deel ... Deel is a more comprehensive approach to global employee benefits, combining HR, global payroll software, and benefits all in one.',
+      },
     ],
     says: [
-      ['“Global” asserted with no per-country evidence', 6],
-      ['Coverage lists show countries served, not configured', 4],
-      ['Consultants and software vendors mixed in one list', 3],
-      ['Local eligibility rules rarely mentioned', 2],
+      ['Deel compares global benefits providers through payroll integration, compliance infrastructure and geographic coverage, favouring integration.', 6],
+      ['Recruiters LineUp groups EOR, global payroll and specialist benefits vendors within one shortlist of twelve.', 4],
+      ['Hoppier assesses customisation, integrations and employee experience, without clearly differentiating employment infrastructure from benefits administration.', 3],
     ],
     gaps: [
-      'No coverage table shows statutory rules, local providers, payroll and language per country.',
-      'Eligibility configuration by entity and grade is never demonstrated.',
-      'No admin workflow, so “multi-country” stays a label.',
-      'No scorecard a Head of Reward could take into a shortlist meeting.',
-    ],
+      'Evaluate where leading multinational benefits platforms differ on eligibility, integrations and provider management.',
+       ],
     angles: [
       {
         name: 'Coverage you can audit',
@@ -665,8 +760,6 @@ const KW: Kw[] = [
       'What should a global benefits platform support?',
     ],
     card: { top: [2, 2, 1, 1, 3], ben: [5, 5, 3, 4, 5] },
-    verify:
-      'Log whether any ranking page evidences a country claim with a screenshot, policy or customer example.',
   },
 
   /* ---------------- 8 ---------------- */
@@ -683,31 +776,53 @@ const KW: Kw[] = [
     diff: 45,
     score: 82,
     intent: 'Feature evaluation',
-    why: 'An existing page to sharpen rather than a new build. Competitors show the employee’s screen; showing the admin’s side is what a Head of Reward actually evaluates.',
-    serp: [
-      s('benefitfocus.com', 'Benefits enrolment software', 'Vendor page', 'US open-enrolment framing'),
-      s('alight.com', 'Enrolment and benefits administration', 'Vendor page', 'Employee UI only'),
-      s('g2.com', 'Best Benefits Enrolment Software', 'Review hub'),
-      s('capterra.com', 'Open Enrolment Software', 'Review hub', 'US-centric'),
-      s('benefex.com', 'Benefits enrolment', 'Vendor page'),
-      s('employeenavigator.com', 'Online benefits enrolment', 'Vendor page', 'US-only workflow'),
-      s('selecthub.com', 'Benefits Enrolment Software', 'Review hub'),
-      s('softwareadvice.com', 'Enrolment Software', 'Review hub'),
-      s('gusto.com', 'Benefits enrolment made simple', 'Vendor blog', 'SMB, single country'),
-      s('trustradius.com', 'Benefits Enrolment Software', 'Review hub'),
-    ],
-    says: [
-      ['Open-enrolment framing, mostly US', 6],
-      ['Employee self-service and mobile as the headline', 5],
-      ['Screenshots show the employee view only', 4],
-      ['Approvals and exceptions not shown', 3],
-    ],
+    why: 'Build a dedicated solution page showing how Ben handles eligibility rules, employee plan selection, enrolment windows, approvals and payroll updates. Use actual product screenshots, workflow examples and integration details to demonstrate how HR teams manage enrolment and reduce manual administration',
+     serp: [
+      {
+        d: 'https://www.gartner.com/reviews/market/benefits-management',
+        t: 'Best Benefits Management Software Reviews 2026',
+        f: 'Review hub',
+        description:
+          'Paycor Benefits Administration is a software designed to help organizations manage employee benefits enrollment and administration processes. The software ...',
+      },
+      {
+        d: 'https://www.indeed.com/recruitment/c/info/benefits-admin-software-tools',
+        t: '16 Benefits Admin Software Tools to Consider',
+        f: 'Publisher',
+        date: '3 Aug 2026',
+        description:
+          'Hibob, founded in 2016, allows employers to create a data hub where employees are assessed for auto-enrollment in benefits programs and payroll ...',
+      },
+      {
+        d: 'https://www.pdcm.com/employee-benefits/benefit-enrollment-software/',
+        t: 'Benefit Enrollment Software',
+        f: 'Broker',
+        description:
+          'Our user-friendly enrollment platform saves you time and money by helping to increase employee engagement, simplifying the otherwise-complex enrollment process, ...',
+      },
+      {
+        d: 'https://monday.com/blog/project-management/benefits-management-software/',
+        t: '12 top benefits management tools HR teams need in 2026',
+        f: 'Vendor blog',
+        date: '13 Oct 2025',
+        description:
+          'Modern benefits management software brings enrolment, compliance, and communication together in one organized system',
+      },
+      {
+        d: 'https://www.justworks.com/hr-glossary/benefits-enrollment-software#how-does-benefits-enrollment-software-help-employees-select-the-right-benefits-plan',
+        t: 'What is Benefits Enrollment Software?',
+        f: 'Vendor page',
+        description:
+          'Benefits enrollment software enables employees to select and manage their workplace benefits online, simplifying the process for both employees and HR.',
+      },
+    ], says: [
+      ['Gartner describes eligibility tracking, enrolment automation and payroll integration, primarily through product listings and reviews.', 6],
+      ['Monday.com explains enrolment workflows and administrative efficiency, but distributes these capabilities across twelve software recommendations.', 5],
+  ["PDCM promotes BerniePortal's self-service enrolment and digital forms, with limited visibility into eligibility configuration workflows.", 4],
+      ],
     gaps: [
-      'The administrator workflow (approvals, life events, exceptions) is invisible.',
-      'No coverage of differing enrolment windows across countries.',
-      'No clickable demo or sandbox. Everything is a static screenshot.',
-      'Life-event handling across entities is not explained.',
-    ],
+      'Demonstrate how Ben manages employee benefits enrolment from eligibility through payroll integration.',
+   ],
     angles: [
       {
         name: 'The admin’s-eye view',
@@ -742,8 +857,6 @@ const KW: Kw[] = [
       'Can enrolment windows differ by country?',
     ],
     card: { top: [2, 2, 1, 1, 3], ben: [5, 4, 3, 5, 5] },
-    verify:
-      'Compare Ben’s current page against the top 10 for admin-side screenshots and exception-handling detail.',
   },
 
   /* ---------------- 9 ---------------- */
@@ -760,31 +873,56 @@ const KW: Kw[] = [
     diff: 52,
     score: 83,
     intent: 'Category shortlist',
-    why: 'High volume, high difficulty. Publish it once the cluster and linkable assets exist, and lead with category clarity because the SERP mixes four platform types.',
-    serp: [
-      s('g2.com', 'Best Global Benefits Software', 'Review hub', 'Mixed platform categories'),
-      s('capterra.com', 'Best Employee Benefits Software', 'Review hub'),
-      s('benefex.com', 'The best global benefits platforms', 'Vendor page', 'Self-ranked'),
-      s('alight.com', 'Global benefits solutions', 'Vendor page'),
-      s('forbes.com', 'Best Employee Benefits Providers', 'Publisher', 'Insurance-led, not software'),
-      s('mercer.com', 'Global benefits consulting', 'Broker', 'Advisory'),
-      s('gartner.com', 'Benefits administration reviews', 'Analyst', 'Paywalled'),
-      s('reddit.com', 'Best global benefits platform?', 'Forum', 'Anecdotes'),
-      s('benify.com', 'Global benefits platform', 'Vendor page'),
-      s('hrdive.com', 'Global benefits trends', 'Publisher', 'Trend piece'),
+    why: 'Publish a ranked comparison of global benefits platforms, assessing country availability, local provider management, eligibility configuration, payroll integrations and reporting. Include documented capabilities, enterprise suitability and clear limitations, helping multinational employers shortlist vendors against their specific requirements.',
+     serp: [
+      {
+        d: 'https://www.deel.com/blog/best-global-employee-benefits-platforms-compared-2026/',
+        t: 'The Best Global Employee Benefits Platforms in 2026',
+        f: 'Vendor blog',
+        date: '19 Oct 2026',
+        description:
+          'Compare top global employee benefits software: Deel, Remote, Oyster HR, and TriNet. Find the right platform for your international team.',
+      },
+      {
+        d: 'https://www.recruiterslineup.com/best-global-employee-benefits-platforms/',
+        t: 'The 12 Best Global Employee Benefits Platforms in 2026',
+        f: 'Publisher',
+        date: '29 Jul 2026',
+        description:
+          'The 12 Best Global Employee Benefits Platforms in 2026 · 1. Deel · 2. Remote · 3. Oyster · 4. Rippling · 5. Papaya Global · 6. Velocity Global.',
+      },
+      {
+        d: 'https://www.ignitionbenefits.com/blog/best-employee-benefits-platform',
+        t: 'Best Employee Benefits Platform in 2026',
+        f: 'Vendor blog',
+        date: '19 Oct 2026',
+        description:
+          'TriNet, ADP TotalSource, and Deel suit companies that want a Professional Employer Organization (PEO) to run HR and benefits under one contract.',
+      },
+      {
+        d: 'https://www.hoppier.com/blog/top-global-employee-benefits-platforms',
+        t: 'Top 5 Global Employee Benefits Platforms',
+        f: 'Vendor blog',
+        date: '24 Nov 2025',
+        description:
+          'The 5 Top Global Employee Benefits Platforms · 1. Hoppier · 2. Compt · 3. Fringe · 4. Benepass · 5. Deel. Deel is a more ...',
+      },
+      {
+        d: 'https://thephagroup.com/blog/employee-benefits-platforms-five-of-the-best/',
+        t: 'Employee benefits platforms: Five of the best',
+        f: 'Publisher',
+        description:
+          'Employee benefits platforms: Five of the best · Xexec · Juno · Vivup · Bravo Benefits · Hawk Incentives · More From Us:',
+      },
     ],
     says: [
-      ['Vendor listicles that rank themselves first', 4],
-      ['Review-site rankings driven by user counts', 3],
-      ['No country-level proof behind “global”', 6],
-      ['Perks, flex and administration platforms mixed', 5],
+      ['Deel compares four global platforms using payroll integration, compliance infrastructure, geographic coverage and support models.', 3],
+      ['Recruiters LineUp ranks twelve providers spanning EOR, payroll and benefits, with limited consistent capability scoring.', 6],
+      ['Hoppier shortlists flexible perks and benefits platforms, emphasising customisation, employee experience and integration capabilities.', 5],
     ],
     gaps: [
-      'Category confusion. Nobody separates perks, flex, outsourced and administration platforms.',
-      'No stated methodology and no editorial independence.',
-      'No downloadable scorecard and no data buyers can reuse.',
-      'No original research to earn citations from AI tools or press.',
-    ],
+      'Compare leading global benefits platforms on country coverage, eligibility, payroll integration and administration capabilities.',
+     ],
     angles: [
       {
         name: 'Four kinds of platform',
@@ -819,8 +957,6 @@ const KW: Kw[] = [
       'How do global benefits platforms work?',
     ],
     card: { top: [2, 2, 1, 1, 3], ben: [5, 5, 5, 5, 5] },
-    verify:
-      'Log the platform categories each ranking page mixes together and whether any publishes its method.',
   },
 
   /* ---------------- 10 ---------------- */
@@ -838,31 +974,54 @@ const KW: Kw[] = [
     diff: 58,
     score: 82,
     intent: 'Category shortlist',
-    why: 'The largest and hardest term. The SERP is US-SMB affiliate lists with the same vendor set, so an enterprise-only, exception-led shortlist is a real point of difference once authority exists.',
-    serp: [
-      s('g2.com', 'Best Benefits Administration Software', 'Review hub', 'Ranked by review volume'),
-      s('capterra.com', 'Top Benefits Administration Software', 'Review hub', 'SMB filters'),
-      s('softwareadvice.com', 'Benefits Administration Software', 'Review hub'),
-      s('selecthub.com', 'Benefits Administration Software', 'Review hub'),
-      s('forbes.com', 'Best Benefits Administration Software', 'Publisher', 'Affiliate list'),
-      s('benefitfocus.com', 'Benefits administration platform', 'Vendor page'),
-      s('trustradius.com', 'Benefits Administration Software', 'Review hub'),
-      s('technologyadvice.com', 'Best Benefits Administration Software', 'Publisher', 'Same vendors as others'),
-      s('reddit.com', 'Best benefits admin software?', 'Forum', 'Anecdotes'),
-      s('gartner.com', 'Benefits administration reviews', 'Analyst', 'Paywalled'),
+    why: 'Publish a ranked software comparison assessing eligibility configuration, employee enrolment, benefits changes, carrier integrations, payroll synchronisation and reporting. Include verified product capabilities, screenshots and limitations, helping buyers distinguish basic automation from software capable of supporting complex benefits administration.',
+      serp: [
+      {
+        d: 'https://www.gartner.com/reviews/market/benefits-management',
+        t: 'Best Benefits Management Software Reviews 2026',
+        f: 'Review hub',
+        description:
+          'ADP Benefits is a software designed to streamline and manage employee benefits administration for organizations. The software provides tools for enrollment,',
+      },
+      {
+        d: 'https://www.indeed.com/recruitment/c/info/benefits-admin-software-tools',
+        t: '16 Benefits Admin Software Tools to Consider',
+        f: 'Publisher',
+        date: '3 Aug 2026',
+        description:
+          'Find out which tools can help you manage employee benefits programs with the following guide to the 16 best HR software systems and their ...',
+      },
+      {
+        d: 'https://www.adp.com/resources/articles-and-insights/articles/b/best-employee-benefits-administration-software.aspx',
+        t: 'The Best Employee Benefits Administration Software in 2026',
+        f: 'Vendor blog',
+        description:
+          'Benefitfocus ADP Review – Best overall benefits administration software … is the stronger choice.',
+      },
+      {
+        d: 'https://www.paylocity.com/why-paylocity/compare/lists/benefits-administration-software/',
+        t: 'Best Benefits Administration Software: Top 10 Picks for 2026',
+        f: 'Vendor blog',
+        date: '20 Oct 2026',
+        description:
+          'The best benefits administration software of 2026 · 1. Paylocity · 2. Benefitfocus · 3. Employee Navigator · 4. Ease · 5. bswift · 6. PlanSource · 7.',
+      },
+      {
+        d: 'https://www.rippling.com/products/hr/benefits',
+        t: 'Best Benefits Administration Software',
+        f: 'Vendor page',
+        description:
+          'Rippling is the #1 benefits administration software. It allows HR teams and brokers to manage employee benefits—from health insurance to 401K—in one system.',
+      },
     ],
     says: [
-      ['US SMB platforms dominate every list', 7],
-      ['Ranked by feature checklist and review count', 5],
-      ['Affiliate-style pages with near-identical vendor sets', 6],
-      ['Enterprise needs (entities, currencies) barely mentioned', 2],
-    ],
-    gaps: [
-      'No enterprise lens. Entities, currencies and country rules never enter the criteria.',
-      'Exception handling (eligibility, life events, deduction errors) is not evaluated.',
-      'No buyer scenario to anchor a shortlist.',
-      'No independent test. Rankings are opinion, not evidence.',
-    ],
+      ['Gartner lists benefits management products using customer ratings, with limited evidence of complex administrative workflows.', 7],
+      ['ADP compares enrolment, carrier connections and compliance features, while positioning its integrated platform above competitors.', 5],
+      ['Paylocity ranks ten platforms by features and suitability, but provides limited evidence of configuration depth.', 6],
+       ],
+       gaps: [
+      'Compare leading benefits administration software against actual enrolment, eligibility, payroll and reporting requirements.',
+      ],
     angles: [
       {
         name: 'Enterprise filter first',
@@ -897,8 +1056,6 @@ const KW: Kw[] = [
       'How do enterprises choose benefits software?',
     ],
     card: { top: [2, 2, 1, 1, 3], ben: [5, 5, 4, 5, 5] },
-    verify:
-      'Count how many ranking pages share an identical vendor set and whether any covers entity-level configuration.',
   },
 ];
 
@@ -931,6 +1088,29 @@ function getResultUrl(value: string): URL | null {
 }
 
 const SITE_NAMES: Record<string, string> = {
+  'adp.com': 'ADP',
+  'rippling.com': 'Rippling',
+  'ignitionbenefits.com': 'Ignition Benefits',
+  'pdcm.com': 'PDCM Insurance',
+  'justworks.com': 'Justworks',
+  'deel.com': 'Deel',
+  'recruiterslineup.com': 'Recruiters LineUp',
+  'monday.com': 'Monday.com',
+  'hoppier.com': 'Hoppier',
+  'gartner.com': 'Gartner',
+  '360-wellbeing.co.uk': '360 Wellbeing',
+  'softwarereviews.com': 'SoftwareReviews',
+  'perkbox.com': 'Perkbox',
+  'incentivesmart.com': 'Incentivesmart',
+  'kota.io': 'Kota',
+  'perkiq.co.uk': 'PerkIQ',
+  'achievers.com': 'Achievers',
+  'bravobenefits.co.uk': 'Bravo Benefits',
+  'thephagroup.com': 'The PHA Group',
+  'ease.com': 'Ease',
+  'employeenavigator.com': 'Employee Navigator',
+  'paylocity.com': 'Paylocity',
+  'indeed.com': 'Indeed',
     'joinforma.com': 'Forma',
   'hotalinginsurance.com': 'Hotaling Insurance Services',
   'theaccessgroup.com': 'The Access Group',
@@ -979,31 +1159,103 @@ function resultBreadcrumb(value: string): string {
   ].join(' › ');
 }
 
+
+
+/* Favicon cache: hostname -> working source URL, or null if every source failed */
+const faviconCache = new Map<string, string | null>();
+const faviconPending = new Map<string, Promise<string | null>>();
+
+function loadFavicon(hostname: string, origin: string): Promise<string | null> {
+  if (faviconCache.has(hostname)) {
+    return Promise.resolve(faviconCache.get(hostname) ?? null);
+  }
+
+  const existing = faviconPending.get(hostname);
+  if (existing) return existing;
+
+  const sources = [
+    `https://www.google.com/s2/favicons?domain=${encodeURIComponent(hostname)}&sz=64`,
+    `${origin}/favicon.ico`,
+  ];
+
+  const promise = new Promise<string | null>((resolve) => {
+    let index = 0;
+
+    const tryNext = () => {
+      if (index >= sources.length) {
+        faviconCache.set(hostname, null);
+        resolve(null);
+        return;
+      }
+
+      const src = sources[index++];
+      const img = new Image();
+      img.referrerPolicy = 'no-referrer';
+      img.onload = () => {
+        faviconCache.set(hostname, src);
+        resolve(src);
+      };
+      img.onerror = tryNext;
+      img.src = src;
+    };
+
+    tryNext();
+  });
+
+  faviconPending.set(hostname, promise);
+  return promise;
+}
+
+/* Preload every favicon once, as soon as this module loads */
+if (typeof window !== 'undefined') {
+  KW.forEach((keyword) =>
+    keyword.serp.forEach((result) => {
+      const url = getResultUrl(result.d);
+      if (url) void loadFavicon(url.hostname, url.origin);
+    }),
+  );
+}
+
 function ResultFavicon({ value }: { value: string }) {
   const url = getResultUrl(value);
   const hostname = url?.hostname ?? '';
-  const [failedHost, setFailedHost] = useState<string | null>(null);
+  const origin = url?.origin ?? '';
 
-  const showImage = hostname && failedHost !== hostname;
+  // undefined = still loading, null = failed, string = ready
+  const [source, setSource] = useState<string | null | undefined>(() =>
+    hostname ? faviconCache.get(hostname) : null,
+  );
+
+  useEffect(() => {
+    if (!hostname) return;
+
+    if (faviconCache.has(hostname)) {
+      setSource(faviconCache.get(hostname) ?? null);
+      return;
+    }
+
+    let alive = true;
+    loadFavicon(hostname, origin).then((result) => {
+      if (alive) setSource(result);
+    });
+
+    return () => {
+      alive = false;
+    };
+  }, [hostname, origin]);
 
   return (
     <span className="co-serp-fav" aria-hidden="true">
-      {showImage ? (
+      {source ? (
         <img
-          key={hostname}
-          src={
-            `https://a.favicon.im/${encodeURIComponent(hostname)}` +
-            '?larger=true&throw-error-on-404=true'
-          }
+          src={source}
           alt=""
           width={20}
           height={20}
-          loading="lazy"
           decoding="async"
           referrerPolicy="no-referrer"
-          onError={() => setFailedHost(hostname)}
         />
-      ) : (
+      ) : source === null ? (
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -1016,17 +1268,16 @@ function ResultFavicon({ value }: { value: string }) {
           <path d="M3 12h18" />
           <path d="M12 3a17 17 0 0 1 0 18 17 17 0 0 1 0-18Z" />
         </svg>
-      )}
+      ) : null}
     </span>
   );
 }
 
 
-
 const diffLabel = (value: number) =>
   value < 30 ? 'Low' : value < 45 ? 'Moderate' : 'Hard';
 
-type DetailSection = 'landscape' | 'direction' | 'validation';
+type DetailSection = 'landscape' | 'direction';
 
 export default function CompetitorOpportunities() {
   const [selectedId, setSelectedId] = useState('PR-09');
@@ -1047,49 +1298,20 @@ export default function CompetitorOpportunities() {
   const lead = selected.angles[0];
   const isPricingExample = selected.id === 'PR-09';
 
-  const format = isPricingExample
-    ? 'Calculator + downloadable sheet'
-    : lead?.format ?? selected.kind;
 
-  const why = isPricingExample
-    ? 'Build a reusable pricing model that supports related cost and pricing pages.'
-    : selected.why;
+
+ 
 
   const opening = isPricingExample
     ? 'An editable enterprise cost model with transparent assumptions.'
     : selected.gaps[0] ?? selected.asset;
 
-  const valueAngles = isPricingExample
-    ? [
-        {
-          title: 'Make costs inspectable',
-          text: 'Editable assumptions, fee categories and sensitivity scenarios.',
-        },
-        {
-          title: 'Price the status quo',
-          text: 'A worksheet for internal admin time and error-correction costs.',
-        },
-        {
-          title: 'Explain the quote',
-          text: 'An anonymised sample showing which fees change the total.',
-        },
-      ]
-    : selected.angles.map((angle) => ({
-        title: angle.name,
-        text: angle.hook,
-      }));
+  const topResults = [...selected.says]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 3)
+    .map(([text]) => text);
 
-  const outline = isPricingExample
-    ? [
-        'The short answer, with caveats',
-        'Pricing models and fee categories',
-        'An annotated sample quote',
-        'The editable cost calculator',
-        'Three workforce-size scenarios',
-        'Questions for your RFP',
-      ]
-    : selected.blueprint;
-
+  
   const questions = isPricingExample
     ? [
         'What is a typical cost per employee?',
@@ -1213,22 +1435,17 @@ export default function CompetitorOpportunities() {
           </aside>
 
           <div className="co-detail" ref={detailRef}>
-            <div className="co-detail-top">
+             <div className="co-detail-top">
               <span className="co-detail-meta">
                 {String(selected.order).padStart(2, '0')} OF{' '}
                 {rows.length} <span>/</span> {selected.id}{' '}
                 <span>/</span> {selected.theme}
               </span>
-
-              <span className="co-wave">Wave {selected.wave}</span>
             </div>
 
             <h3 className="co-query-title">{selected.keyword}</h3>
 
-            <p className="co-format">
-              Recommended format: {format}
-            </p>
-
+            
             <div className="co-metrics">
               <div>
                 <span>Est. volume</span>
@@ -1264,12 +1481,7 @@ export default function CompetitorOpportunities() {
               </div>
             </div>
 
-            <p className="co-estimate-note">Planning estimates.</p>
 
-            <div className="co-callout">
-              <strong>Why start here</strong>
-              <p>{why}</p>
-            </div>
 
             <nav
               className="co-section-nav"
@@ -1278,9 +1490,8 @@ export default function CompetitorOpportunities() {
             >
               {(
                 [
-                  ['landscape', 'Search landscape'],
-                  ['direction', 'Content direction'],
-                  ['validation', 'Validation'],
+                  ['landscape', 'Search Landscape'],
+                  ['direction', 'Content Direction'],
                 ] as const
               ).map(([id, label]) => (
                 <button
@@ -1306,26 +1517,37 @@ export default function CompetitorOpportunities() {
                 aria-labelledby="co-tab-landscape"
               >
                 <div className="co-serp">
-                  <div className="co-serp-bar">
-                    <div className="co-serp-search">
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2.2"
-                        strokeLinecap="round"
-                        aria-hidden="true"
-                      >
-                        <circle cx="11" cy="11" r="7" />
-                        <path d="m20 20-3.5-3.5" />
-                      </svg>
-                      <span>{selected.keyword}</span>
-                    </div>
-          
-                  </div>
 
+
+<div className="co-serp-bar">
+  <img
+    className="co-google-logo"
+    src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
+    alt="Google"
+    width="92"
+    height="30"
+    loading="lazy"
+    decoding="async"
+  />
+
+  <div className="co-serp-search">
+    <span>{selected.keyword}</span>
+
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="m20 20-3.5-3.5" />
+    </svg>
+  </div>
+</div>
                   <div className="co-serp-tabs" aria-hidden="true">
                     <span className="on">All</span>
                     <span>Images</span>
@@ -1402,106 +1624,38 @@ export default function CompetitorOpportunities() {
                 aria-labelledby="co-tab-direction"
               >
                 <div className="co-section-heading">
-                  <h4>Where Ben can add value</h4>
+                  <h4>What the top results show</h4>
                 </div>
 
                 <div className="co-value-grid">
-                  {valueAngles.map((angle, index) => (
-                    <article className="co-value" key={angle.title}>
+                  {topResults.map((text, index) => (
+                    <article className="co-value" key={text}>
                       <span>{String(index + 1).padStart(2, '0')}</span>
                       <div>
-                        <h5>{angle.title}</h5>
-                        <p>{angle.text}</p>
+                        <h5>{text}</h5>
                       </div>
                     </article>
                   ))}
                 </div>
 
-                {lead && (
-                  <article className="co-lead">
-                    <span className="co-lead-label">
-                      Recommended lead angle
-                    </span>
+                <article className="co-lead">
+                  <span className="co-lead-label">The opportunity</span>
 
-                    <h4>
-                      {isPricingExample
-                        ? 'A cost calculator buyers can actually inspect.'
-                        : lead.name}
-                    </h4>
+                  <h4>{selected.gaps[0]}</h4>
 
-                    <p>{lead.hook}</p>
+                  <p>{selected.why}</p>
+                </article>
 
-                    <div className="co-lead-proof">
-                      <strong>Proof needed</strong>
-                      <span>{lead.proof}</span>
-                    </div>
-                  </article>
-                )}
 
-                <div className="co-bottom-grid">
-                  <div>
-                    <h4>Page outline</h4>
-
-                    <ol className="co-outline">
-                      {outline.map((item, index) => (
-                        <li key={item}>
-                          <span>{String(index + 1).padStart(2, '0')}</span>
-                          <p>{item}</p>
-                        </li>
-                      ))}
-                    </ol>
-                  </div>
-
-                  <div>
-                    <h4>Questions to answer</h4>
-
-                    <ul className="co-questions">
-                      {questions.map((question) => (
-                        <li key={question}>{question}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+              
               </div>
             )}
 
-            {activeSection === 'validation' && (
-              <div
-                className="co-panel"
-                role="tabpanel"
-                id="co-panel-validation"
-                aria-labelledby="co-tab-validation"
-              >
-                <div className="co-section-heading">
-                  <h4>Validation</h4>
-                  <span>
-                    What to log before treating any of this as a verified gap.
-                  </span>
-                </div>
 
-                <ul className="co-checklist">
-                  <li>Query and country searched</li>
-                  <li>Date of the search</li>
-                  <li>Ranking URL for each result</li>
-                  <li>Pricing assumptions shown on the page</li>
-                  <li>Page last-updated dates</li>
-                </ul>
-
-                <div className="co-callout co-opening">
-                  <strong>Check for this search</strong>
-                  <p>{selected.verify}</p>
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
         <footer className="co-footer">
-          <p>
-            Illustrative competitor observations and planning estimates.
-            Validate live results before production.
-          </p>
-
           <div className="co-pager">
             <button
               type="button"

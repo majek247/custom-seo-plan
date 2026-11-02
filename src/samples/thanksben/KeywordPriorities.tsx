@@ -56,9 +56,12 @@ type Kw = {
 
 const GROUP_ORDER: GroupKey[] = ['best', 'alt', 'vs', 'price', 'jtbd', 'feature'];
 
+
+
+
 const GROUPS: Record<
   GroupKey,
-  { code: string; label: string; blurb: string; intent: string; path: string }
+  { code: string; label: string; blurb: string; intent: string; path: string; desc: string }
 > = {
   best: {
     code: 'BO',
@@ -66,6 +69,7 @@ const GROUPS: Record<
     blurb: 'Shortlist and listicle queries',
     intent: 'Commercial investigation',
     path: 'best',
+    desc: 'Buyers use these searches to identify and shortlist potential providers. Visibility here puts Ben into consideration while vendor options are still being evaluated.',
   },
   alt: {
     code: 'ALT',
@@ -73,6 +77,7 @@ const GROUPS: Record<
     blurb: 'Switch-intent queries',
     intent: 'Switch intent',
     path: 'alternatives',
+    desc: "These searches come from buyers reconsidering an existing provider or exploring other options. They reveal switching priorities, frustrations, and gaps competitors haven't addressed.",
   },
   vs: {
     code: 'VS',
@@ -80,6 +85,7 @@ const GROUPS: Record<
     blurb: 'Head-to-head evaluation',
     intent: 'Vendor evaluation',
     path: 'compare',
+    desc: 'Buyers use these searches to test their preferred options against specific requirements. Clear comparisons can resolve objections around cost, implementation, and functionality.',
   },
   price: {
     code: 'PR',
@@ -87,6 +93,7 @@ const GROUPS: Record<
     blurb: 'Cost and proof queries',
     intent: 'Purchase planning',
     path: 'pricing',
+    desc: 'These keywords address the financial and practical questions behind purchasing decisions, including total costs, contract commitments, service quality, and customer satisfaction.',
   },
   jtbd: {
     code: 'JB',
@@ -94,6 +101,7 @@ const GROUPS: Record<
     blurb: 'Problem-led queries',
     intent: 'Problem and solution-aware',
     path: 'guides',
+    desc: "Targets buyers researching solutions to specific operational challenges, from inefficient workflows to manual processes, before they've started evaluating products or vendors.",
   },
   feature: {
     code: 'FT',
@@ -101,8 +109,10 @@ const GROUPS: Record<
     blurb: 'Capability and integration queries',
     intent: 'Requirements check',
     path: 'features',
+    desc: 'Covers searches where buyers know what functionality they need and are checking which products offer it, including integrations, configuration options, and limitations.',
   },
 };
+
 
 const BUYERS = [
   'Head of Reward',
@@ -254,86 +264,7 @@ const KEYWORDS: Kw[] = [
   ...build('feature', FEATURE),
 ];
 
-const WHY_BY_ID: Record<string, string> = {
-  'BO-01': 'This search typically sits at the start of an enterprise vendor shortlist, when reward leaders are deciding which providers deserve further evaluation. Country coverage alone will not settle that decision: local benefits availability, payroll dependencies and central control all matter. Ben can compete for consideration before procurement requirements harden, provided its geographic limitations are explicit.',
-  'BO-02': 'Benefits operations teams searching this phrase are often replacing spreadsheets, disconnected providers or a platform that still creates manual work. Their evaluation will turn on employee lifecycle automation, eligibility accuracy and reconciliation rather than benefit catalogue size. For Ben, this is a high-reach opportunity to connect product capabilities to administrative hours and avoidable errors.',
-  'BO-03': 'A multinational buyer has a different problem from a company merely employing remote workers: policies, entities, payroll systems and local obligations multiply with every country. This keyword reaches reward leaders deciding whether one platform can provide central oversight without forcing identical programmes everywhere. Ben needs to substantiate both regional flexibility and operational control.',
-  'BO-04': 'Large-company buyers are evaluating whether software will survive their organisational complexity, not simply whether employees like the interface. Delegated administration, auditability, multiple entities and migration risk become decisive. This page can bring Ben into enterprise shortlists by addressing those failure points, while remaining distinct from the broader administration-software comparison.',
-  'BO-05': 'The search points to a workforce experience problem: employees spread across locations may receive nominally equal benefits but unequal access or value. Reward leaders need to understand local redemption, relevance and regional budgets before choosing a platform. Ben has a reason to appear if it can show employee-level access across actual supported markets.',
-  'BO-06': 'HR teams may search broadly, but their underlying purchase trigger is often rising service requests, onboarding delays and benefits administration work. The opportunity is attractive only when searchers manage sufficiently complex organisations for Ben. A credible page should connect reduced HR workload and employee self-service to specific workflows, not generic wellbeing promises.',
-  'BO-07': 'This is a narrower but more decision-ready query from reward and finance stakeholders who cannot defend benefits expenditure using enrolment figures alone. They need utilisation, budget and segment-level evidence that informs renewal decisions. Ben could earn consideration by showing the actual decisions its reporting supports, while avoiding unsupported claims about retention or ROI.',
-  'BO-08': 'Enterprise buyers use “flexible benefits” to test how much employee choice their policies can safely permit. They will scrutinise budget limits, eligibility, taxable categories and regional variation after the initial promise of flexibility. This keyword is commercially useful if Ben can demonstrate real configuration depth and clearly identify restrictions on eligible spending.',
-  'BO-09': 'Search demand may look appealing, but recognition software is not interchangeable with benefits administration. Buyers may expect peer-to-peer praise, social feeds and performance awards rather than configurable benefits budgets. This term should be validated against Ben’s actual product fit and live sales conversations before investing in a page that attracts the wrong shortlist.',
-  'BO-10': 'Payroll is frequently a veto holder rather than the original benefits-platform buyer. This low-difficulty query can reach teams already checking whether a preferred provider will create deduction errors or month-end manual work. Ben can support purchase approval by demonstrating supported connections, exception handling and the boundary between native integration and file-based processes.',
-  'BO-11': 'Distributed teams often discover that a centrally purchased benefits package cannot be used consistently by employees outside major offices or markets. Searchers need to reconcile worker type, location and employee access before choosing software. Ben can differentiate through verifiable mobile and regional experiences, but should not imply global access where redemption is restricted.',
-  'BO-12': 'This overlaps heavily with the multinational software shortlist, but the word “administration” may signal a more operational evaluation involving multiple providers, entities and payroll cycles. Before creating a second page, compare search results and sales-language differences with BO-03. If intent is indistinguishable, consolidate rather than split authority between near-duplicates.',
-  'BO-13': 'UK enterprise buyers have immediate country-specific requirements that a generic global platform roundup will not resolve. Salary sacrifice, payroll treatment, information security and multi-entity controls shape the shortlist. A UK-focused page gives Ben a clearer route into locally relevant procurement conversations, provided regulatory explanations and product support are checked carefully.',
-  'ALT-01': 'Someone searching for Forma alternatives is likely dissatisfied with an existing shortlist, pricing proposal or implementation fit. The valuable question is what they need beyond lifestyle allowances, especially country configuration, oversight and payroll workflows. Ben can become a credible alternative by explaining actual trade-offs and migration implications rather than assuming Forma fails every enterprise requirement.',
-  'ALT-02': 'Benepass alternatives signal a buyer reconsidering how allowances and international employee spending are managed. This is closer to a vendor-switch decision than general benefits education, making concrete differences in supported markets, policies and finance controls especially valuable. Ben should address what would change operationally and where a replacement would not solve the problem.',
-  'ALT-03': 'Cobee alternative searches may come from teams moving beyond a particular market or reassessing their benefits setup. The opportunity depends on what the current Cobee offering supports, not an assumed geographic gap. Ben should compete only on verified differences in country coverage, benefit administration and employee experience, with an honest account of switching effort.',
-  'ALT-04': 'Perks at Work alternatives may involve employers looking beyond discounts and employee perks toward wider programme administration. The key is to distinguish the buyer who wants a better offers marketplace from one needing eligibility, budgets and reporting. Ben should target the latter, while explicitly acknowledging where a perks-focused provider may remain the better choice.',
-  'ALT-05': 'Reward Gateway alternatives attract buyers whose needs may extend beyond recognition and engagement into benefits administration, or who simply want a different recognition platform. That split matters. Ben can win qualified attention by clarifying which requirements it addresses and which specialist recognition capabilities still call for another vendor, avoiding misleading comparisons.',
-  'ALT-06': 'Darwin Benefits alternatives can capture late-stage enterprise evaluations where configuration, implementation model or ownership are under scrutiny. Although volume is modest, these buyers may already have detailed requirements. Ben needs a restrained comparison of operating models, product scope and switching dependencies rather than a generic list of competing benefits vendors.',
-  'ALT-07': 'Alight alternatives may reflect frustration with the cost, service model or visibility of outsourced administration. These buyers are not merely choosing another dashboard; they may be deciding which responsibilities to bring back in-house. Ben can enter that discussion by specifying where software restores control and which outsourced services a platform cannot replace.',
-  'ALT-08': 'Rippling benefits alternatives challenge a fundamental purchasing assumption: why buy dedicated benefits software if an existing HR platform includes it? International rules, provider choice and administration depth are potential reasons, but they must be evidenced. Ben can support a specialist-platform business case while recognising where an integrated HRIS module is sufficient.',
-  'ALT-09': 'Heka alternative traffic is small and may not represent a meaningful enterprise buying pool. The relevant distinction is whether searchers want wellbeing-specific experiences or a broader benefits administration platform. Before production, verify the query, Ben’s overlap and whether sales hears this competitor in real evaluations; otherwise the page risks low-quality traffic.',
-  'ALT-10': 'Happl alternatives could indicate an employee engagement or benefits search, but the precise buyer expectation needs confirmation. The commercial value depends on whether companies are changing a recognition experience or seeking broader programme control. Ben should not be inserted into the shortlist until product overlap, market demand and the reasons for switching are validated.',
-  'ALT-11': 'BenefitHub alternatives may attract US-centric perks and discount buyers whose requirements differ from Ben’s enterprise target. That makes geographic intent and solution category more important than headline volume. A page is justified only if there is a meaningful segment evaluating central benefits management across relevant markets, with clear reasons to consider Ben.',
-  'ALT-12': 'Benefitfocus alternatives may bring American benefits administration searches tied to local insurance and enrolment requirements. Those needs do not automatically match Ben’s geographic or product scope. This is a qualification exercise before a content opportunity: establish search-market relevance, comparable functionality and whether Ben could credibly make the shortlist.',
-  'ALT-13': 'A broker-alternatives search signals a broader operating-model decision, often triggered by renewal, rising fees or limited visibility. Buyers need to separate advice, insurer relationships and compliance support from administration technology. Ben can frame which functions software can centralise, which still need brokers and what a phased transition would actually involve.',
-  'VS-01': 'A Ben versus Forma search indicates that Ben has already entered the buyer’s consideration set. The page therefore needs to resolve specific final-stage questions about allowances, countries, controls, reporting and implementation rather than repeat positioning copy. An even-handed comparison can help the internal champion explain which platform fits their programme and why.',
-  'VS-02': 'This query comes from evaluators already deciding between Ben and Benepass, so the commercial value is high despite modest volume. They need a precise answer on geographic access, programme configuration, employee spending and administrative oversight. Clear product limitations and sourced evidence will be more persuasive than broad claims of superiority.',
-  'VS-03': 'Ben versus Cobee is likely a close-range decision shaped by operating markets and desired benefits model. Buyers should be able to determine whether local market depth or broader programme administration matters more. A factual comparison can save sales time by clarifying fit early, including cases where Cobee is the stronger option.',
-  'VS-04': 'The important distinction is not merely two vendor names: one buyer may prioritise recognition and engagement, another benefits configuration and administration. This page can qualify leads as much as convert them. Ben should make the boundary between overlapping capabilities and specialist functionality unmistakable for procurement and reward stakeholders.',
-  'VS-05': 'Low volume does not make this irrelevant if Darwin appears in enterprise sales deals. A Ben-versus-Darwin comparison can resolve questions about administrative depth, implementation support, international operating models and contractual complexity. Prioritise evidence from real competitive evaluations, not artificial differentiation created solely to fill a comparison template.',
-  'VS-06': 'This comparison represents a consequential choice between technology-led control and broader outsourced benefits services. Buyers need to understand service responsibilities, internal resourcing, implementation risk and ongoing administration. Ben should be positioned as the right answer only where its software-led approach matches what the organisation wants to own.',
-  'VS-07': 'The prospect may already pay for Rippling and need justification for adding another benefits system. That makes this a direct objection-handling asset for sales. The page should address incremental value, data flow, duplicated administration and where a dedicated benefits platform is necessary versus unnecessary.',
-  'VS-08': 'Ben versus Heka has extremely limited estimated demand, so production should follow evidence from live sales opportunities rather than volume. If buyers do ask, the useful comparison is likely between focused wellbeing experiences and wider benefits operations. The page must make those differences explicit without treating unlike features as equivalents.',
-  'VS-09': 'This low-volume branded search is only valuable if Happl is actually encountered in Ben’s purchasing conversations. The page would need to distinguish recognition, engagement and benefits-management requirements before describing product fit. Without proof of search demand or deal relevance, keeping it off the initial production roadmap is sensible.',
-  'VS-10': 'Searchers comparing Forma and Benepass may be building a shortlist without knowing Ben. The opportunity is to enter the decision as a defensible third option, not hijack a head-to-head query. That requires fair, sourced analysis and a clearly described use case where Ben offers something materially different.',
-  'VS-11': 'This query catches buyers before they have decided what operating model they need. They are weighing outsourced market expertise and provider relationships against platform control, transparency and automation. Ben can influence requirements early by defining what software replaces, what remains external and where a hybrid arrangement makes sense.',
-  'VS-12': 'This search is the clearest expression of an objection sales will hear: “our HRIS already does benefits.” Buyers need a decision boundary based on programme complexity, coverage, eligibility and integrations. Ben can justify a specialist purchase when those requirements exceed the HRIS module, while saying when they do not.',
-  'VS-13': 'Buyers exploring flexible versus traditional benefits are deciding programme design before selecting vendors. The search can establish whether employee choice, cost control and regional policy variation justify a different approach. Ben should educate on practical trade-offs first, then connect relevant models to actual platform configuration rather than force a product pitch.',
-  'PR-01': 'A branded pricing search usually means someone is budgeting or preparing to request approval, not discovering the category. The existing pricing experience should answer what affects a quote, which services are included and what implementation changes the total cost. Transparency here can prevent avoidable sales friction even without publishing fixed prices.',
-  'PR-02': 'Searchers looking for Ben reviews want independent reassurance before they trust vendor claims. The opportunity is to surface attributable feedback about service, rollout and day-to-day use, including limitations. Do not manufacture a review hub from marketing testimonials; validate that credible third-party evidence exists and reflects relevant enterprise customers.',
-  'PR-03': 'Forma pricing searches point to a buyer checking affordability or pressure-testing a quote. If credible public price information is limited, the useful asset is a transparent breakdown of cost drivers and questions to request in proposals. Ben can participate in the buying decision without inventing competitor rates or implying directly comparable packages.',
-  'PR-04': 'A Benepass pricing search suggests a budget conversation is underway, possibly before a formal vendor evaluation. Buyers need clarity on pricing units, allowances, implementation and ongoing costs across their workforce. This is an opportunity for Ben to explain total-cost differences fairly, using only verified prices and clearly labelled assumptions.',
-  'PR-05': 'Darwin Benefits pricing may reflect a late-stage procurement check, but the small market means a separate page has a higher content cost. The useful distinction is the full ownership model, not a guessed subscription figure. If it overlaps the general pricing guide, one authoritative section may serve buyers better.',
-  'PR-06': 'Reward Gateway pricing interest may involve a recognition-heavy package with a different commercial structure from benefits administration. Buyers need to separate base subscriptions, modules, rollout and service commitments before comparing vendors. Ben should address the commercial model rather than suggest its offer is cheaper without like-for-like evidence.',
-  'PR-07': 'This category query reaches buyers building a budget before requesting enterprise quotes. The main uncertainty is how per-employee fees, implementation, integrations, entities and services combine into a realistic total. A neutral pricing model can build Finance confidence and provide context for Ben without promising unsupported market averages.',
-  'PR-08': 'Global benefits costs become difficult to compare when vendors price employees, countries, legal entities and local provision differently. This keyword is valuable because it reaches budget owners confronting those differences. The page should help them model scenario-specific expenditure and discover which assumptions need confirmation in each vendor proposal.',
-  'PR-09': 'A cost-per-employee query signals an active attempt to create a defensible financial benchmark. Simple subscription comparisons hide activation, regional differences and administrative labour. An editable model with sourced assumptions can help Finance compare scenarios, and can give Ben a useful conversation starter without claiming guaranteed savings.',
-  'PR-10': 'This buyer is already being asked to prove the investment case. A transparent ROI model should distinguish measurable administration savings from uncertain effects on engagement or retention, while exposing assumptions and payback sensitivity. It is a high-value sales enablement asset because the output can be reviewed and challenged by Finance.',
-  'PR-11': 'Flexible benefits pricing can mean both software fees and the employer-funded allowance itself, a distinction many comparisons blur. Buyers need to understand the platform cost, spending policies and how participation changes actual expenditure. This page is useful if it adds clarity beyond the broader category pricing guide; otherwise consolidate.',
-  'PR-12': 'Implementation cost searches indicate procurement anxiety about the work and spending beyond the licence. HRIS mappings, payroll testing, data cleansing, training and phased rollout may drive budget and timeline risk. Ben can reduce uncertainty with a realistic project breakdown and responsibilities rather than a generic “quick implementation” claim.',
-  'PR-13': 'Generic software review queries are often dominated by independent directories, and a brand-owned roundup may lack credibility. Before allocating resources, establish whether enterprise buyers use the search and whether useful original evidence is available. If not, directing effort to genuine customer proof and third-party profiles is more defensible.',
-  'JB-01': 'Payroll and benefits teams searching for reconciliation automation already recognise a costly operational failure. Their immediate need is a repeatable monthly process that catches mismatches before employees are paid. Ben can show how its supported integrations and checks fit that workflow, making this a stronger technical sales asset than another general platform list.',
-  'JB-02': 'This is a foundational problem-led search for reward leaders managing multiple providers and policies as they expand. The buyer may not yet be shortlisting software, so the commercial role is to shape requirements around governance, local delivery and reporting. It can become a hub that moves qualified readers toward relevant vendor evaluations.',
-  'JB-03': 'Provider consolidation becomes urgent when contracts, invoices and employee data are fragmented across markets. Buyers need to understand which services can actually be consolidated and which local relationships remain necessary. Ben can enter through an operational migration discussion, with a realistic account of dependencies, disruption risk and potential administrative savings.',
-  'JB-04': 'This search usually starts with an overextended HR or benefits team rather than a formal software procurement. The valuable content identifies where time disappears, which tasks can be automated and which require process changes. Ben can connect those pain points to demonstrated workflows while giving managers a credible basis for prioritising improvements.',
-  'JB-05': 'Global benefits spend is hard to defend when different entities report in different currencies, periods and categories. Finance is looking for reconciliation and decision-ready visibility, not simply attractive dashboards. Ben can support the conversation with examples of consolidated reporting, data limitations and how spending insights inform reallocations.',
-  'JB-06': 'Low benefit uptake is frequently blamed on communication, but causes also include poor local relevance, employee access and difficult enrolment. This search invites a diagnostic approach before software selection. Ben can be considered where experience and reporting capabilities address measurable barriers, without presenting higher utilisation as an automatic guarantee.',
-  'JB-07': 'Eligibility rules are a quiet source of payroll errors, inconsistent treatment and employee complaints across large organisations. Buyers searching this term want a usable way to document exceptions by country, entity and grade. A rigorous matrix template can build trust and lead naturally to how Ben configures and maintains comparable rules.',
-  'JB-08': 'Migration searches appear when buyers like a new provider but fear disruption to payroll, employee access and historical records. This is a late-stage objection that can stall an otherwise qualified opportunity. Ben can reduce uncertainty by laying out data ownership, parallel testing, cutover timing and responsibilities rather than promising a frictionless switch.',
-  'JB-09': 'Opening a new country forces reward leaders to decide what employees need before vendors and policies are ready. The search captures an identifiable expansion trigger with purchasing potential. A country-launch checklist can clarify local obligations, provider dependencies, budgets and launch sequencing, then show where Ben could support the process.',
-  'JB-10': 'An internal champion searching for a business case needs material that Finance and procurement can scrutinise. The page should separate hard cost savings, implementation spend and less certain employee outcomes, with editable assumptions. Ben gains a reusable sales asset that helps move a proposal from enthusiasm to approval.',
-  'JB-11': 'Deskless, office-based and contract populations can have different access, eligibility and communication needs under one employer. Searchers are struggling with programme design rather than vendor features alone. Ben can be relevant if it can prove how supported worker groups enrol, use benefits and are administered without creating parallel systems.',
-  'JB-12': 'Deduction errors have immediate consequences for employee trust and payroll confidence. Buyers need root causes across eligibility data, changes, file handoffs and cutoffs before considering solutions. A worked reconciliation example can establish technical credibility and reveal where Ben reduces risk, including exceptions that still need human review.',
-  'JB-13': 'Global policy standardisation is a governance problem: leaders want consistency without ignoring tax rules, local norms or employee needs. The search can attract senior reward owners before they choose technology. Ben has a relevant role if it can demonstrate how common policy principles translate into controlled regional configurations.',
-  'FT-01': 'Enrolment software searches indicate a specific capability requirement and potentially an imminent vendor decision. Buyers will check eligibility logic, employee journeys, life-event changes and HRIS data flows. An improved product page can convert this intent by documenting actual enrolment steps and limitations, rather than adding another overlapping landing page.',
-  'FT-02': 'This is technical evaluation intent from payroll or integrations stakeholders who may be able to block a purchase. They need supported methods, field mappings, timing and error handling, not benefits marketing. Ben can make the sales process easier by publishing verified specifications and documenting where custom work or manual files remain necessary.',
-  'FT-03': 'Reporting-dashboard searches come from buyers who need to see the output before trusting analytics claims. Finance may prioritise expenditure and reconciliation, while HR needs participation and adoption. The existing page can become a proof asset with real views, export examples and explicit data limits instead of unsupported outcome promises.',
-  'FT-04': 'Multi-entity buyers need rules that change with location, grade or employment status without constant manual intervention. This keyword is specific enough to justify product evidence, but may be served by improving an existing capability page. Demonstrating rule configuration, exceptions and audit history will matter more than a broad feature list.',
-  'FT-05': 'Workflow automation is broad and can attract buyers outside Ben’s ideal fit. The useful demand is narrower: approvals, lifecycle changes and exception handling in complex benefits programmes. Before creating a standalone page, determine whether search intent differs from enrolment and administration content; otherwise strengthen those existing pages.',
-  'FT-06': 'Workday integration searches are often final-stage diligence from HRIS owners, with a direct ability to stop implementation. Buyers need to know precisely which objects synchronise, who configures access, and how failures are resolved. This page should exist only with verified technical documentation, but it could be highly valuable in enterprise deals.',
-  'FT-07': 'SuccessFactors users have similar diligence needs to Workday buyers, but implementation details cannot be copied across platforms. The commercial opportunity is to reduce uncertainty around supported data, authentication, setup responsibilities and ongoing changes. A narrowly scoped, technically reviewed page can answer questions that otherwise require repeated sales-engineering calls.',
-  'FT-08': 'ADP-related searches may involve payroll rather than HRIS integration, with deduction timing and file validation particularly important. Buyers need clarity on supported ADP products and regional variants, not a generic integration badge. Documented inputs, outputs and reconciliation responsibilities could turn this into a strong technical reassurance page.',
-  'FT-09': 'Flexible spending allowance software may imply card-based spend, reimbursements and category controls that Ben must actually support. The search is worth pursuing only after confirming product scope and geographic fit. A capability page built on assumptions would attract evaluations Ben cannot complete, so validate before committing production effort.',
-  'FT-10': 'Benefits analytics searches overlap the vendor roundup but signal interest in a specific software capability. The product page should answer whether data can move from utilisation reporting to concrete budget decisions, with segmentation and exports. Ben can earn higher-intent traffic by proving those workflows rather than repeating category-level comparisons.',
-  'FT-11': 'SSO searches often come from security reviewers working through an approval checklist. Even low search volume can matter when lack of documentation delays enterprise deals. A concise technical page should specify supported protocols, provisioning model, permissions and security evidence, with links to documentation rather than unsupported compliance badges.',
-  'FT-12': 'Provider integration questions arise when employers have existing brokers, carriers or regional benefits partners they cannot replace immediately. Buyers need to understand supported data exchanges, ownership of updates and exceptions. A technical page can qualify feasibility early and prevent promising a level of integration the product cannot deliver.',
-  'FT-13': 'Audit-trail functionality is a low-volume query but a concrete requirement in regulated, multi-admin environments. Buyers need to know which changes are logged, who can review them and how evidence is exported. Unless search intent justifies a separate URL, this belongs inside a stronger product or security page.',
-};
+
 
 const diffBand = (kd: number): DiffBand =>
   kd <= 30 ? 'easy' : kd <= 50 ? 'moderate' : 'hard';
@@ -578,7 +509,7 @@ export default function KeywordPriorities() {
         k.score,
         BUYERS[k.buyer],
         k.action === 'Create' ? urlFor(k) : '',
-        WHY_BY_ID[k.id] ?? k.why,
+        k.why,
       ]
         .map(csvCell)
         .join(','),
@@ -606,7 +537,7 @@ export default function KeywordPriorities() {
     </div>
 
     <h2>
-      A clear view of keyword opportunities and recommended content priorities.
+A breakdown of target keywords, page recommendations, and relative priorities.
     </h2>
 
     <p className="kp-intro-description">
@@ -641,7 +572,13 @@ We’ve organised 78 keywords across six search categories, from vendor comparis
       className={group === g ? 'active' : ''}
       onClick={() => setGroup(g)}
     >
-      <strong>{GROUPS[g].label}</strong>
+      <div className="kp-tab-heading">
+        <strong>{GROUPS[g].label}</strong>
+        <span className="kp-info-icon" aria-hidden="true">
+          ⓘ
+          <span className="kp-tooltip">{GROUPS[g].desc}</span>
+        </span>
+      </div>
       <small>{total} keywords</small>
     </button>
   ))}
@@ -993,10 +930,7 @@ We’ve organised 78 keywords across six search categories, from vendor comparis
                   </div>
                 </div>
 
-                <div className="kp-rationale">
-                  <h4>Why this keyword matters</h4>
-                  <p>{WHY_BY_ID[selected.id] ?? selected.why}</p>
-                </div>
+
 
                 <div className="kp-brief-actions" style={{ marginTop: '24px' }}>
                   <button

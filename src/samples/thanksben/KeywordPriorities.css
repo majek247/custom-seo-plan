@@ -128,6 +128,86 @@
   text-align: left;
 }
 
+
+/* Tooltip Container */
+.kp-tab-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 8px;
+}
+
+/* Info Icon */
+.kp-info-icon {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #8faea4;
+  font-size: 14px;
+  cursor: help;
+  transition: color 0.15s;
+}
+
+.kp-info-icon:hover {
+  color: #167273;
+}
+
+/* Tooltip */
+.kp-tooltip {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: max-content;
+  max-width: 240px;
+  padding: 8px 12px;
+  background: #011522;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s;
+  z-index: 50;
+  pointer-events: none;
+}
+
+/* Tooltip Arrow */
+.kp-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #011522 transparent transparent transparent;
+}
+
+/* Show Tooltip on Hover/Focus */
+.kp-info-icon:hover .kp-tooltip,
+.kp-info-icon:focus-visible .kp-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Make sure active tabs have white tooltip text if needed */
+#keywords .kp-tabs button.active .kp-info-icon {
+  color: #bce4d6;
+}
+#keywords .kp-tabs button.active .kp-info-icon:hover {
+  color: #fff;
+}
+
+
+
 .kp-tabs button + button::before {
   content: "";
   position: absolute;

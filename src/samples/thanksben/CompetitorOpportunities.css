@@ -235,6 +235,7 @@
 .co-detail {
   min-width: 0;
   padding-top: 10px;
+  padding-bottom: 40px; /* Added padding to the bottom of the container */
   scroll-margin-top: 24px;
 }
 
@@ -381,25 +382,30 @@
 
 .co-section-nav {
   display: flex;
-  gap: 28px;
-  margin-top: 23px;
+  gap: 32px; /* Slightly increased gap */
+  margin-top: 28px; /* Added a bit more space above */
   border-bottom: 1px solid var(--co-line);
 }
 
 .co-section-nav button {
   position: relative;
-  padding: 0 0 12px;
+  padding: 4px 0 14px; /* Increased bottom padding */
   border: 0;
   background: transparent;
   color: var(--co-muted);
-  font-size: 12px;
-  font-weight: 500;
+  font-size: 15px; /* Increased from 12px */
+  font-weight: 600; /* Made bolder */
   cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.co-section-nav button:hover {
+  color: var(--co-ink);
 }
 
 .co-section-nav button.active {
   color: #135d5e;
-  font-weight: 600;
+  font-weight: 700; /* Made much bolder */
 }
 
 .co-section-nav button.active::after {
@@ -524,7 +530,7 @@
 .co-section .co-value h5 {
   color: var(--co-ink);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 400; /* Reduced from 600 */
   line-height: 1.45;
   letter-spacing: -0.02em;
 }
@@ -565,7 +571,7 @@
 
 .co-section .co-lead > p {
   margin-top: 4px;
-  color: #4a6370;
+  color: #011522;
   font-size: 12px;
   line-height: 1.6;
 }
@@ -596,43 +602,48 @@
 
 /* Outline and questions */
 
-.co-bottom-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  margin-top: 20px;
+
+.co-outline-section {
+  margin-top: 24px;
+  margin-bottom: 40px; /* Use margin instead of padding to force space */
 }
 
-.co-bottom-grid > div + div {
-  padding-left: 24px;
-  border-left: 1px solid var(--co-line);
+/* Add styling to match the other section heading */
+.co-outline-section h4 {
+  color: var(--co-ink);
+  font-size: 16px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.4;
 }
 
 .co-outline {
   display: grid;
-  gap: 6px;
-  margin: 9px 0 0;
+  gap: 12px; /* Increased gap between items */
+  margin: 12px 0 0;
   padding: 0;
   list-style: none;
 }
 
 .co-outline li {
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr);
-  gap: 10px;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 12px;
+  align-items: baseline;
 }
 
 .co-outline li > span {
-  color: #778992;
-  font-size: 11px;
-  line-height: 1.65;
+  color: var(--co-teal);
+  font-size: 14px; /* Increased font size */
+  font-weight: 700;
+  line-height: 1.6;
   font-variant-numeric: tabular-nums;
 }
 
 .co-section .co-outline p {
-  color: #53616e;
-  font-size: 11px;
-  line-height: 1.65;
+  color: #011522; /* Changed color */
+  font-size: 15px; /* Increased font size */
+  line-height: 1.6;
 }
 
 .co-questions {
@@ -689,7 +700,7 @@
 .co-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end; /* Changed from space-between to flex-end */
   gap: 24px;
   margin-top: 26px;
   padding-top: 14px;
@@ -790,8 +801,8 @@
 .co-serp-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 20px;
+  justify-content: flex-start;
+  gap: 6px;
   padding: 18px 0 16px;
 }
 
@@ -1197,3 +1208,219 @@
   }
 }
 
+/* Google-style SERP search header */
+
+.co-serp-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+  width: 100%;
+  margin-bottom: 18px;
+}
+
+.co-google-logo {
+  width: 92px;
+  height: 30px;
+  object-fit: contain;
+  display: block;
+  flex-shrink: 0;
+  margin-right: 8px;
+}
+
+.co-serp-search {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex: 1;
+  min-width: 0;
+  max-width: 650px;
+  min-height: 44px;
+  padding: 0 18px 0 22px;
+  border: 1px solid #dfe1e5;
+  border-radius: 999px;
+  background: #fff;
+  color: #202124;
+  box-shadow: 0 1px 4px rgba(32, 33, 36, 0.05);
+}
+
+.co-serp-search span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.co-serp-search svg {
+  flex-shrink: 0;
+  color: #4285f4;
+}
+
+@media (max-width: 640px) {
+  .co-serp-bar {
+    gap: 12px;
+  }
+
+  .co-google-logo {
+    width: 70px;
+    height: auto;
+  }
+
+  .co-serp-search {
+    padding: 0 12px;
+  }
+}
+/* ==============================================
+   CONTENT DIRECTION — PREMIUM VERTICAL LAYOUT
+   ============================================== */
+
+/* Make the panel fill more of the available height */
+#co-panel-direction {
+  display: flex;
+  flex-direction: column;
+  min-height: 490px;
+  padding-top: 14px;
+}
+
+/* Section heading */
+#co-panel-direction .co-section-heading {
+  margin: 10px 0 4px;
+}
+
+#co-panel-direction .co-section-heading h4 {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.4;
+}
+
+/* Replace three columns with vertical rows */
+#co-panel-direction .co-value-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0;
+}
+
+/* Each observation */
+#co-panel-direction .co-value {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+  padding: 19px 4px;
+  border-bottom: 1px solid #e3eaed;
+}
+
+
+/* Remove border from the last item */
+#co-panel-direction .co-value:last-child {
+  border-bottom: none;
+  padding-bottom: 40px; /* Optional: removes extra space at the bottom */
+}
+
+/* Remove previous column styling */
+#co-panel-direction .co-value + .co-value {
+  padding-left: 4px;
+  border-left: none;
+}
+
+/* Observation numbers */
+#co-panel-direction .co-value > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border-radius: 6px;
+  background: #edf7f4;
+  color: #167273;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Observation copy */
+#co-panel-direction .co-value h5 {
+  max-width: 640px;
+  padding-top: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.75;
+  letter-spacing: -0.012em;
+  color: #011522;
+}
+
+/* Opportunity panel */
+#co-panel-direction .co-lead {
+  margin-top: auto;
+  padding: 24px 26px;
+  border: 1px solid #d5e8e1;
+  /* REMOVED: border-left: 4px solid #167273; */
+  /* REMOVED: border-radius: 7px; */
+  background: #edf7f4;
+}
+
+
+
+/* Opportunity label */
+#co-panel-direction .co-lead-label {
+  margin-bottom: 11px;
+  color: #167273;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+}
+
+/* Opportunity headline */
+#co-panel-direction .co-lead h4 {
+  margin: 0;
+  max-width: 700px;
+  color: #011522;
+  font-size: 19px;
+  font-weight: 800;
+  line-height: 1.5;
+  letter-spacing: -0.035em;
+}
+
+/* Opportunity description */
+#co-panel-direction .co-lead > p {
+  margin-top: 12px;
+  max-width: 700px;
+  color: #011522;
+  font-size: 13px;
+  line-height: 1.85;
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  #co-panel-direction {
+    min-height: 0;
+    padding-top: 10px;
+  }
+
+  #co-panel-direction .co-value {
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 12px;
+    padding: 16px 0;
+  }
+
+  #co-panel-direction .co-value > span {
+    width: 34px;
+    height: 34px;
+  }
+
+  #co-panel-direction .co-value h5 {
+    font-size: 13px;
+  }
+
+  #co-panel-direction .co-lead {
+    margin-top: 24px;
+    padding: 20px;
+  }
+
+  #co-panel-direction .co-lead h4 {
+    font-size: 17px;
+  }
+}

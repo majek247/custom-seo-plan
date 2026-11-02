@@ -971,11 +971,7 @@ We’ve organised 78 keywords across six search categories, from vendor comparis
           
         </div>
 
-        <p className="kp-foot">
-          Priority is provisional. Volume and difficulty are illustrative,
-          not validated. “Improve” means review the existing page before
-          creating a new URL. Opportunity score blends demand, ease and priority.
-        </p>
+      
       </div>
     </section>
   );

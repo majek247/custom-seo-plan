@@ -83,7 +83,8 @@
 }
 
 .co-section .co-intro h2 {
-  max-width: none;
+  max-width: 860px;
+  text-wrap: balance;
   color: var(--co-ink);
   font-size: clamp(30px, 2.75vw, 46px);
   font-weight: 800;
@@ -92,11 +93,11 @@
 }
 
 .co-section .co-intro-copy {
-  max-width: 1100px;
-  margin-top: 10px;
-  color: var(--co-muted);
-  font-size: 16px;
-  line-height: 1.65;
+  max-width: 1300px; /* Increased to match Keyword Priorities */
+  margin-top: 12px;
+  color: #011522; /* Changed to match dark text */
+  font-size: 18px; /* Increased to match Keyword Priorities */
+  line-height: 1.6; /* Tightened to match Keyword Priorities */
 }
 
 /* Main layout */
@@ -235,7 +236,7 @@
 .co-detail {
   min-width: 0;
   padding-top: 10px;
-  padding-bottom: 40px; /* Added padding to the bottom of the container */
+  padding-bottom: 0;
   scroll-margin-top: 24px;
 }
 
@@ -700,11 +701,11 @@
 .co-footer {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Changed from space-between to flex-end */
+  justify-content: flex-end;
   gap: 24px;
-  margin-top: 26px;
-  padding-top: 14px;
-  border-top: 1px solid var(--co-line);
+  margin-top: 4px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--co-line);
 }
 
 .co-section .co-footer > p {
@@ -1387,7 +1388,7 @@
 /* Opportunity description */
 #co-panel-direction .co-lead > p {
   margin-top: 12px;
-  max-width: 700px;
+  max-width: 100%; /* Changed from 700px to allow full width */
   color: #011522;
   font-size: 13px;
   line-height: 1.85;

@@ -1373,11 +1373,10 @@ export default function CompetitorOpportunities() {
             </div>
           </div>
 
-          <h2>Find the gaps. Build the better answer.</h2>
+          <h2>The strongest content opportunities across Ben’s priority search terms.</h2>
 
           <p className="co-intro-copy">
-            Ten priority searches, the questions competing pages leave
-            unanswered, and what Ben should publish next.
+            We’ve reviewed the leading search results for ten priority keywords to understand what buyers currently find. Each analysis identifies gaps in competitor coverage and recommends how Ben can address those gaps with more differentiated content tailored to the underlying intent.
           </p>
         </header>
 

@@ -1111,6 +1111,7 @@ function Field({
 /* ------------------------------------------------------------------ */
 
 export default function AiVisibility() {
+  const [activeTab, setActiveTab] = useState<'results' | 'evidence' | 'plan'>('results');
   const [stage, setStage] = useState<'All' | Stage>('All');
   const [vis, setVis] = useState<'all' | 'appears' | 'absent'>('all');
   const [plat, setPlat] = useState<'all' | PlatformKey>('all');
@@ -1213,7 +1214,7 @@ export default function AiVisibility() {
     </span>
 
     <span className="av-sample-note">
-      Illustrative results — validate with live tests.
+      I 
     </span>
   </div>
 
@@ -1487,12 +1488,37 @@ aria-pressed={stage === s}
 </div>
 
 
+<nav className="av-tabs" role="tablist">
+  <button
+    role="tab"
+    aria-selected={activeTab === 'results'}
+    className={activeTab === 'results' ? 'active' : ''}
+    onClick={() => setActiveTab('results')}
+  >
+    Platform results
+  </button>
+  <button
+    role="tab"
+    aria-selected={activeTab === 'evidence'}
+    className={activeTab === 'evidence' ? 'active' : ''}
+    onClick={() => setActiveTab('evidence')}
+  >
+    Answer evidence
+  </button>
+  <button
+    role="tab"
+    aria-selected={activeTab === 'plan'}
+    className={activeTab === 'plan' ? 'active' : ''}
+    onClick={() => setActiveTab('plan')}
+  >
+    Content & distribution
+  </button>
+</nav>
 
-<div className="av-section-title">
-  <h4>Platform results</h4>
-  <span>Sample responses · Not live measurements.</span>
-</div>
 
+
+{activeTab === 'results' && (
+  <div className="av-panel">
 <div className="av-table-wrap">
   <table className="av-platform-table">
     <caption className="av-sr">
@@ -1551,121 +1577,120 @@ aria-pressed={stage === s}
   </table>
 </div>
 
-<p className="av-result-count">
-  Appears on {hits} of {PLATFORMS.length} platforms
-  {' · '}
-  Cited on {citedHits}
-</p>
 
-<div className="av-section-title av-evidence-title">
-  <h4>Answer evidence</h4>
-</div>
+    <p className="av-result-count">
+      Appears on {hits} of {PLATFORMS.length} platforms
+      {' · '}
+      Cited on {citedHits}
+    </p>
+  </div>
+)}
 
-<div className="av-evidence-grid">
-  {sel.results.map((result, index) => {
-    if (result.s === 'absent') return null;
 
-    return (
-      <article
-        className="av-evidence"
-        key={PLATFORMS[index].key}
-      >
-        <header>
-          <strong className="av-platform-name">
-  <PlatformLogo platform={PLATFORMS[index].key} />
-  <span>{PLATFORMS[index].name}</span>
-</strong>
 
-          <span className={`av-status av-status--${result.s}`}>
-            {STATUS_LABEL[result.s]}
-          </span>
-        </header>
+{activeTab === 'evidence' && (
+  <div className="av-panel">
+    <div className="av-evidence-grid">
+      {sel.results.map((result, index) => {
+        if (result.s === 'absent') return null;
 
-        {result.said ? (
-          <blockquote>
-            <Highlight text={result.said} />
-          </blockquote>
-        ) : (
-          <p className="av-evidence-missing">
-            No sample excerpt recorded.
+        return (
+          <article
+            className="av-evidence"
+            key={PLATFORMS[index].key}
+          >
+            <header>
+              <strong className="av-platform-name">
+                <PlatformLogo platform={PLATFORMS[index].key} />
+                <span>{PLATFORMS[index].name}</span>
+              </strong>
+
+              <span className={`av-status av-status--${result.s}`}>
+                {STATUS_LABEL[result.s]}
+              </span>
+            </header>
+
+            {result.said ? (
+              <blockquote>
+                <Highlight text={result.said} />
+              </blockquote>
+            ) : (
+              <p className="av-evidence-missing">
+                No sample excerpt recorded.
+              </p>
+            )}
+
+            {result.also && result.also.length > 0 && (
+              <div className="av-also">
+                <span>Also named</span>
+                <p>{result.also.join(' · ')}</p>
+              </div>
+            )}
+
+            {result.gap && (
+              <p className="av-gap">
+                <strong>Gap</strong>
+                {result.gap}
+              </p>
+            )}
+          </article>
+        );
+      })}
+
+      {hits === 0 && (
+        <div className="av-no-evidence">
+          <strong>No Ben mentions in this sample.</strong>
+          <p>
+            Run the prompt on each platform and save the
+            responses before confirming the visibility gap.
           </p>
-        )}
-
-        {result.also && result.also.length > 0 && (
-          <div className="av-also">
-            <span>Also named</span>
-            <p>{result.also.join(' · ')}</p>
-          </div>
-        )}
-
-        {result.gap && (
-          <p className="av-gap">
-            <strong>Gap</strong>
-            {result.gap}
-          </p>
-        )}
-      </article>
-    );
-  })}
-
-  {hits === 0 && (
-    <div className="av-no-evidence">
-      <strong>No Ben mentions in this sample.</strong>
-      <p>
-        Run the prompt on each platform and save the
-        responses before confirming the visibility gap.
-      </p>
+        </div>
+      )}
     </div>
-  )}
-</div>
+  </div>
+)}
 
 
+      {activeTab === 'plan' && (
+        <div className="av-panel">
+          <div className="av-improvement">
+            <strong>What to improve</strong>
+            <p>{sel.why}</p>
+          </div>
+
+          <div className="av-plan">
+            <div>
+              <div className="av-plan-label">Content to create or improve</div>
+              <ul>
+                {sel.fix.map((f) => (
+                  <li key={f.text}>
+                    <em className={f.action === 'Create' ? 'create' : 'improve'}>
+                      {f.action}
+                    </em>
+                    <span>
+                      {f.text}
+                      {f.ref && <code>{f.ref}</code>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <div className="av-plan-label">Authority &amp; distribution</div>
+              <ul>
+                {sel.moves.map((m) => (
+                  <li key={m.text}>
+                    <em className="move">{m.type}</em>
+                    <span>{m.text}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
 
 
-      <div className="av-improvement">
-  <strong>What to improve</strong>
-  <p>{sel.why}</p>
-</div>
-
-
-                <div className="av-plan">
-                  <div>
-                    <div className="av-plan-label">Content to create or improve</div>
-                    <ul>
-                      {sel.fix.map((f) => (
-                        <li key={f.text}>
-                          <em className={f.action === 'Create' ? 'create' : 'improve'}>
-                            {f.action}
-                          </em>
-                          <span>
-                            {f.text}
-                            {f.ref && <code>{f.ref}</code>}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <div className="av-plan-label">Authority &amp; distribution</div>
-                    <ul>
-                      {sel.moves.map((m) => (
-                        <li key={m.text}>
-                          <em className="move">{m.type}</em>
-                          <span>{m.text}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="av-retest">
-                  <small>HOW TO VALIDATE</small>
-                  <p>
-                    Run this exact prompt on all four platforms, log the date,
-                    geography and every cited URL, and repeat 30 days after the
-                    new assets go live.
-                  </p>
-                </div>
 
                 <div className="av-pager">
                   <button

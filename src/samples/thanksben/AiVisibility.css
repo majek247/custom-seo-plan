@@ -35,12 +35,18 @@
   font-family: inherit;
 }
 
+
 .av-section > .tb-container {
   width: 100%;
-  max-width: 1440px;
+  max-width: 1500px !important;
   margin-inline: auto;
+  
+  /* Added side padding to match the other 1500px sections */
+  padding-left: clamp(22px, 2.4vw, 44px) !important;
+  padding-right: clamp(22px, 2.4vw, 44px) !important;
+  
+  margin-top: -80px; /* Reduced to pull the section up */
 }
-
 /* Introduction */
 
 .av-intro {
@@ -79,10 +85,11 @@
 }
 
 .av-section .av-intro > p {
-  margin-top: 9px;
-  color: var(--av-muted);
-  font-size: 15px;
-  line-height: 1.65;
+  margin-top: 12px;
+  color: #011522; /* Changed to dark ink */
+  font-size: 18px; /* Increased to match other sections */
+  line-height: 1.6; /* Tightened */
+  max-width: 1100px;
 }
 
 /* Compact summary */
@@ -116,7 +123,7 @@
 }
 
 .av-section .av-summary-item h3 {
-  font-size: 12px;
+  font-size: 15px; /* Increased from 12px */
   font-weight: 700;
   line-height: 1.5;
   letter-spacing: -0.02em;
@@ -125,7 +132,7 @@
 .av-section .av-summary-item p {
   margin-top: 4px;
   color: var(--av-muted);
-  font-size: 10px;
+  font-size: 13px; /* Increased from 10px */
   line-height: 1.6;
 }
 
@@ -135,15 +142,16 @@
   display: flex;
   align-items: center;
   gap: 24px;
-  padding-block: 15px;
+  padding-block: 18px; /* Increased padding */
   border-top: 1px solid var(--av-line);
   border-bottom: 1px solid var(--av-line);
 }
 
 .av-platform-summary > strong {
   flex-shrink: 0;
-  font-size: 12px;
+  font-size: 15px; /* Increased from 12px */
   font-weight: 700;
+  color: var(--av-ink); /* Made darker */
 }
 
 .av-platform-counts {
@@ -153,24 +161,33 @@
   min-width: 0;
 }
 
+
 .av-platform-counts > div {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 12px; /* Increased gap */
   padding-inline: 12px;
-  font-size: 11px;
+  font-size: 14px; /* Increased from 11px */
+  font-weight: 500;
 }
+
 
 .av-platform-counts > div + div {
   border-left: 1px solid var(--av-line);
 }
 
+
+
 .av-platform-counts b {
   margin-left: auto;
-  font-size: 11px;
+  font-size: 15px; /* Increased from 11px */
+  font-weight: 700;
+  color: var(--av-ink);
   font-variant-numeric: tabular-nums;
 }
+
+
 
 /* Platform logos */
 
@@ -190,9 +207,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
+  flex: 0 0 28px; /* Increased size */
+  width: 28px; /* Increased size */
+  height: 28px; /* Increased size */
   line-height: 1;
 }
 
@@ -294,9 +311,11 @@
   border: 0;
   background: transparent;
   color: var(--av-muted);
-  font-size: 11px;
+  font-size: 15px; /* Increased from 11px */
+  font-weight: 600; /* Added weight */
   line-height: 1.5;
   cursor: pointer;
+  transition: color 0.15s ease;
 }
 
 .av-chips button.active {
@@ -502,11 +521,11 @@
 .av-item {
   position: relative;
   display: grid;
-  grid-template-columns: 22px minmax(0, 1fr) 48px;
+  grid-template-columns: 24px minmax(0, 1fr) 48px; /* Slightly wider ID column */
   align-items: start;
-  gap: 10px;
+  gap: 14px; /* Increased gap */
   width: 100%;
-  padding: 17px 15px;
+  padding: 18px 16px; /* Increased padding */
   border: 0;
   border-bottom: 1px solid var(--av-line);
   background: #fff;
@@ -514,6 +533,8 @@
   text-align: left;
   cursor: pointer;
 }
+
+
 
 .av-item:last-child {
   border-bottom: 0;
@@ -536,15 +557,17 @@
 }
 
 .av-item-id {
-  padding-top: 2px;
+  padding-top: 3px;
   color: #66848e;
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 14px; /* Increased from 10px */
+  font-weight: 600; /* Increased weight */
   font-variant-numeric: tabular-nums;
 }
 
+
 .av-item.active .av-item-id {
   color: var(--av-teal);
+  font-weight: 800;
 }
 
 .av-item-main {
@@ -560,21 +583,24 @@
   overflow: hidden;
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 1.55;
+  font-size: 15px; /* Increased from 12px */
+  font-weight: 600; /* Increased weight */
+  line-height: 1.5; /* Tightened slightly */
   letter-spacing: -0.015em;
 }
+
 
 .av-item.active .av-item-main strong {
   font-weight: 700;
 }
 
 .av-item-main small {
-  color: #718893;
-  font-size: 9px;
+  color: #748094; /* Darker text */
+  font-size: 13px; /* Increased from 9px */
   line-height: 1.5;
 }
+
+
 
 .av-dots {
   display: flex;
@@ -717,16 +743,19 @@
   table-layout: fixed;
 }
 
+
 .av-platform-table th,
 .av-platform-table td {
-  padding: 9px 8px;
+  padding: 14px 12px; /* Increased padding */
   border-bottom: 1px solid #edf1f3;
   text-align: left;
   vertical-align: top;
-  font-size: 10px;
+  font-size: 14px; /* Increased from 10px */
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
+
+
 
 .av-platform-table thead th {
   color: #476e79;
@@ -771,7 +800,8 @@
 }
 
 .av-rank {
-  font-size: 10px;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 .av-rank-bar {
@@ -779,9 +809,10 @@
 }
 
 .av-section .av-result-count {
-  margin-top: 8px;
+  margin-top: 12px;
   color: var(--av-muted);
-  font-size: 9px;
+  font-size: 13px; /* Increased from 9px */
+  font-weight: 500; /* Added weight */
   line-height: 1.5;
 }
 
@@ -814,10 +845,13 @@
   gap: 8px;
 }
 
+
+
 .av-evidence > header > strong {
-  font-size: 11px;
+  font-size: 14px; /* Increased from 11px */
   font-weight: 700;
 }
+
 
 .av-status {
   padding: 3px 6px;
@@ -835,10 +869,12 @@
 
 .av-section .av-evidence blockquote {
   margin-top: 10px;
-  color: #4e6975;
-  font-size: 12px;
+  color: #011522; /* Darker color for readability */
+  font-size: 14px; /* Increased from 12px */
   line-height: 1.7;
 }
+
+
 
 .av-evidence mark {
   background: transparent;
@@ -859,21 +895,24 @@
   color: var(--av-muted);
 }
 
+
 .av-section .av-also p {
   color: #385866;
-  font-size: 10px;
+  font-size: 13px; /* Increased from 10px */
   line-height: 1.6;
 }
 
 .av-section .av-gap {
   margin-top: 10px;
-  padding: 7px 9px;
+  padding: 8px 10px;
   border-radius: 3px;
   background: #fff7e8;
   color: #88622c;
-  font-size: 10px;
+  font-size: 13px; /* Increased from 10px */
   line-height: 1.6;
 }
+
+
 
 .av-gap strong {
   margin-right: 8px;
@@ -914,7 +953,7 @@
 
 .av-improvement > strong {
   color: #155c61;
-  font-size: 11px;
+  font-size: 13px; /* Increased from 11px */
   font-weight: 700;
   line-height: 1.65;
 }
@@ -922,8 +961,8 @@
 .av-section .av-improvement > p {
   padding-left: 16px;
   border-left: 1px solid #c6ddd5;
-  color: #345c65;
-  font-size: 11px;
+  color: #011522; /* Darker color */
+  font-size: 14px; /* Increased from 11px */
   line-height: 1.7;
 }
 
@@ -941,11 +980,12 @@
 
 .av-plan-label {
   color: var(--av-ink);
-  font-size: 12px;
+  font-size: 15px; /* Increased from 12px */
   font-weight: 700;
   line-height: 1.5;
   letter-spacing: -0.015em;
 }
+
 
 .av-plan ul {
   margin: 8px 0 0;
@@ -964,17 +1004,18 @@
 .av-plan li > em {
   padding-top: 1px;
   color: var(--av-teal);
-  font-size: 9px;
+  font-size: 11px; /* Increased from 9px */
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700; /* Made bolder */
   line-height: 1.6;
 }
 
 .av-plan li > span {
-  color: #506a77;
-  font-size: 10px;
-  line-height: 1.7;
+  color: #011522; /* Darker color */
+  font-size: 14px; /* Increased from 10px */
+  line-height: 1.6;
 }
+
 
 .av-plan code {
   display: inline-block;
@@ -1248,4 +1289,54 @@
   .av-table-wrap {
     overflow: visible;
   }
+}
+
+
+/* Tab navigation */
+.av-tabs {
+  display: flex;
+  gap: 32px;
+  margin-top: 28px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--av-line);
+}
+
+.av-tabs button {
+  position: relative;
+  padding: 4px 0 14px;
+  border: 0;
+  background: transparent;
+  color: var(--av-muted);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.av-tabs button:hover {
+  color: var(--av-ink);
+}
+
+.av-tabs button.active {
+  color: #135d5e;
+  font-weight: 700;
+}
+
+.av-tabs button.active::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: var(--av-teal);
+  content: "";
+}
+
+.av-panel {
+  animation: av-panel-in 180ms ease;
+}
+
+@keyframes av-panel-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
 }

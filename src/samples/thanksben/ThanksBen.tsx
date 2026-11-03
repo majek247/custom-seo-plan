@@ -4,7 +4,8 @@ import './ThanksBen.css';
 import BuyerMap from './BuyerMap';
 import KeywordPriorities from './KeywordPriorities';
 import AiVisibility from './AiVisibility';
-import CompetitorOpportunities from './CompetitorOpportunities';
+import Roadmap from './Roadmap';
+import ContentOpportunities from './ContentOpportunities';
 
 type Priority = 'High' | 'Medium' | 'Low';
 type Theme = 'Buying intent' | 'Use cases' | 'Business case';
@@ -317,128 +318,12 @@ const competitiveAngles = [
   },
 ];
 
-
-
-const roadmap = [
-  {
-    period: 'Days 01–30',
-    subtitle: 'Validate & establish the foundation',
-    goal: 'Confirm the commercial search landscape before investing in production.',
-    tasks: [
-      [
-        'Search reality check',
-        'Validate query clusters, actual SERPs, intent and current rankings for all priority themes.',
-      ],
-      [
-        'Content and conversion inventory',
-        'Map existing product, pricing, comparison and educational URLs to buying stages.',
-      ],
-      [
-        'Buyer evidence collection',
-        'Get product, payroll and reward stakeholders to approve capabilities, screenshots and proof.',
-      ],
-      [
-        'Measurement baseline',
-        'Define demo requests, SQL criteria, opportunity attribution and key page events.',
-      ],
-    ],
-    deliverables: [
-      'Validated keyword opportunity register',
-      'Create / improve / consolidate decisions',
-      'Page-level measurement baseline',
-      'Approved first-wave content briefs',
-    ],
-  },
-  {
-    period: 'Days 31–60',
-    subtitle: 'Build the decision-stage layer',
-    goal: 'Publish and improve the pages most likely to help enterprise buyers evaluate Ben.',
-    tasks: [
-      [
-        'Improve core category page',
-        'Tighten enterprise benefits-management messaging around market governance and operational workflows.',
-      ],
-      [
-        'Create payroll workflow asset',
-        'Explain enrolment-to-payroll data flow, reconciliation exceptions and technical considerations.',
-      ],
-      [
-        'Publish buyer evaluation guide',
-        'Give reward leaders a procurement-ready comparison framework.',
-      ],
-      [
-        'Produce financial model',
-        'Build a transparent platform business-case worksheet with editable assumptions.',
-      ],
-    ],
-    deliverables: [
-      'Core commercial page refresh',
-      'Payroll reconciliation page',
-      'Vendor evaluation guide',
-      'ROI / TCO planning asset',
-    ],
-  },
-  {
-    period: 'Days 61–90',
-    subtitle: 'Distribute, measure & refine',
-    goal: 'Turn the new assets into observable buyer engagement and a repeatable quarterly programme.',
-    tasks: [
-      [
-        'Strengthen internal pathways',
-        'Connect guides to relevant product, implementation, pricing and demo destinations.',
-      ],
-      [
-        'Activate relevant authority sources',
-        'Prioritise partner resources, expert contributions and genuinely useful HR/payroll commentary.',
-      ],
-      [
-        'Review AI answer samples',
-        'Manually record platform, prompt, date and cited sources before claiming any visibility change.',
-      ],
-      [
-        'Report commercial signals',
-        'Compare qualified enquiries, stakeholder journeys and page influence; set next-quarter priorities.',
-      ],
-    ],
-    deliverables: [
-      'Internal-link and distribution register',
-      'Dated AI visibility observation log',
-      'Commercial performance review',
-      'Next-quarter opportunity backlog',
-    ],
-  },
-];
-
-const citations = [
-  {
-    label: 'Ben homepage and enterprise positioning',
-    url: 'https://www.thanksben.com/',
-  },
-  {
-    label: 'Benefits management capabilities',
-    url: 'https://www.thanksben.com/benefits-management',
-  },
-  {
-    label: 'Product modules and workflows',
-    url: 'https://www.thanksben.com/how-it-works',
-  },
-  {
-    label: 'Pricing, packaging and implementation FAQ',
-    url: 'https://www.thanksben.com/pricing',
-  },
-  {
-    label: 'Company overview and market scope',
-    url: 'https://www.thanksben.com/about-us',
-  },
-];
-
 const nav = [
   ['buyers', 'Audience Mapping'],
   ['keywords', 'Keyword Priorities'],
-  ['competition', 'Competitor Opportunities'],
+  ['competition', 'Content Opportunities'],
   ['ai', 'AI Visibility'],
   ['roadmap', '90-day Roadmap'],
-  ['measurement', 'Measurement'],
 ] as const;
 
 function Arrow({ size = 16 }: { size?: number }) {
@@ -650,10 +535,10 @@ export default function ThanksBen() {
     alt="Ben"
     className="tb-client-logo"
   />
-  <small>90-day strategy</small>
+  <small>90-day plan</small>
 </div>
 
-        <div className="tb-side-label tb-side-label-nav">THE STRATEGY</div>
+        <div className="tb-side-label tb-side-label-nav">THE PLAN</div>
         <nav aria-label="Strategy sections">
           {nav.map(([id, label], i) => (
             <button
@@ -752,164 +637,16 @@ This SEO plan sets out how Ben can reach more potential customers and create mor
 
 
                    <KeywordPriorities />
-                     <CompetitorOpportunities />
+                     <ContentOpportunities />
 
           <AiVisibility />
+             <Roadmap />
 
-          <section className="tb-page-section tb-pad tb-roadmap" id="roadmap">
-            <div className="tb-container">
-              <SectionTitle
-                no="05"
-                eyebrow="90-DAY EXECUTION ROADMAP"
-                title="An actual sequence of work. Not a list of disconnected ideas."
-                description="Start with validation, build a small decision-stage content layer, then assess which journeys are moving relevant accounts towards sales conversations."
-              />
-              <div className="tb-phase-tabs">
-                {roadmap.map((r, i) => (
-                  <button
-                    key={r.period}
-                    className={phase === i ? 'active' : ''}
-                    onClick={() => setPhase(i)}
-                  >
-                    <span>0{i + 1}</span>
-                    <strong>{r.period}</strong>
-                    <small>{r.subtitle}</small>
-                  </button>
-                ))}
-              </div>
-              <div className="tb-phase-content">
-                <div className="tb-phase-main">
-                  <span className="tb-overline">
-                    PHASE 0{phase + 1} · OUTCOME
-                  </span>
-                  <h3>{roadmap[phase].goal}</h3>
-                  <div className="tb-task-list">
-                    {roadmap[phase].tasks.map(([t, d], i) => (
-                      <div className="tb-task" key={t}>
-                        <span>{String(i + 1).padStart(2, '0')}</span>
-                        <div>
-                          <strong>{t}</strong>
-                          <p>{d}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <aside className="tb-phase-output">
-                  <span>WHAT THE TEAM SHOULD HAVE</span>
-                  <h3>Phase deliverables</h3>
-                  {roadmap[phase].deliverables.map((d, i) => (
-                    <div key={d}>
-                      <span>0{i + 1}</span>
-                      <p>{d}</p>
-                    </div>
-                  ))}
-                  <p className="tb-phase-caveat">
-                    Outputs depend on access, available evidence, editorial
-                    resources and stakeholder review.
-                  </p>
-                </aside>
-              </div>
-            </div>
-          </section>
-          <section
-            className="tb-page-section tb-pad tb-measure"
-            id="measurement"
-          >
-            <div className="tb-container">
-              <SectionTitle
-                no="06"
-                eyebrow="MEASUREMENT & ACCOUNTABILITY"
-                title="The scorecard should follow the buying journey all the way to pipeline."
-                description="Avoid confusing increases in generic organic traffic with progress towards qualified enterprise demand. Review these signals in sequence and connect them to known CRM outcomes where possible."
-              />
-              <div className="tb-metrics-grid">
-                {[
-                  {
-                    n: '01',
-                    label: 'Discoverability',
-                    title: 'Are the right buyers finding Ben?',
-                    measure:
-                      'Relevant category rankings, impressions, AI answer observations and qualified search entrances.',
-                    caution: 'An AI mention or impression is not a lead.',
-                  },
-                  {
-                    n: '02',
-                    label: 'Consideration',
-                    title: 'Are they evaluating the product?',
-                    measure:
-                      'Visits to solution, implementation, comparison and pricing pages; engagement across sessions and account domains.',
-                    caution: 'A page visit alone does not prove influence.',
-                  },
-                  {
-                    n: '03',
-                    label: 'Commercial action',
-                    title: 'Are those journeys creating demand?',
-                    measure:
-                      'Demo enquiries, qualified meetings, SQLs and opportunity creation from attributable organic journeys.',
-                    caution: 'Separate form completions from held meetings.',
-                  },
-                  {
-                    n: '04',
-                    label: 'Revenue influence',
-                    title: 'Does the content contribute to pipeline?',
-                    measure:
-                      'Organic-sourced and content-influenced pipeline, deal-stage touchpoints and closed-won revenue where attribution permits.',
-                    caution: 'Use a documented attribution methodology.',
-                  },
-                ].map((x) => (
-                  <div className="tb-metric" key={x.n}>
-                    <span>
-                      {x.n} / {x.label.toUpperCase()}
-                    </span>
-                    <h3>{x.title}</h3>
-                    <p>{x.measure}</p>
-                    <small>{x.caution}</small>
-                  </div>
-                ))}
-              </div>
-              <div className="tb-measure-note">
-                <div>
-                  <small>THE REPORTING PRINCIPLE</small>
-                  <h3>
-                    Review buyer movement before celebrating traffic growth.
-                  </h3>
-                </div>
-                <p>
-                  Track the search themes and pages that lead to deeper product
-                  evaluation, demo requests, meetings held and opportunities
-                  created. The first 90 days should establish a reliable
-                  baseline and early signals—not promise a specific pipeline
-                  figure.
-                </p>
-              </div>
-            </div>
-          </section>
-          <section className="tb-sources">
-            <div className="tb-container">
-              <div className="tb-sources-head">
-                <div>
-                  <span>RESEARCH NOTES</span>
-                  <h2>What this strategy is based on.</h2>
-                </div>
-                <p>
-                  Publicly accessible Ben product material, reviewed in October
-                  2026. Proposed search themes, gaps, buyer segments and the
-                  roadmap are GrowUp strategic hypotheses pending live SEO and
-                  stakeholder validation.
-                </p>
-              </div>
-              <div className="tb-source-links">
-                {citations.map((c, i) => (
-                  <a href={c.url} target="_blank" rel="noreferrer" key={c.url}>
-                    <span>0{i + 1}</span>
-                    {c.label}
-                    <External />
-                  </a>
-                ))}
-              </div>
-            </div>
-          </section>
+
+
+
+
+
           <footer className="tb-footer">
             <div className="tb-container">
               <div>

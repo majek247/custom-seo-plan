@@ -13,9 +13,7 @@ type Stage =
   | 'Switching'
   | 'Head-to-head'
   | 'Pricing'
-  | 'Business case'
-  | 'Implementation'
-  | 'Integration & security';
+  | 'Feature fit';
 type MoveType =
   | 'Backlinks'
   | 'Digital PR'
@@ -32,8 +30,18 @@ type Result = {
   cited?: string; // Ben URL cited as a source, if any
   gap?: string; // what is thin or missing in that answer
 };
-type Fix = { action: 'Create' | 'Improve'; text: string; ref?: string };
-type Move = { type: MoveType; text: string };
+
+
+type Fix = {
+  action: 'Create' | 'Improve';
+  title: string;
+  text: string;
+  ref?: string;
+};
+
+
+
+type Move = { type: MoveType; title: string; text: string };
 type Prompt = {
   id: string;
   stage: Stage;
@@ -111,9 +119,7 @@ const STAGES: Stage[] = [
   'Switching',
   'Head-to-head',
   'Pricing',
-  'Business case',
-  'Implementation',
-  'Integration & security',
+  'Feature fit',
 ];
 
 const STATUS_LABEL: Record<Status, string> = {
@@ -163,162 +169,216 @@ const MOVE_TYPES: { type: MoveType; blurb: string }[] = [
 
 const NO: Result = { s: 'absent' };
 
+
 const RAW: Omit<Prompt, 'id'>[] = [
-  /* ---------------- Vendor shortlist ---------------- */
+  /* ---------------- 01 · PR-09 ---------------- */
   {
-    stage: 'Vendor shortlist',
-    buyer: 'Head of Reward',
-    keywords: ['BO-01', 'BO-03'],
+    stage: 'Pricing',
+    buyer: 'Finance',
+    keywords: ['PR-09'],
     prompt:
-      'I’m Head of Reward at a company with about 6,000 employees across 14 countries. Which global benefits platforms should I put on a shortlist?',
+      'I’m Finance Director at a company with about 6,000 employees across 14 countries, and we’re budgeting for a global benefits platform. How much does an enterprise employee benefits platform cost per employee, and what usually pushes the price up?',
     priority: 'High',
-    results: [
-      NO,
-      NO,
-      {
-        s: 'listed',
-        pos: [6, 7],
-        said: 'Other platforms worth a look include Ben, which presents itself as one platform for multinational employers that want central administration with local benefit flexibility.',
-        also: ['Benefex', 'Benify', 'Alight', 'Forma', 'Reward Gateway'],
-        cited: 'thanksben.com',
-        gap: 'Repeats homepage positioning. No country coverage or configuration evidence to back it up.',
-      },
-      NO,
-    ],
-    why: 'Shortlist answers lean on third-party roundups and review sites. Ben surfaces only when a source repeats its homepage claim, with nothing that proves multi-entity configuration.',
+    results: [NO, NO, NO, NO],
+    why: 'Ben needs a source AI platforms can reference when answering enterprise pricing questions. A clear, publicly accessible explanation of its pricing structure would give these systems more useful evidence than general benefits-cost articles.',
     fix: [
       {
         action: 'Create',
-        text: 'Best global employee benefits platforms: an honest evaluation guide with a downloadable scorecard',
-        ref: 'BO-01',
+        title: 'Publish a standalone enterprise pricing methodology',
+        text: "Explain Ben's pricing basis, what is included, and how quotes vary by workforce size, country coverage and implementation requirements. Use confirmed product and commercial information.",
+
       },
       {
         action: 'Improve',
-        text: 'Benefits management page: add multi-entity configuration screenshots and a country-coverage table',
+        title: "Make Ben's pricing information easier to reference",
+        text: 'Add a crawlable pricing FAQ with direct answers, defined terminology, clear assumptions and a link to the full methodology. Avoid hiding all substantive information behind a demo form.',
       },
     ],
     moves: [
       {
         type: 'Digital PR',
-        text: 'Pitch a benchmark on running benefits across 10+ countries to reward and HR trade press',
+        title: 'Place anonymised pricing insight where analysts and buyers already look',
+        text: 'Share aggregated cost drivers and typical implementation ranges with HR technology analysts and benefits publications, where commercially and contractually permitted.  ',
       },
       {
-        type: 'Reviews',
-        text: 'Build G2 and Capterra profiles with verifiable multinational customer reviews',
+        type: 'Third-party citations',
+        title: 'Get independent buying guides to describe Ben’s pricing consistently',
+        text: 'Ask the review sites and buying guides that already rank for benefits-cost questions to include Ben’s pricing basis, linking to the methodology page rather than the homepage. Supply the same dated figures to each so descriptions stay consistent.',
       },
     ],
   },
+
+  /* ---------------- 02 · VS-12 ---------------- */
   {
-    stage: 'Vendor shortlist',
-    buyer: 'Benefits Ops',
-    keywords: ['BO-02', 'BO-10'],
+    stage: 'Head-to-head',
+    buyer: 'HRIS & Security',
+    keywords: ['VS-12'],
     prompt:
-      'What’s the best employee benefits administration software for a multinational? We need enrolment, eligibility rules and payroll handled across several countries.',
+      'I lead HRIS at a company with about 6,000 employees across 14 countries. Our HRIS has a benefits module, but local eligibility rules keep getting messy. Should we buy dedicated benefits administration software, or is the HRIS module enough?',
     priority: 'High',
     results: [NO, NO, NO, NO],
-    why: 'The highest-volume shortlist theme, and Ben is absent everywhere. No page is built for this evaluation intent, so answers lean on generic HRIS and broker content.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Best employee benefits administration software: an enterprise shortlist led by eligibility and exception handling',
-        ref: 'BO-02',
-      },
-      {
-        action: 'Improve',
-        text: 'Benefits administration page: show enrolment, approvals and reporting with product detail',
-        ref: 'FT-01',
-      },
-    ],
+    why: "Ben doesn't appear in the sample AI answers to this question. The priority is to make its role alongside existing HRIS platforms easier to verify, then establish that position through independent HR technology sources.",
+fix: [
+  {
+    action: 'Create',
+    title: 'Use the planned HRIS comparison to support AI recommendations',
+    text: "The HRIS-versus-specialist decision framework is already covered in Content Opportunities. Rather than commissioning another asset, use that page as the main reference for this buyer question and link it to Ben's relevant integration documentation.",
+  },
+  {
+    action: 'Improve',
+    title: "Make Ben's HRIS integrations independently verifiable",
+    text: 'Document confirmed HRIS connections, supported data flows and integration limitations. Where available, link to technical documentation and partner listings so third parties can accurately describe how Ben works alongside existing systems.',
+  },
+],
+
     moves: [
       {
-        type: 'Backlinks',
-        text: 'Publish the eligibility matrix template and offer it to HR operations communities for linking',
-      },
-      {
         type: 'Expert content',
-        text: 'Contribute a benefits-administration evaluation checklist to HR technology publications',
+        title: 'Secure references from HRIS integration partners',
+        text: "Work with confirmed integration partners to publish Ben's supported workflows in their directories, documentation or implementation guides. Prioritise sources buyers already consult when evaluating whether specialist software can coexist with their HRIS.",
       },
     ],
   },
+
+  /* ---------------- 03 · ALT-13 ---------------- */
   {
-    stage: 'Vendor shortlist',
+    stage: 'Switching',
     buyer: 'Head of Reward',
-    keywords: ['BO-03'],
+    keywords: ['ALT-13'],
     prompt:
-      'Can you recommend multinational employee benefits software that can handle different eligibility rules in each country?',
+      'I’m Head of Reward at a company with about 6,000 employees across 14 countries. Our benefits broker contract is up for renewal. What are the alternatives to a traditional broker for managing global benefits, and what would we move in-house?',
+    priority: 'High',
+    results: [
+      {
+        s: 'listed',
+        pos: [3, 5],
+        said: 'Software platforms such as Ben can sit alongside or replace parts of broker administration, and Ben notes it can work with an existing broker rather than forcing a switch.',
+        also: ['Alight', 'Aon'],
+        cited: 'thanksben.com/pricing',
+        gap: 'The broker-friendly model is mentioned but never explained.',
+      },
+      NO,
+      {
+        s: 'recommended',
+        pos: [1, 4],
+        said: 'Ben is worth considering if the goal is to keep your broker for advice while moving administration and reporting onto one platform.',
+        also: ['Alight', 'Aon'],
+        cited: 'thanksben.com/pricing',
+      },
+      NO,
+    ],
+    why: 'Ben already appears in two AI platform results for this question, with its broker-friendly model highlighted as a differentiator. The next priority is to support that positioning with verifiable partner evidence and stronger independent references.',
+
+fix: [
+  {
+    action: 'Create',
+    title: 'Make the planned broker comparison the main reference',
+    text: "The broker responsibility matrix is already covered in Content Opportunities. Use that page as Ben's primary reference for broker alternatives, and link it from relevant pricing and benefits management pages so the explanation is easy to find.",
+    ref: 'ALT-13',
+  },
+  {
+    action: 'Improve',
+    title: 'Prove the hybrid broker model with customer evidence',
+    text: "Add an approved customer example showing Ben working alongside an existing broker. Identify the broker's role, the responsibilities handled through Ben, and what changed operationally after implementation.",
+  },
+],
+
+    moves: [
+      {
+        type: 'Partners',
+        title: "Secure independent references from Ben's broker partners",
+        text: "Co-publish a customer implementation story with an existing broker partner, hosted on the partner's website. Include a link to Ben's broker comparison and confirm how both organisations work together.",
+      },
+    ],
+  },
+
+  /* ---------------- 04 · PR-07 ---------------- */
+  {
+    stage: 'Pricing',
+    buyer: 'Benefits Ops',
+    keywords: ['PR-07'],
+    prompt:
+      'I run benefits operations at a company with about 6,000 employees across 14 countries, and we’re comparing vendors. What does employee benefits administration software usually cost, how is it priced, and what do implementation and integrations add?',
     priority: 'High',
     results: [
       NO,
+      NO,
       {
         s: 'passing',
-        said: 'Ben is another provider that describes multi-country benefits with local configuration, though public detail on how eligibility rules are set up is limited.',
-        also: ['Benefex', 'Alight'],
-        gap: 'No citable page on eligibility configuration, so the mention stays vague.',
+        said: 'Ben’s pricing page outlines how packages and implementation work, but per-employee rates aren’t shown, so a quote is needed.',
+        cited: 'thanksben.com/pricing',
+        gap: 'Packaging only. No price drivers or example scenarios to quote.',
       },
       NO,
-      NO,
     ],
-    why: 'Where Ben appears it is a hedged one-liner. The AI has no page showing how eligibility rules are configured by entity, grade and country.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Eligibility rules matrix template (by entity, grade, country) with a worked example',
-        ref: 'JB-07',
-      },
-      {
-        action: 'Improve',
-        text: 'Benefits management page: document eligibility and regional policy configuration step by step',
-      },
-    ],
-    moves: [
-      {
-        type: 'Partners',
-        text: 'Co-publish an eligibility-governance guide with a multinational payroll or employment partner',
-      },
-      {
-        type: 'Backlinks',
-        text: 'Offer the template to reward communities such as REBA for linking',
-      },
-    ],
+    why: "Perplexity already cites Ben's pricing page, but only describes its packaging and quote process. The priority is to make that existing reference more useful, then strengthen Ben's pricing information across independent software evaluation sources.",
+
+fix: [
+  {
+    action: 'Create',
+    title: "Connect Ben's pricing page to the planned cost breakdown",
+    text: "The enterprise pricing framework is already covered in Content Opportunities. Once published, link it prominently from Ben's existing pricing page, which Perplexity already cites, so buyers and AI platforms can access the more detailed explanation.",
   },
   {
-    stage: 'Vendor shortlist',
-    buyer: 'Payroll',
-    keywords: ['BO-10', 'FT-02', 'FT-08'],
-    prompt:
-      'Which benefits platforms integrate well with payroll? We need clean deduction files going to ADP every month without manual fixes.',
-    priority: 'High',
-    results: [NO, NO, NO, NO],
-    why: 'Payroll buyers ask for file specs and validation rules. Ben has no integration page, so there is nothing for AI tools to cite.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Employee benefits payroll integration: file specs, validation and cut-off timeline',
-        ref: 'FT-02',
-      },
-      {
-        action: 'Create',
-        text: 'ADP integration page: payroll files and validation',
-        ref: 'FT-08',
-      },
-    ],
+    action: 'Improve',
+    title: "Make Ben's pricing information consistent across external sources",
+    text: "Audit Ben's G2, Capterra and other relevant software directory profiles for outdated packaging, unsupported pricing claims and missing implementation details. Align the information with Ben's current commercial terms so external comparisons accurately describe its pricing model.",
+  },
+],
+
     moves: [
       {
-        type: 'Partners',
-        text: 'Request listings or a co-authored note with payroll provider partners',
-      },
-      {
-        type: 'Community',
-        text: 'Answer deduction-error threads in payroll communities with genuinely useful detail',
+        type: 'Reviews',
+        title: 'Build third-party evidence around implementation and pricing transparency',
+        text: 'Invite eligible customers to describe their procurement and implementation experience in independent reviews, including what was included in the quoted scope and whether additional integration costs arose. Avoid requesting predetermined claims or ratings.',
       },
     ],
   },
+
+  /* ---------------- 05 · ALT-05 ---------------- */
+  {
+    stage: 'Switching',
+    buyer: 'Head of Reward',
+    keywords: ['ALT-05'],
+    prompt:
+      'We’re on Reward Gateway today at a company of about 6,000 employees across 14 countries. It’s great for recognition and perks, but we now need proper benefits administration. What are the best alternatives?',
+    priority: 'High',
+    results: [NO, NO, NO, NO],
+    why: 'Ben is absent from all four sample AI answers, while existing Reward Gateway comparisons focus heavily on recognition and perks. The priority is to establish Ben as a relevant option when buyers need broader benefits administration, supported by independent comparisons and customer evidence.',
+
+fix: [
+  {
+    action: 'Create',
+    title: "Use the planned Reward Gateway comparison as Ben's reference",
+    text: "The comparison framework is already covered in Content Opportunities. Once published, link it from Ben's benefits management and relevant alternatives pages, making the distinction between recognition software and benefits administration easy to find.",
+  },
+  {
+    action: 'Improve',
+    title: 'Position Ben under the right software comparison categories',
+    text: "Review Ben's listings on relevant software directories and ensure its categorisation accurately reflects benefits administration, enrolment and eligibility management. This helps third-party comparisons distinguish Ben from recognition-only platforms.",
+  },
+],
+    moves: [
+      {
+        type: 'Backlinks',
+        title: 'Get Ben considered in independent Reward Gateway alternatives lists',
+        text: 'Approach relevant HR software publishers and comparison websites that already cover Reward Gateway alternatives. Provide documented administration capabilities and explain where Ben fits when buyers need more than recognition and employee discounts.',
+      },
+      {
+        type: 'Reviews',
+        title: 'Build independent evidence from customers who changed platforms',
+        text: 'Invite customers who previously used recognition-led software to describe their reasons for changing and the administration requirements Ben now handles. Prioritise verified reviews that identify the previous platform and specific operational improvements.',
+      },
+    ],
+  },
+
+  /* ---------------- 06 · BO-13 ---------------- */
   {
     stage: 'Vendor shortlist',
     buyer: 'Head of Reward',
     keywords: ['BO-13'],
     prompt:
-      'What’s the best enterprise employee benefits platform in the UK for a company that’s expanding into Europe?',
+      'I’m Head of Reward at a UK company with about 6,000 employees, and we’re expanding into Europe. What’s the best enterprise employee benefits platform in the UK for us?',
     priority: 'Medium',
     results: [
       NO,
@@ -340,644 +400,174 @@ const RAW: Omit<Prompt, 'id'>[] = [
       },
     ],
     why: 'Ben’s strongest result: the UK framing plus the expansion trigger gives AI tools something to match. UK customer proof would help the Perplexity recommendation hold and spread to ChatGPT and Gemini.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Best enterprise employee benefits platforms in the UK',
-        ref: 'BO-13',
-      },
-      {
-        action: 'Create',
-        text: 'Launching employee benefits in a new country: a checklist',
-        ref: 'JB-09',
-      },
-    ],
+
+fix: [
+  {
+    action: 'Improve',
+    title: 'Show how UK enterprise customers manage European expansion',
+    text: 'Publish an approved customer case study documenting the countries involved, benefits administration challenges, implementation scope and measurable operational results. Link it from the About page already cited in AI answers, and from relevant product pages.',
+  },
+],
+
     moves: [
-      {
-        type: 'Digital PR',
-        text: 'Secure UK trade-press commentary on benefits when expanding into Europe',
-      },
-      {
-        type: 'Reviews',
-        text: 'Gather UK customer reviews and a case study that names the expansion use case',
-      },
-    ],
+    {
+      type: 'Reviews',
+      title: 'Build independent reviews from UK multinational customers',
+      text: 'Invite UK enterprise customers using Ben across multiple countries to document their experience on relevant independent software review platforms. Encourage specific, authentic feedback about local configuration, rollout complexity, support and administration.',
+    },
+  ],
   },
 
-  /* ---------------- Switching ---------------- */
+  /* ---------------- 07 · BO-03 ---------------- */
   {
-    stage: 'Switching',
+    stage: 'Vendor shortlist',
     buyer: 'Head of Reward',
-    keywords: ['ALT-13', 'VS-11'],
+    keywords: ['BO-03'],
     prompt:
-      'Our benefits broker contract is up for renewal soon. What are the alternatives to a traditional broker for managing global benefits?',
+      'I’m Head of Reward at a company with about 6,000 employees across 14 countries, and every country has different eligibility rules. Can you recommend the best multinational employee benefits software for that?',
     priority: 'High',
     results: [
-      {
-        s: 'listed',
-        pos: [3, 5],
-        said: 'Software platforms such as Ben can sit alongside or replace parts of broker administration, and Ben notes it can work with an existing broker rather than forcing a switch.',
-        also: ['Alight', 'Aon'],
-        cited: 'thanksben.com/pricing',
-        gap: 'The broker-friendly model is mentioned but never explained.',
-      },
       NO,
       {
-        s: 'recommended',
-        pos: [1, 4],
-        said: 'Ben is worth considering if the goal is to keep your broker for advice while moving administration and reporting onto one platform.',
-        also: ['Alight', 'Aon'],
-        cited: 'thanksben.com/pricing',
+        s: 'passing',
+        said: 'Ben is another provider that describes multi-country benefits with local configuration, though public detail on how eligibility rules are set up is limited.',
+        also: ['Benefex', 'Alight'],
+        gap: 'No citable page on eligibility configuration, so the mention stays vague.',
       },
       NO,
+      NO,
     ],
-    why: 'Bring-your-own-broker is a real differentiator and two platforms already surface it. A dedicated page would turn a passing line into a cited answer on every platform.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Alternatives to a traditional benefits broker: what to move in-house',
-        ref: 'ALT-13',
-      },
-      {
-        action: 'Create',
-        text: 'Global benefits platform vs benefits broker: who should run your programme?',
-        ref: 'VS-11',
-      },
-    ],
+    why: 'Gemini mentions Ben as a multinational benefits provider but cannot substantiate how its eligibility rules work across countries. The priority is to make these capabilities verifiable through product documentation, supported implementation examples and independent partner references.',
+
+fix: [
+  {
+    action: 'Create',
+    title: 'Show exactly how Ben configures eligibility across countries',
+    text: 'Publish product screenshots and documented configuration examples showing how eligibility varies by country, legal entity and employee group. Explain which rules administrators can configure directly and which require implementation support, using confirmed product capabilities.',
+  },
+],
+
     moves: [
       {
         type: 'Partners',
-        text: 'Publish a joint explainer with a broker partner on the platform-plus-broker model',
-      },
-      {
-        type: 'Digital PR',
-        text: 'Offer reward leaders a view on broker renewal timing to HR trade press',
-      },
-    ],
-  },
-  {
-    stage: 'Switching',
-    buyer: 'Head of Reward',
-    keywords: ['ALT-05', 'VS-04'],
-    prompt:
-      'What are the best Reward Gateway alternatives for an enterprise that needs proper benefits administration, not just recognition and perks?',
-    priority: 'Medium',
-    results: [NO, NO, NO, NO],
-    why: 'Switch-intent searchers name the incumbent. With no alternatives page, AI tools have nothing that connects Ben to that comparison.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Reward Gateway alternatives: when recognition isn’t the whole job',
-        ref: 'ALT-05',
-      },
-      {
-        action: 'Create',
-        text: 'Ben vs Reward Gateway: benefits administration or recognition-led?',
-        ref: 'VS-04',
-      },
-    ],
-    moves: [
-      {
-        type: 'Backlinks',
-        text: 'Pitch the comparison framework to HR software review sites and comparison newsletters',
-      },
-      {
-        type: 'Reviews',
-        text: 'Ask customers who moved off perks-led platforms to review the switch',
-      },
-    ],
-  },
-  {
-    stage: 'Switching',
-    buyer: 'Head of Reward',
-    keywords: ['ALT-01', 'VS-01'],
-    prompt:
-      'We’re on Forma but need to run benefits in a lot more countries. What should we be looking at instead?',
-    priority: 'Medium',
-    results: [NO, NO, NO, NO],
-    why: 'A clear switch trigger with no matching Ben page. AI tools answering this lean on competitor and aggregator content.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Forma alternatives for global enterprise benefits teams',
-        ref: 'ALT-01',
-      },
-      {
-        action: 'Create',
-        text: 'Migrating your employee benefits platform: plan, data and cutover',
-        ref: 'JB-08',
-      },
-    ],
-    moves: [
-      {
-        type: 'Backlinks',
-        text: 'Earn links from migration-focused HR operations resources',
-      },
-      {
-        type: 'Expert content',
-        text: 'Publish a country-expansion benefits checklist for community sharing',
+        title: "Get multinational payroll partners to document Ben's integration workflows",
+        text: 'Co-publish a technical implementation example with a confirmed payroll or HRIS partner, documenting how employee data, eligibility changes and country-specific rules move between systems. Host supporting documentation on both companies\' websites.',
       },
     ],
   },
 
-  /* ---------------- Head-to-head ---------------- */
+  /* ---------------- 08 · FT-01 ---------------- */
   {
-    stage: 'Head-to-head',
-    buyer: 'Head of Reward',
-    keywords: ['VS-01'],
-    prompt: 'How does Ben compare with Forma for a multinational company?',
-    priority: 'High',
+    stage: 'Feature fit',
+    buyer: 'Benefits Ops',
+    keywords: ['FT-01'],
+    prompt:
+      'I run benefits operations at a company with about 6,000 employees across 14 countries. We need employee benefits enrolment software that handles open enrolment, approvals and eligibility by country. What should we look at?',
+    priority: 'Medium',
     results: [
+      NO,
+      NO,
       {
-        s: 'recommended',
-        said: 'Forma is built around flexible lifestyle and wellbeing allowances, while Ben focuses on central administration of benefits across several countries with local configuration. If multi-country governance is the priority, Ben is the closer match.',
-        also: ['Forma'],
+        s: 'passing',
+        said: 'Ben’s benefits management page covers enrolment and approvals, but gives little detail on how enrolment rules work by country.',
         cited: 'thanksben.com/benefits-management',
-        gap: 'The comparison rests entirely on Ben’s own pages. No neutral third-party source.',
-      },
-      {
-        s: 'listed',
-        said: 'Both platforms support employee benefits, but public information on Ben’s enterprise capabilities is thinner than for Forma, so a direct feature comparison is limited.',
-        also: ['Forma'],
-        gap: 'Thin public detail is pulling Ben’s answer down.',
-      },
-      {
-        s: 'listed',
-        said: 'Ben is positioned for multinational administration while Forma is positioned for flexible allowances. Teams tend to choose based on whether they need central rules and payroll coordination or employee-chosen spending.',
-        also: ['Forma'],
-        cited: 'thanksben.com/how-it-works',
+        gap: 'Enrolment is named but not shown. No screenshots or eligibility examples.',
       },
       NO,
     ],
-    why: 'Brand-led prompts are where Ben is already visible. Gemini’s hedge shows the cost of thin public comparison content; a fair, sourced Ben vs Forma page would replace guesswork.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Ben vs Forma: enterprise benefits platform comparison',
-        ref: 'VS-01',
-      },
-      {
-        action: 'Improve',
-        text: 'How it works page: add a capability table with sources and last-checked dates',
-      },
-    ],
+    why: "Perplexity already cites Ben's benefits management page, but only gives a passing mention of enrolment and approvals. The priority is to connect that existing reference to stronger product evidence and independent accounts of how Ben handles enrolment across countries.",
+
+fix: [
+  {
+    action: 'Improve',
+    title: 'Show how customers manage enrolment across multiple countries',
+    text: 'Publish an approved customer example documenting enrolment windows, approval responsibilities, country-specific eligibility and payroll handoffs. Include measurable outcomes where available, such as processing time, administrative workload or enrolment errors.',
+  },
+],
+
     moves: [
-      {
-        type: 'Reviews',
-        text: 'Seed review-site comparison profiles so neutral sources describe the difference',
-      },
       {
         type: 'Backlinks',
-        text: 'Invite analysts and HR technology writers to reference the comparison table',
+        title: 'Build independent reviews around real enrolment experiences',
+        text: 'Invite customers managing enrolment across several countries to share their experience on relevant software review platforms. Encourage specific feedback about approval workflows, eligibility configuration, employee self-service and payroll coordination rather than generic satisfaction statements.',
       },
+
+
     ],
   },
+
+  /* ---------------- 09 · BO-01 ---------------- */
   {
-    stage: 'Head-to-head',
-    buyer: 'HRIS & Security',
-    keywords: ['VS-07', 'FT-06'],
-    prompt:
-      'Ben vs Rippling for employee benefits. Which is better for a company with entities in about 20 countries?',
-    priority: 'Medium',
-    results: [
-      {
-        s: 'listed',
-        said: 'Rippling bundles benefits into a wider HR and payroll suite, whereas Ben is a dedicated benefits platform. For many entities and local rules a dedicated platform like Ben can offer more configuration, but you would need to check how it connects to your HRIS.',
-        also: ['Rippling'],
-        gap: 'Raises integration risk with no integration documentation to point to.',
-      },
-      NO,
-      {
-        s: 'listed',
-        said: 'Ben is a specialist benefits platform, while Rippling’s benefits sit inside its all-in-one HR suite. Ben’s own site emphasises multi-entity programmes.',
-        also: ['Rippling'],
-        cited: 'thanksben.com/benefits-management',
-      },
-      NO,
-    ],
-    why: 'Both answers frame the choice as dedicated platform versus HRIS suite, which is the right fight. Integration detail is the missing proof.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Ben vs Rippling: dedicated benefits platform or HRIS module?',
-        ref: 'VS-07',
-      },
-      {
-        action: 'Create',
-        text: 'Employee benefits Workday integration: data flows, SSO and setup',
-        ref: 'FT-06',
-      },
-    ],
-    moves: [
-      {
-        type: 'Partners',
-        text: 'Pursue listings in HRIS marketplaces and integration directories',
-      },
-      {
-        type: 'Community',
-        text: 'Contribute integration how-tos in HRIS user communities',
-      },
-    ],
-  },
-  {
-    stage: 'Head-to-head',
-    buyer: 'HRIS & Security',
-    keywords: ['VS-12'],
-    prompt:
-      'Should we buy a dedicated benefits platform or just use the benefits module in our HRIS? We’re a global company.',
-    priority: 'High',
-    results: [NO, NO, NO, NO],
-    why: 'The strongest objection in the deal, and Ben is absent. AI answers give generic pros and cons because no vendor has published a direct answer.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Benefits administration software vs HRIS: when your HRIS module is enough',
-        ref: 'VS-12',
-      },
-      {
-        action: 'Create',
-        text: 'Benefits-to-payroll reconciliation workflow',
-        ref: 'JB-01',
-      },
-    ],
-    moves: [
-      {
-        type: 'Expert content',
-        text: 'Write a neutral decision guide for HR technology publications and invite HRIS consultants to contribute',
-      },
-      {
-        type: 'Backlinks',
-        text: 'Target consultant and implementation-partner blogs that cover this decision',
-      },
-    ],
-  },
-  {
-    stage: 'Head-to-head',
+    stage: 'Vendor shortlist',
     buyer: 'Head of Reward',
-    keywords: ['VS-11', 'ALT-13'],
+    keywords: ['BO-01'],
     prompt:
-      'Global benefits platform vs benefits broker: who should actually run our programme?',
+      'I’m Head of Reward at a company with about 6,000 employees across 14 countries. Which are the best global employee benefits platforms, and which should I put on a shortlist?',
     priority: 'High',
     results: [
       NO,
+      NO,
       {
-        s: 'passing',
-        said: 'A platform such as Ben handles administration and data, while a broker advises on provider selection and negotiation. Some employers keep both.',
-        also: ['Alight'],
-        gap: 'No cited source. The nuance about keeping a broker has no page behind it.',
+        s: 'listed',
+        pos: [6, 7],
+        said: 'Other platforms worth a look include Ben, which presents itself as one platform for multinational employers that want central administration with local benefit flexibility.',
+        also: ['Benefex', 'Benify', 'Alight', 'Forma', 'Reward Gateway'],
+        cited: 'thanksben.com',
+        gap: 'Repeats homepage positioning. No country coverage or configuration evidence to back it up.',
       },
       NO,
-      NO,
     ],
-    why: 'Gemini gets the idea but cannot point to anything. A page that owns the platform-plus-broker answer would earn the citation.',
+    why: "Perplexity names Ben sixth in a seven-vendor shortlist but cites only its homepage. The answer repeats Ben's multinational positioning without supporting evidence. The priority is to strengthen its enterprise credentials through documented capabilities, independent comparisons and multinational customer reviews.",
     fix: [
       {
         action: 'Create',
-        text: 'Global benefits platform vs benefits broker: who should run your programme?',
-        ref: 'VS-11',
-      },
-      {
-        action: 'Create',
-        text: 'Alternatives to a traditional benefits broker',
-        ref: 'ALT-13',
+        title: 'Replace broad global claims with verifiable enterprise evidence',
+        text: 'Strengthen the homepage and benefits management pages with confirmed country coverage, documented multi-entity capabilities and links to relevant customer implementations. Distinguish supported functionality from integrations or services delivered through partners.',
       },
     ],
     moves: [
       {
-        type: 'Digital PR',
-        text: 'Commission a short reward-leader survey on broker versus platform responsibilities',
-      },
-      {
-        type: 'Partners',
-        text: 'Co-host a webinar with a broker partner',
+        type: 'Third-party listings',
+        title: 'Get Ben evaluated in independent global benefits shortlists',
+        text: 'Approach relevant HR software publishers that already compare multinational benefits providers. Supply documented product capabilities, country coverage and enterprise customer evidence so Ben can be assessed against the same criteria as Benefex, Benify and Alight.',
       },
     ],
   },
 
-  /* ---------------- Pricing ---------------- */
+  /* ---------------- 10 · BO-02 ---------------- */
   {
-    stage: 'Pricing',
-    buyer: 'Finance',
-    keywords: ['PR-09', 'PR-07', 'PR-08'],
+    stage: 'Vendor shortlist',
+    buyer: 'Benefits Ops',
+    keywords: ['BO-02'],
     prompt:
-      'How much does an enterprise employee benefits platform cost per employee, and what usually pushes the price up?',
+      'I run benefits at a company with about 6,000 employees across 14 countries. What’s the best employee benefits administration software for us? We need enrolment, eligibility rules and payroll handled across several countries.',
     priority: 'High',
     results: [NO, NO, NO, NO],
-    why: 'Finance buyers want ranges and drivers. No Ben content explains pricing models, so answers cite competitors and generic guides.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Employee benefits platform cost per employee: benchmarks and how to model yours',
-        ref: 'PR-09',
-      },
-      {
-        action: 'Create',
-        text: 'Global benefits platform pricing: per-employee, per-entity and implementation fees',
-        ref: 'PR-08',
-      },
-    ],
-    moves: [
-      {
-        type: 'Digital PR',
-        text: 'Publish an original cost-of-administration benchmark for finance and HR press',
-      },
-      {
-        type: 'Backlinks',
-        text: 'Offer the calculator to finance communities and HR budgeting resources',
-      },
-    ],
-  },
-  {
-    stage: 'Pricing',
-    buyer: 'Finance',
-    keywords: ['PR-01', 'PR-02'],
-    prompt:
-      'What does Ben charge for employee benefits, and is it worth it for a large company?',
-    priority: 'High',
-    results: [
-      {
-        s: 'listed',
-        said: 'Ben’s site describes packaging and an implementation process, but I couldn’t find a published per-employee price, so you would need a quote. Whether it is worth it depends on how many countries and providers you are consolidating.',
-        cited: 'thanksben.com/pricing',
-        gap: 'No price drivers or example scenarios to quote.',
-      },
-      {
-        s: 'passing',
-        said: 'Detailed pricing for Ben isn’t listed publicly. Enterprise platforms are usually quoted on headcount, entities and modules.',
-        gap: 'A generic enterprise-software answer, nothing specific to Ben.',
-      },
-      {
-        s: 'listed',
-        said: 'Ben’s pricing page outlines how packages and implementation work. Per-employee rates aren’t shown, so a quote is needed.',
-        cited: 'thanksben.com/pricing',
-      },
-      {
-        s: 'passing',
-        said: 'Ben lists implementation details on its pricing page; detailed rates are not published.',
-        cited: 'thanksben.com/pricing',
-      },
-    ],
-    why: 'Ben is visible because the prompt names it, but every platform ends in ask for a quote. A pricing explainer with price drivers and a worked example would give AI something concrete to quote.',
+    why: 'Ben is absent from all four sample AI answers for this enterprise administration question. The priority is to establish its relevance in independent software shortlists, with verifiable evidence of enrolment, eligibility and payroll capabilities across multiple countries.',
     fix: [
       {
         action: 'Improve',
-        text: 'Ben pricing: explain what drives price, with an example multi-entity scenario',
-        ref: 'PR-01',
-      },
-      {
-        action: 'Create',
-        text: 'Benefits management software ROI calculator',
-        ref: 'PR-10',
+        title: "Make Ben's software directory profiles reflect its administration capabilities",
+        text: "Review Ben's categorisation on relevant platforms such as G2 and Capterra. Ensure product descriptions accurately cover supported enrolment, eligibility, approvals, payroll integrations and multi-country administration, with links to the relevant product pages.",
       },
     ],
+
     moves: [
+      {
+        type: 'Backlinks',
+        title: 'Get Ben evaluated in independent benefits administration shortlists',
+        text: 'Approach HR technology publishers and software comparison websites already ranking benefits administration vendors. Supply verified product capabilities, multinational implementation examples and clear eligibility criteria so Ben can be evaluated against the same requirements as established providers.',
+      },
       {
         type: 'Reviews',
-        text: 'Add pricing context and implementation timelines to review-site profiles so third parties describe Ben consistently',
-      },
-      {
-        type: 'Backlinks',
-        text: 'Get the pricing explainer referenced in procurement-focused HR resources',
-      },
-    ],
-  },
-
-  /* ---------------- Business case ---------------- */
-  {
-    stage: 'Business case',
-    buyer: 'Finance',
-    keywords: ['JB-10', 'PR-10'],
-    prompt:
-      'How do I build a business case for consolidating our benefits providers into one platform? My CFO wants real numbers.',
-    priority: 'High',
-    results: [NO, NO, NO, NO],
-    why: 'Almost no vendor competition on this prompt, and Ben has nothing a CFO could use. An open, editable model is easy for AI tools to cite and for a champion to forward.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'How to build a business case for a benefits platform',
-        ref: 'JB-10',
-      },
-      {
-        action: 'Create',
-        text: 'Benefits management software ROI calculator with every assumption visible',
-        ref: 'PR-10',
-      },
-    ],
-    moves: [
-      {
-        type: 'Digital PR',
-        text: 'Offer finance and HR trade press a model with transparent assumptions',
-      },
-      {
-        type: 'Backlinks',
-        text: 'Share the model with FP&A communities and HR finance partner networks',
-      },
-    ],
-  },
-
-  /* ---------------- Implementation ---------------- */
-  {
-    stage: 'Implementation',
-    buyer: 'HRIS & Security',
-    keywords: ['PR-12', 'JB-08'],
-    prompt:
-      'How long does it take to implement an employee benefits platform across several countries, and what do we need to have ready?',
-    priority: 'Medium',
-    results: [
-      NO,
-      NO,
-      {
-        s: 'listed',
-        said: 'Ben describes a four-stage implementation process covering requirements, configuration, testing and launch, which gives a useful template for what to prepare.',
-        cited: 'thanksben.com/pricing',
-        gap: 'No customer-side task list or timeline ranges.',
-      },
-      {
-        s: 'passing',
-        said: 'Vendors such as Ben outline phased rollouts that start with requirements gathering and end with launch support.',
-        cited: 'thanksben.com/pricing',
-      },
-    ],
-    why: 'The four-stage process is already being picked up. Customer-side tasks, data requirements and realistic timelines would move Ben from a passing example to the cited answer.',
-    fix: [
-      {
-        action: 'Improve',
-        text: 'Implementation and migration guide: customer-side tasks, data requirements and a UAT plan',
-      },
-      {
-        action: 'Create',
-        text: 'Employee benefits software implementation costs and timeline',
-        ref: 'PR-12',
-      },
-    ],
-    moves: [
-      {
-        type: 'Reviews',
-        text: 'Capture implementation experience in customer reviews and one named case study',
-      },
-      {
-        type: 'Partners',
-        text: 'Publish onboarding notes with HRIS implementation partners',
-      },
-    ],
-  },
-  {
-    stage: 'Implementation',
-    buyer: 'HRIS & Security',
-    keywords: ['JB-08', 'JB-03'],
-    prompt:
-      'We want to move from broker-managed benefits to a single platform. What does the migration actually involve?',
-    priority: 'Medium',
-    results: [
-      NO,
-      {
-        s: 'passing',
-        said: 'Some platforms, including Ben, are designed to take over administration while letting an existing broker relationship continue, which can simplify the transition.',
-        gap: 'The claim has no supporting page, so it can’t be verified or cited.',
-      },
-      NO,
-      NO,
-    ],
-    why: 'Gemini picks up the bring-your-own-broker angle but has no source for it. A migration guide would make it citable.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Migrating your employee benefits platform: plan, data and cutover',
-        ref: 'JB-08',
-      },
-      {
-        action: 'Create',
-        text: 'Consolidating employee benefits providers: a migration-ready framework',
-        ref: 'JB-03',
-      },
-    ],
-    moves: [
-      {
-        type: 'Expert content',
-        text: 'Publish a migration checklist with a customer or implementation partner',
-      },
-      {
-        type: 'Backlinks',
-        text: 'Pitch the checklist to HR operations communities and newsletters',
-      },
-    ],
-  },
-
-  /* ---------------- Integration & security ---------------- */
-  {
-    stage: 'Integration & security',
-    buyer: 'Payroll',
-    keywords: ['FT-06', 'FT-08', 'FT-02'],
-    prompt:
-      'Does Ben integrate with Workday and ADP, and how does the benefits-to-payroll file actually work?',
-    priority: 'High',
-    results: [
-      {
-        s: 'passing',
-        said: 'Ben describes HRIS and payroll integrations, but I couldn’t find public documentation of specific Workday or ADP connectors or file formats, so confirm with the vendor.',
-        gap: 'No integration documentation found. This is exactly what a technical reviewer would flag.',
-      },
-      {
-        s: 'passing',
-        said: 'Ben lists integrations with HR and payroll systems; connector-level detail isn’t clearly documented in public sources.',
-        gap: 'Same dead end: no public connector detail.',
-      },
-      {
-        s: 'listed',
-        said: 'Ben’s materials reference HRIS and payroll integration as part of its benefits management platform, but connector-level detail isn’t published.',
-        cited: 'thanksben.com/benefits-management',
-      },
-      NO,
-    ],
-    why: 'Every answer reaches the same dead end: no public connector or file documentation. This is the cheapest high-value gap on the list.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Employee benefits Workday integration: data flows, SSO and setup',
-        ref: 'FT-06',
-      },
-      {
-        action: 'Create',
-        text: 'Employee benefits ADP integration: payroll files and validation',
-        ref: 'FT-08',
-      },
-    ],
-    moves: [
-      {
-        type: 'Partners',
-        text: 'Seek listings in HRIS and payroll integration directories',
-      },
-      {
-        type: 'Backlinks',
-        text: 'Publish an anonymised payroll file spec that practitioners will link to',
-      },
-    ],
-  },
-  {
-    stage: 'Integration & security',
-    buyer: 'Payroll',
-    keywords: ['JB-01', 'JB-12'],
-    prompt:
-      'How can we automate benefits payroll reconciliation? Payroll keeps finding deduction errors right before payday.',
-    priority: 'High',
-    results: [NO, NO, NO, NO],
-    why: 'Payroll’s core pain with no Ben content behind it. Practitioner forums and payroll vendors currently set the answer.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'How to automate benefits payroll reconciliation across countries',
-        ref: 'JB-01',
-      },
-      {
-        action: 'Create',
-        text: 'Why benefits deductions go wrong in payroll, and how to reduce errors',
-        ref: 'JB-12',
-      },
-    ],
-    moves: [
-      {
-        type: 'Community',
-        text: 'Contribute substantive answers in payroll practitioner communities, with disclosure',
-      },
-      {
-        type: 'Backlinks',
-        text: 'Offer the monthly cut-off timeline to payroll associations and vendor client communities',
-      },
-    ],
-  },
-  {
-    stage: 'Integration & security',
-    buyer: 'HRIS & Security',
-    keywords: ['FT-11', 'FT-12'],
-    prompt:
-      'What security certifications and SSO options should I ask an employee benefits platform vendor about? Which vendors have them?',
-    priority: 'Medium',
-    results: [NO, NO, NO, NO],
-    why: 'Security reviewers need forwardable proof. With no trust or SSO page, AI tools cannot name Ben even if it qualifies.',
-    fix: [
-      {
-        action: 'Create',
-        text: 'Employee benefits SSO integration: SAML, OIDC and provisioning',
-        ref: 'FT-11',
-      },
-      {
-        action: 'Create',
-        text: 'Security and DPIA pack for procurement reviews',
-      },
-    ],
-    moves: [
-      {
-        type: 'Reviews',
-        text: 'Publish certifications and SSO options on review-site profiles',
-      },
-      {
-        type: 'Partners',
-        text: 'Request listings in HR security and vendor-risk directories',
+        title: 'Build independent reviews around complex administration workflows',
+        text: 'Invite customers using Ben for multinational benefits administration to describe their experience on independent software review platforms. Encourage specific, authentic feedback about eligibility changes, open enrolment, approvals, payroll coordination and administrative workload.',
       },
     ],
   },
 ];
+
+
 
 const PROMPTS: Prompt[] = RAW.map((p, i) => ({
   ...p,
@@ -1035,7 +625,7 @@ function exportCsv(rows: Prompt[]) {
       p.priority,
       p.why,
       p.fix.map((f) => `${f.action}: ${f.text}`).join(' | '),
-      p.moves.map((m) => `${m.type}: ${m.text}`).join(' | '),
+      p.moves.map((m) => `${m.type}: ${m.title}. ${m.text}`).join(' | '),
     ]
       .map(csvCell)
       .join(','),
@@ -1117,7 +707,7 @@ export default function AiVisibility() {
   const [plat, setPlat] = useState<'all' | PlatformKey>('all');
   const [prio, setPrio] = useState<'all' | Priority>('all');
   const [query, setQuery] = useState('');
-  const [selectedId, setSelectedId] = useState('P05');
+  const [selectedId, setSelectedId] = useState('P06');
   const listRef = useRef<HTMLDivElement>(null);
   const workRef = useRef<HTMLDivElement>(null);
   const detailRef = useRef<HTMLDivElement>(null);
@@ -1212,17 +802,12 @@ export default function AiVisibility() {
     <span className="av-eyebrow">
       04 / AI SEARCH VISIBILITY &amp; AUTHORITY
     </span>
-
-    <span className="av-sample-note">
-      I 
-    </span>
   </div>
 
-  <h2>Help buyers find Ben in AI answers.</h2>
+  <h2>Where Ben stands across AI search results and recommendations.</h2>
 
   <p>
-    {TOTAL} buyer prompts, four platforms, and clear priorities
-    for content and supporting evidence.
+We took the same ten priority searches and tested them across four AI platforms. The results show where Ben appears, which competitors are recommended, and what content or evidence could improve its visibility.
   </p>
 </header>
     
@@ -1640,10 +1225,7 @@ aria-pressed={stage === s}
       {hits === 0 && (
         <div className="av-no-evidence">
           <strong>No Ben mentions in this sample.</strong>
-          <p>
-            Run the prompt on each platform and save the
-            responses before confirming the visibility gap.
-          </p>
+ 
         </div>
       )}
     </div>
@@ -1662,26 +1244,48 @@ aria-pressed={stage === s}
             <div>
               <div className="av-plan-label">Content to create or improve</div>
               <ul>
-                {sel.fix.map((f) => (
-                  <li key={f.text}>
-                    <em className={f.action === 'Create' ? 'create' : 'improve'}>
-                      {f.action}
-                    </em>
-                    <span>
-                      {f.text}
-                      {f.ref && <code>{f.ref}</code>}
-                    </span>
-                  </li>
-                ))}
+         
+         
+        
+{sel.fix.map((f) => (
+  <li key={f.title}>
+    <em className={f.action === 'Create' ? 'create' : 'improve'}>
+      {f.action}
+    </em>
+
+    <div className="av-fix-content">
+      <strong className="av-fix-title">
+        {f.title}
+      </strong>
+
+      <p className="av-fix-description">
+        {f.text}
+      </p>
+
+      {f.ref && (
+        <code className="av-fix-ref">
+          {f.ref}
+        </code>
+      )}
+    </div>
+  </li>
+))}
+
+
+
+
               </ul>
             </div>
             <div>
               <div className="av-plan-label">Authority &amp; distribution</div>
               <ul>
                 {sel.moves.map((m) => (
-                  <li key={m.text}>
+                  <li key={m.title}>
                     <em className="move">{m.type}</em>
-                    <span>{m.text}</span>
+                    <div className="av-fix-content">
+                      <strong className="av-fix-title">{m.title}</strong>
+                      <p className="av-fix-description">{m.text}</p>
+                    </div>
                   </li>
                 ))}
               </ul>

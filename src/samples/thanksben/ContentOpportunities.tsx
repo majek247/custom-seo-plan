@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from 'react';
-import './CompetitorOpportunities.css';
+import './ContentOpportunities.css';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -1369,14 +1369,14 @@ export default function CompetitorOpportunities() {
         <header className="co-intro">
           <div className="co-intro-top">
             <div className="co-eyebrow">
-              04 <span>/</span> COMPETITOR OPPORTUNITIES
+              04 <span>/</span> CONTENT OPPORTUNITIES
             </div>
           </div>
 
           <h2>The strongest content opportunities across Ben’s priority search terms.</h2>
 
           <p className="co-intro-copy">
-            We’ve reviewed the leading search results for ten priority keywords to understand what buyers currently find. Each analysis identifies gaps in competitor coverage and recommends how Ben can address those gaps with more differentiated content tailored to the underlying intent.
+            We’ve analysed the leading results for ten priority searches to identify what existing pages cover, which buyer questions remain unanswered, and where Ben can offer more value. Each recommendation outlines the evidence and product details needed to compete for the search.
           </p>
         </header>
 

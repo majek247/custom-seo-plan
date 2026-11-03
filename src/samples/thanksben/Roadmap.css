@@ -73,9 +73,10 @@
 .rm-section .rm-intro p {
   margin-top: 12px;
   max-width: 1100px;
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.65;
-  color: #344854;
+  color: #011522;
+  font-weight: 400;
 }
 
 .rm-download {
@@ -246,18 +247,19 @@
 .rm-table-labels,
 .rm-task {
   display: grid;
-  grid-template-columns: 38px minmax(0, 1fr) 124px 82px;
-  gap: 10px;
+  grid-template-columns: 70px minmax(0, 1fr) 150px 90px;
+  gap: 16px;
   align-items: center;
 }
 
 .rm-table-labels {
-  padding: 0 9px 12px;
-  font-size: 9px;
+  padding: 28px 9px 16px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: .07em;
   color: #526773;
+  white-space: nowrap;
 }
 
 .rm-task {
@@ -295,6 +297,7 @@
   color: var(--rm-teal);
   font-weight: 800;
   font-size: 13px;
+  padding-left: 9px;
 }
 
 .rm-task-main {
@@ -539,8 +542,8 @@
   }
   .rm-table-labels,
   .rm-task {
-    grid-template-columns: 25px minmax(0, 1fr) 90px 64px;
-    gap: 8px;
+    grid-template-columns: 50px minmax(0, 1fr) 110px 70px;
+    gap: 12px;
   }
   .rm-task-main {
     gap: 9px;
@@ -579,7 +582,8 @@
   }
   .rm-table-labels,
   .rm-task {
-    grid-template-columns: 35px minmax(0, 1fr) 125px 85px;
+    grid-template-columns: 50px minmax(0, 1fr) 120px 80px;
+    gap: 12px;
   }
   .rm-task-main > svg {
     display: block;

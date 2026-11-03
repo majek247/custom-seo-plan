@@ -1105,11 +1105,13 @@ background: #0a2e2e;
   margin-left: auto;
   color: #167273;
 }
+
 .tb-footer {
-  background: #041c1d;
+  background: #0a2e2e;
   padding: 42px 0;
   color: #fff;
 }
+
 .tb-footer .tb-container {
   display: flex;
   align-items: center;

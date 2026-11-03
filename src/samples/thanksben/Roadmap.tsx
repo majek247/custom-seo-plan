@@ -31,8 +31,6 @@ type Phase = {
   title: string;
   summary: string;
   heading: string;
-  review: string;
-  next: string;
   tasks: Task[];
 };
 
@@ -191,7 +189,106 @@ export const ROADMAP_PAGES: Page[] = [
   },
 ];
 
+
+const TASK_HEADINGS: Record<
+  string,
+  {
+    why: string;
+    needs: string;
+    ready?: string;
+  }
+> = {
+  // DAYS 1–30: VALIDATE AND PREPARE
+
+  '01': {
+    why: 'Secure internal approval for the ten priority pages',
+    needs: 'Approvals to secure',
+    ready: 'Ready to proceed',
+  },
+
+  '02': {
+    why: 'Know what performance looks like before publishing',
+    needs: 'What to measure',
+    ready: 'Tracking confirmed',
+  },
+
+  '03': {
+    why: 'Resolve evidence gaps before writing begins',
+    needs: 'What to gather',
+    ready: 'Ready for production',
+  },
+
+  '04': {
+    why: 'Turn the approved priorities into production-ready briefs',
+    needs: 'What each brief needs',
+    ready: 'Ten content briefs approved',
+  },
+
+
+
+
+  // DAYS 31–60: PUBLISH PRIORITY PAGES
+
+  '05': {
+    why: 'Move the first four priority pages into production',
+    needs: 'What to complete before publishing',
+    ready: 'First four pages published',
+  },
+
+  '06': {
+    why: 'Complete the second publishing batch',
+    needs: 'Production and review requirements',
+    ready: 'Seven pages live and three ready for review',
+  },
+
+  '07': {
+    why: 'Establish how the published pages are performing',
+    needs: 'Performance checks',
+    ready: 'Initial results reviewed',
+  },
+
+
+
+
+
+
+  // DAYS 61–90: DISTRIBUTE AND REFINE
+
+  '08': {
+    why: 'Complete the ten-page publishing programme',
+    needs: 'Final launch checks',
+    ready: 'All ten priorities delivered',
+  },
+
+  '09': {
+    why: 'Make the new pages useful in sales conversations',
+    needs: 'Sales enablement requirements',
+    ready: 'Sales team equipped',
+  },
+
+  '10': {
+    why: 'Compare current performance against your starting figures',
+    needs: 'What to measure',
+    ready: 'Outreach documented',
+  },
+
+  '11': {
+    why: 'Decide where to focus your next 90 days',
+    needs: 'What to prioritise',
+    ready: 'Performance findings recorded',
+  },
+
+  '12': {
+    why: 'Decide what to prioritise in the next 90 days',
+    needs: 'Evidence for the next decisions',
+    ready: 'Next 90-day plan approved',
+  },
+
+};
+
 const ALL_IDS = ROADMAP_PAGES.map((page) => page.id);
+
+
 const BATCH_1 = ALL_IDS.slice(0, 4);
 const BATCH_2 = ALL_IDS.slice(4, 7);
 const BATCH_3 = ALL_IDS.slice(7);
@@ -200,30 +297,26 @@ const PAGE_BY_ID = new Map(ROADMAP_PAGES.map((page) => [page.id, page]));
 export const ROADMAP_PHASES: Phase[] = [
   {
     days: 'DAYS 1–30',
-    title: 'Validate and prepare',
-    summary: 'Confirm priorities, gather evidence, brief all ten pages.',
-    heading: 'Days 1–30: establish the publishing queue',
-    review:
-      'Approve ten distinct briefs, confirm evidence owners and sign off tracking before production.',
-    next: 'Next: publish the first four pages; draft the next three.',
-    tasks: [
+    title: 'Approve and prepare',
+    summary: 'Secure approval, gather evidence and brief all ten pages.',
+    heading: 'Days 1–30: approve, prepare and brief the priority pages',    tasks: [
       {
         id: '01',
-        title: 'Validate the ten-page shortlist',
-        subtitle: 'Check intent, existing URLs and overlap',
+title: 'Secure approval for the ten priority pages',
+subtitle: 'Confirm budget, owners and publishing schedule',
         owner: 'SEO lead',
         timing: 'Week 1',
         type: 'Content',
         pages: ALL_IDS,
-        why:
-          'The priority score does not settle page scope. Check the two pricing themes and four shortlist themes against current search intent before commissioning overlapping pages.',
+              why:
+          "Present the proposed pages to your marketing, product and sales teams. Agree which pages to publish, confirm the business case for each, and secure internal approval before production begins.",
         needs: [
-          'Review existing URLs and Search Console queries',
-          'Confirm distinct intent for PR-09 vs PR-07 and each best-of page',
-          'Confirm FT-01 as an existing-page improvement',
+          'Confirm marketing leadership agrees with the proposed ten pages.',
+          'Get Product and Sales to approve the recommended topics.',
+          'Agree the publishing budget, responsibilities and timeline.',
         ],
         ready:
-          'Each theme has a target URL, distinct scope and action. If intent overlaps, agree a consolidated page before production.',
+          'All ten priorities have internal approval, confirmed owners and an agreed production schedule.',
       },
       {
         id: '02',
@@ -234,285 +327,194 @@ export const ROADMAP_PHASES: Phase[] = [
         type: 'Measurement',
         pages: ALL_IDS,
         why:
-          'A baseline makes later changes interpretable. Existing AI sample answers must be replaced by dated observations before they are used to assess progress.',
+          'Before launching the new pages, establish how Ben currently performs in organic search, demo generation and AI recommendations. This gives the team a clear starting point for measuring progress over the next 90 days.',
         needs: [
-          'Record current query and landing-page performance',
-          'Test demo starts, completions and CRM attribution where available',
-          'Log the 20 prompts with platform, date, geography and sources',
+          'Record current search visibility and traffic to relevant pages.',
+          'Confirm demo enquiries are tracked through to sales opportunities',
+          'Record where Ben appears across the ten AI buyer questions.',
         ],
         ready:
-          'Tracking works end to end, baseline exports are saved and AI checks can be repeated under comparable conditions.',
+          'All reporting is working, starting figures are saved, and the team can measure changes after the ten priority pages are published.',
       },
       {
         id: '03',
-        title: 'Gather pricing and product evidence',
-        subtitle: 'Fees, workflows, country scope and approved claims',
+title: 'Collect approved pricing and product information',
+subtitle: 'Confirm commercial terms, features and competitor facts',
         owner: 'Product + Sales',
         timing: 'Weeks 1–2',
         type: 'Evidence',
         pages: ALL_IDS,
         why:
-          'The cost guides need approved commercial inputs; comparisons need sourced vendor facts; shortlist and enrolment pages need product proof. Missing evidence should be visible before writing starts.',
+          'The ten pages will need accurate pricing information, confirmed product capabilities and reliable competitor details. Work with your internal team to gather the information writers need before production begins.',
         needs: [
-          'Assign an approver for pricing and service boundaries',
-          'Collect screenshots, integration scope and country limitations',
-          'Create a dated vendor-source register and approval log',
+          'Confirm pricing, additional charges and service inclusions with Sales.',
+          'Collect product screenshots, supported integrations and country coverage from Product.',
+          'Verify competitor information and approve claims used in comparisons.',
         ],
         ready:
-          'Every planned claim has a source or an assigned evidence owner. Unsupported claims are removed or clearly bounded.',
+          'The content team has the approved pricing, product details and competitor information needed to write all ten pages accurately.',
       },
       {
         id: '04',
-        title: 'Brief the cost and comparison pages',
-        subtitle: 'PR-09 · VS-12 · ALT-13 · PR-07',
+        title: 'Prepare content briefs for all ten priority pages',
+        subtitle: '9 new pages and 1 existing-page improvement',
         owner: 'Content lead',
-        timing: 'Week 3',
+        timing: 'Weeks 3–4',
         type: 'Content',
-        pages: BATCH_1,
+        pages: ALL_IDS,
         why:
-          'Start with cost, system choice and broker responsibilities: questions that prevent buyers from defining a viable scope or progressing a procurement conversation.',
+          'Use the keyword research, competitor findings and buyer questions already covered in this plan to prepare a brief for each page. Give your writers clear direction on what to produce, which evidence to include and how each page should support buying decisions.',
         needs: [
-          'Use PR-09 for cost calculations and PR-07 for pricing models',
-          'Define HRIS and broker responsibility boundaries',
-          'Agree the evidence, CTA and internal links for each brief',
+          'Define a working title, target keyword, page structure and intended ICP.',
+          'Identify the buyer questions, objections and competitor gaps each page must address.',
+          'Specify the product evidence, internal links and next steps for visitors.',
+          'Assign a writer, reviewer and agreed publishing deadline to each page.',
         ],
         ready:
-          'Four approved briefs have distinct buyer questions, sourced evidence requirements and a defined conversion route.',
-      },
-      {
-        id: '05',
-        title: 'Brief alternatives and regional shortlists',
-        subtitle: 'ALT-05 · BO-13 · BO-03',
-        owner: 'Content lead',
-        timing: 'Week 4',
-        type: 'Content',
-        pages: BATCH_2,
-        why:
-          'These pages address three different triggers: replacing an incumbent, buying for a UK enterprise and operating across multiple entities. Their evaluation criteria must reflect those differences.',
-        needs: [
-          'Verify current competitor claims and switching requirements',
-          'Separate UK procurement needs from multinational operations',
-          'Agree honest fit and non-fit criteria for each shortlist',
-        ],
-        ready:
-          'Three briefs specify the audience, selection method, product evidence and review owner.',
-      },
-      {
-        id: '06',
-        title: 'Brief enrolment and broader shortlists',
-        subtitle: 'FT-01 · BO-01 · BO-02',
-        owner: 'Content lead',
-        timing: 'Week 4',
-        type: 'Content',
-        pages: BATCH_3,
-        why:
-          'The existing enrolment page needs concrete workflow evidence. The global shortlist serves strategic selection; the administration shortlist serves day-to-day operations.',
-        needs: [
-          'Confirm the FT-01 URL and screenshot requirements',
-          'Separate global platform selection from administration workflows',
-          'Plan links from comparison guides to the relevant product page',
-        ],
-        ready:
-          'The FT-01 update brief and two new-page briefs complete coverage of all ten priority themes.',
+          'All nine new pages and the existing-page improvement have clear writing instructions, approved requirements and assigned owners, ready for production.',
       },
     ],
   },
+
+
   {
     days: 'DAYS 31–60',
     title: 'Publish priority pages',
-    summary: 'Launch the first seven pages and prepare the final batch.',
-    heading: 'Days 31–60: publish the first seven pages',
-    review:
-      'Check seven published pages for accuracy, indexability, internal links and working demo paths.',
-    next: 'Next: update enrolment, publish two shortlists and distribute.',
-    tasks: [
+    summary: 'Publish seven pages and prepare the final three.',
+    heading: 'Days 31–60: progress content towards publication',    tasks: [
       {
-        id: '07',
-        title: 'Draft the first four priority pages',
-        subtitle: 'Cost, HRIS comparison, broker alternatives and pricing',
-        owner: 'Content lead',
+        id: '05',
+        title: 'Write and publish the first four priority pages',
+        subtitle: 'PR-09 · VS-12 · ALT-13 · PR-07',
+        owner: 'Content + SEO',
         timing: 'Weeks 5–6',
         type: 'Content',
         pages: BATCH_1,
         why:
-          'Turn the approved briefs into useful buying tools: a cost model, a system decision framework, a broker responsibility matrix and a quote checklist.',
+          'Begin with the two pricing pages, the HRIS comparison and traditional broker alternatives. Build each around the commercial information, product evidence and practical comparisons buyers need to evaluate Ben alongside other providers.',
         needs: [
-          'Approved first-batch briefs and evidence',
-          'Named Product and Sales reviewers',
-          'Clear cross-links between both pricing pages',
+          'Write all four pages using approved pricing, product details and competitor research.',
+          'Get your Product and Sales teams to review all technical and commercial claims before publication.',
+          'Add internal links, clear demo CTAs and working conversion tracking.',
+          'Check mobile experience, page titles, indexing settings and final URLs.',
         ],
         ready:
-          'Four drafts answer their assigned buyer questions and every commercial claim has a source.',
+          'All four pages are live, approved by your internal teams and linked from relevant existing pages. ',
       },
       {
-        id: '08',
-        title: 'Review and publish the first batch',
-        subtitle: 'Launch PR-09, VS-12, ALT-13 and PR-07',
-        owner: 'SEO + Product',
-        timing: 'Week 6',
-        type: 'Content',
-        pages: BATCH_1,
-        why:
-          'Review must resolve factual objections as well as editorial quality. Launch only after scope, vendor facts and conversion paths are checked.',
-        needs: [
-          'Product approval and dated competitor checks',
-          'Titles, canonicals and indexability checks',
-          'Relevant internal links and tested demo events',
-        ],
-        ready:
-          'Four pages are live, linked from relevant existing content and included in the performance log.',
-      },
-      {
-        id: '09',
-        title: 'Draft and publish the next three pages',
-        subtitle: 'ALT-05 · BO-13 · BO-03',
+        id: '06',
+        title: 'Publish the next three pages and complete the final drafts',
+        subtitle: 'ALT-05 · BO-13 · BO-03 · FT-01 · BO-01 · BO-02',
         owner: 'Content + SEO',
         timing: 'Weeks 6–8',
         type: 'Content',
-        pages: BATCH_2,
-        why:
-          'Use the approved switching, UK-enterprise and multinational briefs to extend coverage without recycling the same shortlist under different titles.',
-        needs: [
-          'Signed-off second-batch briefs',
-          'Sourced vendor comparisons and transparent selection criteria',
-          'Editorial, product and conversion QA',
+        pages: [...BATCH_2, ...BATCH_3],
+             why:
+          "Publish the Reward Gateway alternatives, UK enterprise and multinational benefits software pages. In parallel, prepare the enrolment update and two remaining platform shortlists, with the product information and supporting evidence needed for internal approval.",
+           needs: [
+          'Write and publish the next three priority pages using the approved content briefs.',
+          'Prepare the remaining three pages for review and publication.',
+          'Coordinate all content reviews directly with your Marketing, Product and Sales teams.',
+          'Finalise publishing dates, internal links and conversion tracking.',
         ],
         ready:
-          'Three further pages are live with distinct scopes, dated sources and links to the relevant cost and product content.',
+          'Seven priority pages are live. The enrolment update and two remaining comparisons have completed drafts, with reviewers assigned for final approval.',
       },
       {
-        id: '10',
-        title: 'Prepare enrolment and the final shortlists',
-        subtitle: 'FT-01 · BO-01 · BO-02',
-        owner: 'Content + Product',
-        timing: 'Weeks 7–8',
-        type: 'Content',
-        pages: BATCH_3,
-        why:
-          'Prepare the remaining work while the first pages are being reviewed. Enrolment screenshots and operational examples can also support the administration shortlist.',
-        needs: [
-          'Approved FT-01 screenshots and workflow descriptions',
-          'Global evaluation scorecard and administration demo checklist',
-          'Final review slots reserved with Product',
-        ],
-        ready:
-          'The enrolment update and two new shortlist drafts are ready for review in week nine.',
-      },
-      {
-        id: '11',
-        title: 'Check the first publishing batch',
-        subtitle: 'Indexing, query fit, internal links and demo paths',
+        id: '07',
+        title: 'Review early search and conversion performance',
+        subtitle: 'Indexing, search visibility and demo enquiries',
         owner: 'Analytics + SEO',
         timing: 'Weeks 7–8',
         type: 'Measurement',
         pages: [...BATCH_1, ...BATCH_2],
-        why:
-          'Early checks should find technical or intent problems, not declare a revenue result before pages have had time to be discovered and used.',
+                why:
+          "Review the first seven pages to confirm they're indexed, attracting relevant visitors and tracking demo requests correctly. Address any technical or tracking problems before the next reporting cycle.",
         needs: [
-          'Live URLs and publishing dates',
-          'Search Console indexing and query checks',
-          'Demo event tests and internal-link review',
+          'Confirm all published pages are indexed and appearing for relevant searches.',
+          'Test demo forms, internal links and CRM tracking.',
+          'Compare initial traffic and demo enquiries against your starting figures.',
         ],
         ready:
-          'Technical issues are fixed, early query mismatches are logged and later comparisons use the original baseline.',
+          'All seven published pages have been checked for search visibility and working demo tracking. Any issues have been recorded and assigned for correction.',
       },
     ],
   },
+
   {
     days: 'DAYS 61–90',
     title: 'Distribute and refine',
     summary: 'Finish all ten priorities, support sales and review results.',
-    heading: 'Days 61–90: complete, distribute and review',
-    review:
-      'Review nine new pages and the enrolment update. Prioritise the next sprint using evidence and remaining buyer objections.',
-    next: 'Next: agree the next 90-day backlog from observed results.',
-    tasks: [
+    heading: 'Days 61–90: complete, distribute and review',    tasks: [
       {
-        id: '12',
+        id: '08',
         title: 'Publish the final three priorities',
         subtitle: 'Improve FT-01; create BO-01 and BO-02',
         owner: 'Content + SEO',
         timing: 'Weeks 9–10',
         type: 'Content',
         pages: BATCH_3,
-        why:
-          'Complete the planned scope with the enrolment improvement and two distinct shortlists, then connect them to the cost and comparison pages already published.',
+              why:
+          "Publish the enrolment page improvement alongside the global benefits platform and administration software shortlists. Connect them to relevant product pages so prospective buyers can move from evaluating providers to exploring Ben's capabilities.",
         needs: [
-          'Approved final-batch drafts',
-          'Tested enrolment-page demo path',
-          'Cross-links checked across all ten priorities',
+          'Approve and publish the three remaining pages.',
+          'Add links to relevant product, pricing and comparison content.',
+          'Verify demo CTAs, page functionality and conversion tracking.',
         ],
         ready:
           'Nine new pages and one existing-page improvement are live, reviewed and recorded in the measurement log.',
       },
       {
-        id: '13',
-        title: 'Put the pages into sales conversations',
+        id: '09',
+        title: 'Integrate the priority pages into your sales process',
         subtitle: 'Match cost, switching and technical objections to an asset',
         owner: 'Sales enablement',
         timing: 'Weeks 9–11',
         type: 'Content',
         pages: ALL_IDS,
         why:
-          'Pages should help active opportunities as well as search visitors. Sales needs to know which asset answers each objection and when to use it.',
+          'Share the completed pages with your Sales team and identify where they can support existing conversations. Focus on pricing discussions, competitor comparisons and product evaluation, using feedback from actual opportunities to identify any missing information.',
         needs: [
-          'One-page asset index grouped by buyer objection',
-          'Approved follow-up snippets and relevant CRM links',
-          'A route for AEs to flag unanswered buyer questions',
+          'Map the published pages to common objections and buying stages',
+          'Add approved content links to sales emails and CRM templates',
+          'Ask Sales to flag missing information and recurring buyer concerns',
         ],
         ready:
           'Sales can find and share the right page; feedback is recorded against the relevant URL.',
       },
+     
       {
-        id: '14',
-        title: 'Distribute the supporting evidence',
-        subtitle: 'Scorecards, worked examples and sourced frameworks',
-        owner: 'Marketing + Partners',
-        timing: 'Weeks 10–12',
-        type: 'Evidence',
-        pages: ALL_IDS,
-        why:
-          'Useful supporting material gives relevant partners and publications something specific to reference. Distribution should follow the audience and evidence, not a generic backlink quota.',
-        needs: [
-          'Approved scorecards and worked examples',
-          'Relevant partner, community and publication shortlist',
-          'Transparent authorship and accurate company profiles',
-        ],
-        ready:
-          'Outreach and responses are logged; earned references are verified without promising links, placements or AI mentions.',
-      },
-      {
-        id: '15',
-        title: 'Repeat search and AI visibility checks',
+        id: '10',
+        title: 'Review changes in search and AI visibility',
         subtitle: 'Compare query fit, citations and qualified engagement',
         owner: 'Analytics + SEO',
         timing: 'Weeks 11–12',
         type: 'Measurement',
         pages: ALL_IDS,
         why:
-          'Repeat the original prompt set and inspect the actual sources. Separate changes in visibility from evidence of buyer engagement and pipeline contribution.',
-        needs: [
-          'Same prompt set, platforms and comparable geography',
-          'Dated answer captures and cited URLs',
-          'Search, demo and CRM data where available',
+          'Review how your published pages are performing in Google and whether Ben is appearing more frequently in relevant AI recommendations. Compare these findings with demo enquiries and sales opportunities to understand where visibility is improving and what still needs attention.',
+           needs: [
+          'Compare search rankings, relevant traffic and demo enquiries against the original baseline.',
+          'Repeat the same AI buyer questions across all platforms assessed during the initial Week 1 baseline.',
+          'Review changes in brand mentions, cited sources and CRM opportunities linked to your published content.',
         ],
         ready:
           'The review distinguishes observed changes, sample variability and signals too early to interpret.',
       },
       {
-        id: '16',
-        title: 'Refine pages and agree the next sprint',
+        id: '11',
+        title: 'Review results and agree the next priorities',
         subtitle: 'Use buyer objections, query evidence and conversion friction',
         owner: 'SEO + Sales',
         timing: 'Days 85–90',
         type: 'Content',
         pages: ALL_IDS,
         why:
-          'The next sprint should follow what buyers still cannot resolve. Improve weak answers and conversion paths before expanding into another large publishing list.',
-        needs: [
-          'Page-level observations and sales feedback',
-          'Overlap, indexability and conversion review',
-          'Confirmed writing and review capacity',
+          'Use the search performance data, demo enquiries and Sales feedback collected during the programme to identify which pages need further improvements and which new opportunities deserve investment.',
+           needs: [
+          'Identify published pages that need improvements based on early performance',
+          'Review recurring buyer objections and gaps raised by your Sales team',
+          'Agree the next content priorities, responsible teams and delivery timelines',
         ],
         ready:
           'A ranked backlog identifies the next action, evidence needed, owner and reason for each recommendation.',
@@ -631,22 +633,23 @@ function downloadRoadmap() {
 export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
   const uid = useId();
   const [phaseIndex, setPhaseIndex] = useState(0);
-  const [filter, setFilter] = useState<WorkType | 'All work'>('All work');
-  const [selectedId, setSelectedId] = useState('04');
-  const [showPages, setShowPages] = useState(false);
+
+  const [selectedId, setSelectedId] = useState('01');
+
 
   const phase = ROADMAP_PHASES[phaseIndex];
-  const visibleTasks = phase.tasks.filter(
-    (task) => filter === 'All work' || task.type === filter
-  );
+  const visibleTasks = phase.tasks;
   const selected =
     visibleTasks.find((task) => task.id === selectedId) ?? visibleTasks[0];
 
+
+  const selectedHeadings = selected
+    ? TASK_HEADINGS[selected.id]
+    : undefined;
+
   function changePhase(index: number) {
     setPhaseIndex(index);
-    setFilter('All work');
     setSelectedId(ROADMAP_PHASES[index].tasks[0].id);
-    setShowPages(false);
   }
 
   return (
@@ -661,8 +664,7 @@ export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
             <span className="rm-eyebrow">05 / 90-DAY ROADMAP</span>
             <h2 id={`${uid}-heading`}>What to prioritise over the next 90 days.</h2>
             <p>
-              Sequence the work by buyer need, dependencies and publishing capacity. Each
-              phase ends with a clear review point.
+This plan gives your team a defined publishing schedule for the ten priority pages, including who should approve the work, when content goes live and how you'll assess its initial commercial contribution.
             </p>
           </div>
           <button type="button" className="rm-download" onClick={downloadRoadmap}>
@@ -671,11 +673,7 @@ export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
           </button>
         </header>
 
-        <p className="rm-note">
-          <strong>Proposed sequence</strong>
-          <span aria-hidden="true"> · </span>Confirm capacity before kickoff
-          <span className="rm-scope">9 new pages + 1 improvement</span>
-        </p>
+  
 
         <div className="rm-phases" role="group" aria-label="Choose a roadmap phase">
           {ROADMAP_PHASES.map((item, index) => (
@@ -702,24 +700,7 @@ export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
               <h3>{phase.heading}</h3>
               <span className="rm-badge">{visibleTasks.length} tasks</span>
             </div>
-            <div className="rm-filters" role="group" aria-label="Filter work">
-              {(['All work', 'Content', 'Evidence', 'Measurement'] as const).map(
-                (item) => (
-                  <button
-                    type="button"
-                    key={item}
-                    aria-pressed={filter === item}
-                    className={filter === item ? 'is-active' : ''}
-                    onClick={() => {
-                      setFilter(item);
-                      setShowPages(false);
-                    }}
-                  >
-                    {item}
-                  </button>
-                )
-              )}
-            </div>
+
             <div className="rm-table-labels" aria-hidden="true">
               <span>Order</span>
               <span>Deliverable</span>
@@ -728,12 +709,7 @@ export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
             </div>
             <div className="rm-task-list" role="group" aria-label="Select a task">
               {visibleTasks.length === 0 ? (
-                <p className="rm-empty">
-                  No {filter.toLowerCase()} tasks in this phase.{' '}
-                  <button type="button" onClick={() => setFilter('All work')}>
-                    Show all work
-                  </button>
-                </p>
+                <p className="rm-empty">No tasks in this phase.</p>
               ) : (
                 visibleTasks.map((task) => (
                   <button
@@ -742,7 +718,6 @@ export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
                     key={task.id}
                     onClick={() => {
                       setSelectedId(task.id);
-                      setShowPages(false);
                     }}
                     aria-pressed={task.id === selected?.id}
                     aria-controls={`${uid}-detail`}
@@ -750,10 +725,14 @@ export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
                     <span className="rm-order">{task.id}</span>
                     <span className="rm-task-main">
                       <Icon kind={task.type} />
-                      <span>
-                        <strong>{task.title}</strong>
-                        <small>{task.subtitle}</small>
-                      </span>
+                    
+            
+<span>
+  <strong>{task.title}</strong>
+</span>
+
+
+
                     </span>
                     <span className="rm-owner">
                       <span className="rm-sr">Suggested owner: </span>
@@ -781,64 +760,27 @@ export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
                     : selected.type.toUpperCase()}
                 </span>
                 <h3>{selected.title}</h3>
-                <div className="rm-tags">
-                  {selected.pages.length === 10 ? (
-                    <span>All 10 priority pages</span>
-                  ) : (
-                    selected.pages.map((pageId) => <span key={pageId}>{pageId}</span>)
-                  )}
-                  <span>{selected.timing}</span>
-                </div>
-                <h4>Why this comes {phaseIndex === 0 ? 'first' : 'next'}</h4>
-                <p>{selected.why}</p>
-                <h4>Required before delivery</h4>
+
+
+
+<div className="rm-tags">
+  <span>{selected.timing}</span>
+</div>
+
+
+
+                <h4>{selectedHeadings?.why ?? 'Why this matters'}</h4>
+                <p style={{ color: '#011522' }}>{selected.why}</p>
+
+                <h4>{selectedHeadings?.needs ?? 'Delivery requirements'}</h4>
                 <ul className="rm-needs">
                   {selected.needs.map((need) => (
-                    <li key={need}>{need}</li>
+                    <li key={need} style={{ color: '#011522' }}>
+                      {need}
+                    </li>
                   ))}
                 </ul>
-                <div className="rm-ready">
-                  <h4>Ready when</h4>
-                  <p>{selected.ready}</p>
-                </div>
-                <button
-                  type="button"
-                  className="rm-detail-toggle"
-                  aria-expanded={showPages}
-                  aria-controls={`${uid}-pages`}
-                  onClick={() => setShowPages(!showPages)}
-                >
-                  {showPages ? 'Hide page briefs' : `View ${selected.pages.length} page briefs`}
-                  <span aria-hidden="true">{showPages ? '−' : '↗'}</span>
-                </button>
-                <div id={`${uid}-pages`} hidden={!showPages} className="rm-page-briefs">
-                  {selected.pages.map((pageId) => {
-                    const page = PAGE_BY_ID.get(pageId)!;
-                    return (
-                      <article className="rm-page-brief" key={page.id}>
-                        <div className="rm-page-meta">
-                          <span>
-                            {page.id} · {page.action}
-                          </span>
-                          <span>Score {page.score}/100</span>
-                        </div>
-                        <h4>{page.title}</h4>
-                        <p>{page.brief}</p>
-                        <h5>Evidence needed</h5>
-                        <ul className="rm-needs">
-                          {page.evidence.map((item) => (
-                            <li key={item}>{item}</li>
-                          ))}
-                        </ul>
-                        <h5>Acceptance check</h5>
-                        <p>{page.ready}</p>
-                      </article>
-                    );
-                  })}
-                  <p className="rm-score-note">
-                    Scores are supplied planning estimates, not measured results.
-                  </p>
-                </div>
+
               </>
             ) : (
               <p className="rm-empty">
@@ -848,14 +790,7 @@ export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
           </aside>
         </div>
 
-        <footer className="rm-review">
-          <Icon kind="Flag" />
-          <strong>
-            Day {phaseIndex === 0 ? '30' : phaseIndex === 1 ? '60' : '90'} review
-          </strong>
-          <p>{phase.review}</p>
-          <span>{phase.next}</span>
-        </footer>
+
       </div>
     </section>
   );

@@ -1101,8 +1101,14 @@ Get a free 90-day roadmap showing the exact keywords to prioritise, pages to pub
                   </p>
                 )}
                 <p className="sp-micro">
-                  Free, tailored to your business. No obligation to work with
-                  us.
+                  <a
+                    href="https://customseoplan.seo-growup.com/samples/thanksben"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="sp-sample-link"
+                  >
+                    View sample report <Icon name="arrow" />
+                  </a>
                 </p>
               </form>
   
@@ -2374,6 +2380,35 @@ const STYLES = `
   font-size: 9px;
   color: #c2d9d5;
   margin-top: 10px !important;
+}
+
+/* New Sample Link Styles */
+.sp-sample-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #8fd9cf;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  text-decoration-color: transparent;
+  transition: all 0.2s ease;
+}
+
+.sp-sample-link .sp-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.2s ease;
+}
+
+.sp-sample-link:hover {
+  color: #ffffff;
+  text-decoration-color: currentColor;
+}
+
+.sp-sample-link:hover .sp-icon {
+  transform: translateX(3px);
 }
 
 .sp-hero-art {

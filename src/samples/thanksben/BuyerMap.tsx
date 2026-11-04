@@ -1,5 +1,24 @@
+
 import { useState } from 'react';
+import {
+  AlertTriangle,
+  ArrowLeftRight,
+  BarChart3,
+  CalendarClock,
+  CircleDollarSign,
+  ClipboardCheck,
+  Database,
+  FileWarning,
+  GitMerge,
+  Layers,
+  LockKeyhole,
+  Network,
+  RefreshCw,
+  ShieldCheck,
+  Users,
+} from 'lucide-react';
 import './BuyerMap.css';
+
 
 type Stage = 'Problem-aware' | 'Solution-aware' | 'Vendor evaluation';
 type Persona = {
@@ -7,7 +26,17 @@ type Persona = {
   role: string;
   dealRole: string;
   titles: string;
-  jtbd: { when: string; want: string; so: string };
+  
+challenges: {
+  icon: React.ComponentType<{
+    size?: number;
+    strokeWidth?: number;
+    className?: string;
+  }>;
+  title: string;
+  description: string;
+}[];
+
   triggers: string[];
   searches: { stage: Stage; queries: string[]; lands: string }[];
   filters: [string, string][];
@@ -25,11 +54,27 @@ const personas: Persona[] = [
     dealRole: 'Champion · owns the programme',
     titles:
       'Head of Reward, Global Head of Total Rewards, Director of Compensation & Benefits, VP Total Rewards, Global Benefits Director',
-    jtbd: {
-      when: 'I inherit a patchwork of local benefit vendors across 20+ countries',
-      want: 'one programme I can configure and report on centrally',
-      so: 'I can stop firefighting and prove to my CHRO and CFO that the strategy works',
-    },
+challenges: [
+  {
+    icon: Network,
+    title: 'Fragmented vendors',
+    description:
+      'Different providers, contracts and eligibility rules make it difficult to maintain consistent benefits across countries.',
+  },
+  {
+    icon: Layers,
+    title: 'Limited central control',
+    description:
+      'Local teams manage benefits independently, leaving little oversight of policy changes and programme delivery.',
+  },
+  {
+    icon: BarChart3,
+    title: 'Proving programme value',
+    description:
+      'Disconnected cost and utilisation data makes it difficult to justify spending to the CHRO and CFO.',
+  },
+],
+
     triggers: [
       'A broker or vendor contract is 12–18 months from renewal',
       'M&A adds new entities with their own benefits',
@@ -121,11 +166,30 @@ const personas: Persona[] = [
     dealRole: 'Operator · lives in the tool daily',
     titles:
       'Global Benefits Manager, Benefits Operations Lead, Benefits Specialist, HR Operations Manager, People Ops Manager, Head of Colleague Experience',
-    jtbd: {
-      when: 'enrolment windows and life events hit across several countries at once',
-      want: 'eligibility and enrolment to run themselves',
-      so: 'I stop answering the same HR tickets and stop fixing spreadsheets before payroll cut-off',
-    },
+   
+
+challenges: [
+  {
+    icon: CalendarClock,
+    title: 'Overlapping enrolments',
+    description:
+      'Different enrolment deadlines and country-specific rules create bottlenecks during already busy benefits cycles.',
+  },
+  {
+    icon: RefreshCw,
+    title: 'Manual employee changes',
+    description:
+      'Life events, eligibility updates and provider changes require repeated spreadsheet corrections and manual follow-ups.',
+  },
+  {
+    icon: Users,
+    title: 'Employee support backlog',
+    description:
+      'Questions about eligibility, missing enrolments and available benefits consume time needed for programme administration.',
+  },
+],
+
+
     triggers: [
       'Open enrolment season is six to eight weeks away',
       'A new country launches and local eligibility rules differ',
@@ -216,11 +280,30 @@ const personas: Persona[] = [
     dealRole: 'Gatekeeper · can quietly kill the deal',
     titles:
       'Global Payroll Manager, Head of Payroll, Payroll Operations Lead, Payroll Director, Payroll Transformation Lead',
-    jtbd: {
-      when: 'benefit changes feed into payroll every month from several systems',
-      want: 'clean, validated deduction data before cut-off',
-      so: 'I don’t spend payday week reconciling and don’t own the error when someone’s pay is wrong',
-    },
+
+
+challenges: [
+  {
+    icon: ArrowLeftRight,
+    title: 'Disconnected payroll data',
+    description:
+      'Benefits deductions arrive in inconsistent formats from different providers, requiring manual reconciliation before processing.',
+  },
+  {
+    icon: FileWarning,
+    title: 'Incorrect deductions',
+    description:
+      'Late enrolment changes and outdated records can result in incorrect employee pay and escalations.',
+  },
+  {
+    icon: CalendarClock,
+    title: 'Payroll cut-off pressure',
+    description:
+      'Missing files and unresolved discrepancies leave little time to validate deductions before monthly payroll closes.',
+  },
+],
+
+
     triggers: [
       'A payroll error escalated to HR leadership or the CFO',
       'A new benefit with salary deductions is about to go live',
@@ -305,11 +388,30 @@ const personas: Persona[] = [
     dealRole: 'Economic buyer · signs off the spend',
     titles:
       'CFO, VP Finance, Finance Director, Head of FP&A, HR Finance Business Partner, Group Financial Controller',
-    jtbd: {
-      when: 'I’m asked to approve another HR platform',
-      want: 'a defensible number for what benefits really cost across entities and what they return',
-      so: 'I can sign it off without being the person who bought another tool that doesn’t land',
-    },
+  
+
+challenges: [
+  {
+    icon: CircleDollarSign,
+    title: 'Unclear total spending',
+    description:
+      'Costs are spread across local providers, brokers and entities, obscuring the full cost of benefits administration.',
+  },
+  {
+    icon: Database,
+    title: 'Inconsistent cost reporting',
+    description:
+      'Different reporting formats make it difficult to compare spending per employee, country and business entity.',
+  },
+  {
+    icon: BarChart3,
+    title: 'Unproven financial returns',
+    description:
+      'Platform proposals often lack the implementation costs, savings assumptions and evidence needed for budget approval.',
+  },
+],
+
+
     triggers: [
       'Annual budget cycle, usually Q3 and Q4',
       'A cost-reduction mandate that includes HR technology',
@@ -389,12 +491,30 @@ const personas: Persona[] = [
     role: 'HRIS Lead and Information Security',
     dealRole: 'Technical gate · slows or unblocks the deal',
     titles:
-      'HRIS Manager, Head of People Systems, HR Technology Lead, Director of HR Technology, Information Security Manager, Third-Party Risk Manager, Data Protection Officer',
-    jtbd: {
-      when: 'a new people tool is proposed and lands on my desk for review',
-      want: 'to know in one pass how it integrates with our HRIS and SSO and whether it clears vendor security',
-      so: 'I can approve or block without a six-week questionnaire cycle',
-    },
+      'HRIS Manager, Head of People Systems, HR Technology Lead, Information Security Manager, Third-Party Risk Manager, Data Protection Officer',
+  
+
+challenges: [
+  {
+    icon: GitMerge,
+    title: 'Integration complexity',
+    description:
+      'Unclear HRIS connections, data mappings and synchronisation rules create uncertainty about implementation effort.',
+  },
+  {
+    icon: LockKeyhole,
+    title: 'Employee data exposure',
+    description:
+      'Sensitive employee information crossing systems and jurisdictions raises questions about access, storage and data protection.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Prolonged security reviews',
+    description:
+      'Missing technical documentation, security evidence and vendor controls delay procurement and technical approval.',
+  },
+],
+
     triggers: [
       'Vendor reaches shortlist and procurement triggers a security review',
       'DPIA required because employee data crosses borders',
@@ -544,13 +664,32 @@ This framework breaks down the five core decision makers defining your exact tar
             </div>
           </div>
 
-          <div className="bm-jtbd">
-            <small>JOB TO BE DONE</small>
-            <p>
-              <b>When</b> {p.jtbd.when}, <b>I want</b> {p.jtbd.want},{' '}
-              <b>so I can</b> {p.jtbd.so}.
-            </p>
+
+<div className="bm-challenges">
+  <div className="bm-challenges-label">
+    TOP CHALLENGES
+  </div>
+
+  <div className="bm-challenges-grid">
+    {p.challenges.map((challenge) => {
+      const Icon = challenge.icon;
+
+      return (
+        <div className="bm-challenge" key={challenge.title}>
+          <div className="bm-challenge-icon">
+            <Icon size={25} strokeWidth={1.8} />
           </div>
+
+          <div className="bm-challenge-content">
+            <h4>{challenge.title}</h4>
+            <p>{challenge.description}</p>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+
 
           <div className="bm-grid">
             <div className="bm-col">
@@ -570,9 +709,9 @@ This framework breaks down the five core decision makers defining your exact tar
                       <code key={q}>{q}</code>
                     ))}
                   </div>
-                  <div className="bm-lands">
-                    <span>Lands on</span> {s.lands}
-                  </div>
+
+          
+
                 </div>
               ))}
 

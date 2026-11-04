@@ -63,28 +63,128 @@
 .bm-titles b {
   color: #11302e;
 }
-.bm-jtbd {
+/* TOP CHALLENGES */
+
+.bm-challenges {
   background: #eaf5f0;
   border-left: 3px solid #167273;
   border-radius: 4px;
-  padding: 20px 22px;
+  padding: 22px 24px 24px;
   margin: 26px 0 30px;
 }
-.bm-jtbd small {
+
+.bm-challenges-label {
+  font-family: 'Montserrat', sans-serif;
   font-size: 11px;
-  letter-spacing: 0.14em;
   font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
   color: #167273;
+  margin-bottom: 22px;
 }
-.bm-jtbd p {
-  font-size: clamp(14px, 1.5vw, 18px);
-  line-height: 1.7;
-  letter-spacing: -0.02em;
-  margin-top: 8px;
-  color: #203836;
+
+.bm-challenges-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0;
 }
-.bm-jtbd b {
+
+.bm-challenge {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  min-width: 0;
+  padding: 0 24px;
+}
+
+.bm-challenge:first-child {
+  padding-left: 0;
+}
+
+.bm-challenge:last-child {
+  padding-right: 0;
+}
+
+.bm-challenge + .bm-challenge {
+  border-left: 1px solid #cfe0d9;
+}
+
+.bm-challenge-icon {
   color: #167273;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 2px;
+}
+
+.bm-challenge-content {
+  min-width: 0;
+}
+
+.bm-challenge-content h4 {
+  font-family: 'Montserrat', sans-serif !important;
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  line-height: 1.4;
+  letter-spacing: -0.025em;
+  color: #011522;
+  margin: 0 0 7px !important;
+  text-transform: none !important;
+}
+
+.bm-challenge-content p {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  line-height: 1.65;
+  color: #011522;
+  margin: 0;
+}
+
+/* TABLET */
+
+@media (max-width: 1100px) {
+  .bm-challenges-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .bm-challenge,
+  .bm-challenge:first-child,
+  .bm-challenge:last-child {
+    padding: 0;
+  }
+
+  .bm-challenge + .bm-challenge {
+    border-left: none;
+    border-top: 1px solid #cfe0d9;
+    padding-top: 18px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 560px) {
+  .bm-challenges {
+    padding: 20px;
+  }
+
+  .bm-challenges-label {
+    margin-bottom: 18px;
+  }
+
+  .bm-challenge-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .bm-challenge-content h4 {
+    font-size: 14px !important;
+  }
+
+  .bm-challenge-content p {
+    font-size: 13px;
+  }
 }
 .bm-grid {
   display: grid;

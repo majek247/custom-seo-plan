@@ -608,14 +608,7 @@ This SEO plan sets out how Ben can reach more potential customers and create mor
             <Arrow />
           </button>
 
-          <button
-            type="button"
-            className="tb-editorial-secondary"
-            onClick={() => window.print()}
-          >
-            Download PDF
-            <Download />
-          </button>
+ 
         </div>
       </div>
 

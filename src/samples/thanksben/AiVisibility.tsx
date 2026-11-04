@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import ExcelJS from 'exceljs';
 import './AiVisibility.css';
 
 /* ------------------------------------------------------------------ */
@@ -574,6 +575,47 @@ const PROMPTS: Prompt[] = RAW.map((p, i) => ({
   id: `P${String(i + 1).padStart(2, '0')}`,
 }));
 
+
+
+export function getAiVisibilityWorkbookData() {
+  return PROMPTS.map(p => ({
+    id: p.id,
+    stage: p.stage,
+    buyer: p.buyer,
+    keywords: [...p.keywords],
+    prompt: p.prompt,
+    priority: p.priority,
+    why: p.why,
+
+    results: p.results.map((r, index) => ({
+      platform: PLATFORMS[index].name,
+      status: STATUS_LABEL[r.s],
+      position: r.pos
+        ? `Named ${r.pos[0]} of ${r.pos[1]}`
+        : '',
+      cited: r.cited ?? '',
+      said: r.said ?? '',
+      also: r.also ?? [],
+      gap: r.gap ?? ''
+    })),
+
+    fixes: p.fix.map(f => ({
+      action: f.action,
+      title: f.title,
+      text: f.text,
+      ref: f.ref ?? ''
+    })),
+
+    moves: p.moves.map(m => ({
+      type: m.type,
+      title: m.title,
+      text: m.text
+    }))
+  }));
+}
+
+
+
 /* ------------------------------------------------------------------ */
 /* Derived values and helpers                                          */
 /* ------------------------------------------------------------------ */
@@ -591,56 +633,370 @@ const ordinal = (n: number) => {
   const v = n % 100;
   return n + (s[(v - 20) % 10] || s[v] || s[0]);
 };
+ 
 
-const csvCell = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
 
-function exportCsv(rows: Prompt[]) {
-  const head = [
-    'ID',
-    'Stage',
-    'Buyer prompt',
-    'Buyer',
-    'Mapped keywords',
-    ...PLATFORMS.map((p) => `${p.name} status`),
-    'Platforms showing Ben',
-    'What AI said (sample)',
-    'Priority',
-    'Why it matters',
-    'Content to create or fix',
-    'Authority moves',
+
+async function exportXlsx() {
+  const workbook = new ExcelJS.Workbook();
+
+  workbook.creator = 'GrowUp';
+  workbook.title = 'Ben | AI Search Visibility & Authority';
+
+  const C = {
+    navy: '011522',
+    teal: '167273',
+    mint: 'F3F9F5',
+    white: 'FFFFFF',
+    text: '011522',
+    muted: '526775',
+    line: 'DEE8E6'
+  };
+
+  const sheet = workbook.addWorksheet('AI Visibility', {
+    views: [{ state: 'frozen', ySplit: 2 }],
+    properties: {
+      tabColor: { argb: C.teal },
+      defaultRowHeight: 26
+    }
+  });
+
+  // Eight columns allow detailed copy without excessive scrolling.
+  sheet.columns = [
+    { width: 24 },
+    { width: 26 },
+    { width: 28 },
+    { width: 32 },
+    { width: 38 },
+    { width: 38 },
+    { width: 38 },
+    { width: 32 }
   ];
-  const lines = rows.map((p) =>
-    [
-      p.id,
-      p.stage,
-      p.prompt,
-      p.buyer,
-      p.keywords.join(' '),
-      ...p.results.map((r) => STATUS_LABEL[r.s]),
-      p.results.filter((r) => r.s !== 'absent').length,
-      p.results
-        .map((r, i) => (r.said ? `${PLATFORMS[i].name}: ${r.said}` : ''))
-        .filter(Boolean)
-        .join(' | '),
-      p.priority,
-      p.why,
-      p.fix.map((f) => `${f.action}: ${f.text}`).join(' | '),
-      p.moves.map((m) => `${m.type}: ${m.title}. ${m.text}`).join(' | '),
-    ]
-      .map(csvCell)
-      .join(','),
+
+  function cellBlock(
+    row: number,
+    from: number,
+    to: number,
+    value: string,
+    options: {
+      bg?: string;
+      color?: string;
+      bold?: boolean;
+      size?: number;
+      height?: number;
+    } = {}
+  ) {
+    sheet.mergeCells(row, from, row, to);
+
+    const cell = sheet.getCell(row, from);
+    cell.value = value;
+
+    cell.font = {
+      name: 'Aptos',
+      size: options.size ?? 10,
+      bold: options.bold ?? false,
+      color: { argb: options.color ?? C.text }
+    };
+
+    cell.alignment = {
+      vertical: 'middle',
+      horizontal: 'left',
+      wrapText: true,
+      indent: 1
+    };
+
+    if (options.bg) {
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: options.bg }
+      };
+    }
+
+    sheet.getRow(row).height = options.height ?? 36;
+  }
+
+  function section(row: number, name: string) {
+    cellBlock(row, 1, 8, name, {
+      bg: C.teal,
+      color: C.white,
+      bold: true,
+      size: 10,
+      height: 32
+    });
+  }
+
+  function detail(
+    row: number,
+    label: string,
+    value: string,
+    height = 85
+  ) {
+    cellBlock(row, 1, 2, label, {
+      bg: C.mint,
+      color: C.teal,
+      bold: true,
+      height
+    });
+
+    cellBlock(row, 3, 8, value, {
+      color: C.text,
+      height
+    });
+  }
+
+  // Workbook heading
+  cellBlock(
+    1, 1, 8,
+    'Ben | AI Search Visibility & Authority',
+    {
+      bg: C.navy,
+      color: C.white,
+      bold: true,
+      size: 18,
+      height: 48
+    }
   );
-  const blob = new Blob(
-    ['﻿' + [head.map(csvCell).join(','), ...lines].join('\r\n')],
-    { type: 'text/csv;charset=utf-8' },
+
+  cellBlock(
+    2, 1, 8,
+    'GROWUP / BEN / AI SEARCH VISIBILITY',
+    {
+      color: C.teal,
+      bold: true,
+      size: 10,
+      height: 30
+    }
   );
+
+  let currentRow = 4;
+
+  // Export all ten prompts in their original order.
+  PROMPTS.forEach((prompt, index) => {
+    // Prompt identifier and stage
+    cellBlock(
+      currentRow, 1, 8,
+      `${String(index + 1).padStart(2, '0')} / ${prompt.stage.toUpperCase()}`,
+      {
+        bg: C.navy,
+        color: C.white,
+        bold: true,
+        size: 12,
+        height: 40
+      }
+    );
+    currentRow++;
+
+    // Full original buyer question
+    cellBlock(
+      currentRow, 1, 8,
+      prompt.prompt,
+      {
+        bg: C.mint,
+        color: C.navy,
+        bold: true,
+        size: 12,
+        height: 85
+      }
+    );
+    currentRow += 2;
+
+    // PLATFORM RESULTS
+    section(currentRow, 'PLATFORM RESULTS');
+    currentRow++;
+
+    const headers = [
+      'Platform',
+      'Ben’s presence',
+      'Position',
+      'Source'
+    ];
+
+    const columns = [1, 3, 5, 7];
+
+    headers.forEach((header, i) => {
+      cellBlock(
+        currentRow,
+        columns[i],
+        columns[i] + 1,
+        header,
+        {
+          bg: 'E4F0EC',
+          color: C.navy,
+          bold: true,
+          height: 34
+        }
+      );
+    });
+    currentRow++;
+
+    prompt.results.forEach((result, i) => {
+      const position = result.pos
+        ? `Named ${result.pos[0]}${ordinal(result.pos[0]).slice(String(result.pos[0]).length)} of ${result.pos[1]}`
+        : '—';
+
+      const values = [
+        PLATFORMS[i].name,
+        STATUS_LABEL[result.s],
+        position,
+        result.cited ?? '—'
+      ];
+
+      values.forEach((value, j) => {
+        cellBlock(
+          currentRow,
+          columns[j],
+          columns[j] + 1,
+          value,
+          {
+            bg: i % 2 === 0 ? C.white : C.mint,
+            height: 38
+          }
+        );
+      });
+
+      currentRow++;
+    });
+
+    currentRow++;
+
+    // ANSWER EVIDENCE
+    section(currentRow, 'ANSWER EVIDENCE');
+    currentRow++;
+
+    const evidence = prompt.results
+      .map((result, i) => ({
+        ...result,
+        platform: PLATFORMS[i].name
+      }))
+      .filter(result => result.s !== 'absent');
+
+    if (evidence.length === 0) {
+      cellBlock(
+        currentRow, 1, 8,
+        'No Ben mentions in this sample.',
+        {
+          color: C.muted,
+          height: 38
+        }
+      );
+      currentRow++;
+    } else {
+      evidence.forEach(result => {
+        detail(
+          currentRow,
+          `${result.platform} / ${STATUS_LABEL[result.s]}`,
+          result.said ?? 'No sample excerpt recorded.',
+          85
+        );
+        currentRow++;
+
+        if (result.also?.length) {
+          detail(
+            currentRow,
+            'Also named',
+            result.also.join(' · '),
+            42
+          );
+          currentRow++;
+        }
+
+        if (result.gap) {
+          detail(
+            currentRow,
+            'Gap',
+            result.gap,
+            65
+          );
+          currentRow++;
+        }
+      });
+    }
+
+    currentRow++;
+
+    // CONTENT & DISTRIBUTION
+    section(currentRow, 'CONTENT & DISTRIBUTION');
+    currentRow++;
+
+    detail(
+      currentRow,
+      'What to improve',
+      prompt.why,
+      110
+    );
+    currentRow++;
+
+    // Original content recommendations
+    prompt.fix.forEach(fix => {
+      detail(
+        currentRow,
+        `${fix.action} / ${fix.title}`,
+        fix.text + (fix.ref ? `\n${fix.ref}` : ''),
+        135
+      );
+      currentRow++;
+    });
+
+    // Original authority recommendations
+    prompt.moves.forEach(move => {
+      detail(
+        currentRow,
+        `${move.type} / ${move.title}`,
+        move.text,
+        135
+      );
+      currentRow++;
+    });
+
+    // Spacing between each buyer prompt
+    currentRow += 3;
+  });
+
+  // Discreet note: source results are illustrative.
+  cellBlock(
+    currentRow, 1, 8,
+    'Illustrative research sample. AI platform responses require dated, independently logged verification before use as live findings.',
+    {
+      color: C.muted,
+      size: 9,
+      height: 36
+    }
+  );
+
+  sheet.pageSetup = {
+    orientation: 'landscape',
+    paperSize: 9,
+    fitToPage: true,
+    fitToWidth: 1,
+    fitToHeight: 0
+  };
+
+  sheet.headerFooter.oddFooter =
+    '&LGrowUp | AI Search Visibility & Authority&RPage &P of &N';
+
+  // Generate and download Excel.
+  const buffer = await workbook.xlsx.writeBuffer();
+
+  const blob = new Blob([buffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  });
+
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = 'ai-visibility-sample-audit.csv';
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'Ben-AI-Search-Visibility.xlsx';
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+
+
 
 /* ------------------------------------------------------------------ */
 /* Small components                                                    */
@@ -807,7 +1163,7 @@ export default function AiVisibility() {
   <h2>Where Ben stands across AI search results and recommendations.</h2>
 
   <p>
-We took the same ten priority searches and tested them across four AI platforms. The results show where Ben appears, which competitors are recommended, and what content or evidence could improve its visibility.
+We extended our analysis of the same ten priority searches to four AI platforms. The results show where Ben is recommended, which competing providers appear more frequently, and where gaps in content or supporting evidence could be limiting its visibility.
   </p>
 </header>
     
@@ -818,7 +1174,10 @@ We took the same ten priority searches and tested them across four AI platforms.
   <div className="av-summary-item">
     <strong>{Math.round((VISIBLE / TOTAL) * 100)}%</strong>
     <div>
-      <h3>Prompt coverage</h3>
+      <h3>
+        Prompt coverage
+        <span className="av-tooltip-trigger" data-tooltip="Percentage of the 10 buyer prompts where Ben is mentioned on at least one AI platform.">i</span>
+      </h3>
       <p>{VISIBLE} of {TOTAL} prompts</p>
     </div>
   </div>
@@ -826,7 +1185,10 @@ We took the same ten priority searches and tested them across four AI platforms.
   <div className="av-summary-item">
     <strong>{TOP_PICKS}</strong>
     <div>
-      <h3>Recommendations</h3>
+      <h3>
+        Recommendations
+        <span className="av-tooltip-trigger" data-tooltip="Total number of times Ben was explicitly recommended as a top choice across all 40 AI answers.">i</span>
+      </h3>
       <p>Across {CELLS.length} sample answers</p>
     </div>
   </div>
@@ -834,7 +1196,10 @@ We took the same ten priority searches and tested them across four AI platforms.
   <div className="av-summary-item">
     <strong>{CITED}</strong>
     <div>
-      <h3>Source citations</h3>
+      <h3>
+        Source citations
+        <span className="av-tooltip-trigger" data-tooltip="Number of times an AI platform cited a Ben URL (e.g., thanksben.com) as the source for its answer.">i</span>
+      </h3>
       <p>Across {CELLS.length} sample answers</p>
     </div>
   </div>
@@ -842,7 +1207,10 @@ We took the same ten priority searches and tested them across four AI platforms.
   <div className="av-summary-item">
     <strong>{TOTAL - VISIBLE}</strong>
     <div>
-      <h3>Uncovered prompts</h3>
+      <h3>
+        Uncovered prompts
+        <span className="av-tooltip-trigger" data-tooltip="The number of priority prompts where Ben is completely absent across all four AI platforms.">i</span>
+      </h3>
       <p>No appearance on any platform</p>
     </div>
   </div>
@@ -864,23 +1232,7 @@ We took the same ten priority searches and tested them across four AI platforms.
   </div>
 </div>
 
-<details className="av-stage-disclosure">
-  <summary>View coverage by buying stage</summary>
-
-  <div className="av-stage-grid">
-    {stageCover.map((item) => (
-      <div key={item.s}>
-        <span>{item.s}</span>
-        <strong>{item.hit}/{item.total}</strong>
-      </div>
-    ))}
-  </div>
-
-  <p>
-    Coverage includes any mention of Ben. {HEDGED} sample
-    answers have a recorded evidence gap.
-  </p>
-</details>
+{/* Removed View coverage by buying stage */}
 
 
         {/* ---------- Toolbar ---------- */}
@@ -927,17 +1279,7 @@ aria-pressed={stage === s}
                 ...PLATFORMS.map((p): [string, string] => [p.key, p.name]),
               ]}
             />
-            <Field
-              label="Priority"
-              value={prio}
-              onChange={(v) => setPrio(v as 'all' | Priority)}
-              options={[
-                ['all', 'All priorities'],
-                ['High', 'High'],
-                ['Medium', 'Medium'],
-                ['Low', 'Low'],
-              ]}
-            />
+
           </div>
           <div className="av-toolbar-row">
             <span className="av-count">
@@ -949,14 +1291,18 @@ aria-pressed={stage === s}
                   Reset filters
                 </button>
               )}
-              <button
-                type="button"
-                className="av-export"
-                onClick={() => exportCsv(rows)}
-                disabled={!rows.length}
-              >
-                Export CSV ({rows.length})
-              </button>
+
+              
+<button
+  type="button"
+  className="av-export"
+  onClick={exportXlsx}
+  disabled={!PROMPTS.length}
+>
+  Export XLSX ({PROMPTS.length})
+</button>
+         
+         
             </div>
           </div>
         </div>
@@ -981,11 +1327,10 @@ aria-pressed={stage === s}
                 <i className="d d-passing" />
                 Passing
               </span>
-              <span>
+               <span>
                 <i className="d d-absent" />
                 None
               </span>
-              <small>Dots read GPT · GEM · PPX · AIO</small>
             </div>
             <div
   className="av-list"

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import ExcelJS from 'exceljs';
 import './KeywordPriorities.css';
 
 /* ------------------------------------------------------------------ */
@@ -266,6 +267,46 @@ const KEYWORDS: Kw[] = [
 
 
 
+
+export function getKeywordWorkbookRows() {
+  const CATEGORY_ORDER: GroupKey[] = [
+    'alt',
+    'best',
+    'vs',
+    'price',
+    'jtbd',
+    'feature'
+  ];
+
+  return [...KEYWORDS]
+    .sort(
+      (a, b) =>
+        CATEGORY_ORDER.indexOf(a.group) -
+          CATEGORY_ORDER.indexOf(b.group) ||
+        PRIORITY_RANK[a.priority] -
+          PRIORITY_RANK[b.priority] ||
+        b.score - a.score ||
+        a.order - b.order
+    )
+    .map(k => ({
+      id: k.id,
+      category: GROUPS[k.group].label,
+      keyword: k.keyword,
+      title: k.title,
+      format: k.format,
+      action: k.action,
+      priority: k.priority,
+      volume: k.volume,
+      difficulty: k.kd,
+      score: k.score,
+      buyer: BUYERS[k.buyer],
+      suggestedUrl: k.action === 'Create' ? urlFor(k) : '',
+      rationale: k.why
+    }));
+}
+
+
+
 const diffBand = (kd: number): DiffBand =>
   kd <= 30 ? 'easy' : kd <= 50 ? 'moderate' : 'hard';
 const diffLabel: Record<DiffBand, string> = {
@@ -292,7 +333,7 @@ const SORTERS: Record<SortKey, (a: Kw, b: Kw) => number> = {
   original: (a, b) => a.order - b.order,
 };
 
-const csvCell = (v: string | number) => `"${String(v).replace(/"/g, '""')}"`;
+ 
 
 function CopyButton({ text, label = 'Copy' }: { text: string; label?: string }) {
   const [done, setDone] = useState(false);
@@ -479,51 +520,266 @@ export default function KeywordPriorities() {
     );
   };
 
-  const exportCsv = () => {
-    const head = [
-      'ID',
-      'Group',
-      'Search theme',
-      'Working title',
-      'Page format',
+
+  const exportXlsx = async () => {
+    const workbook = new ExcelJS.Workbook();
+
+    workbook.creator = 'GrowUp';
+    workbook.title = 'Ben | Keyword Priorities';
+
+    const C = {
+      navy: '011522',
+      teal: '167273',
+      mint: 'F3F9F5',
+      white: 'FFFFFF',
+      text: '011522'
+    };
+
+    // Export all 78 keywords, grouped by category.
+    const keywordRows = getKeywordWorkbookRows();
+
+    const sheet = workbook.addWorksheet('Keyword Priorities', {
+      views: [
+        {
+          state: 'frozen',
+          ySplit: 4,
+          xSplit: 3
+        }
+      ],
+      properties: {
+        tabColor: { argb: C.teal }
+      }
+    });
+
+    const widths = [
+      15, // Keyword ID
+      22, // Category
+      52, // Search Keyword
+      68, // Working Title
+      22, // Page Format
+      15, // Action
+      15, // Priority
+      20, // Est. Monthly Volume
+      16, // Difficulty
+      19, // Opportunity Score
+      24, // Primary Buyer
+      62  // Suggested URL
+    ];
+
+    sheet.columns = widths.map(width => ({ width }));
+
+    // Workbook title.
+    sheet.mergeCells(1, 1, 1, 12);
+
+    const titleCell = sheet.getCell(1, 1);
+    titleCell.value = 'Ben | Keyword & Page Priorities';
+
+    titleCell.font = {
+      name: 'Aptos',
+      size: 18,
+      bold: true,
+      color: { argb: C.white }
+    };
+
+    titleCell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: C.navy }
+    };
+
+    titleCell.alignment = {
+      vertical: 'middle',
+      indent: 1
+    };
+
+    sheet.getRow(1).height = 46;
+
+    // Brand subtitle.
+    sheet.mergeCells(2, 1, 2, 12);
+
+    const subtitle = sheet.getCell(2, 1);
+
+    subtitle.value =
+      'GROWUP / BEN / KEYWORD & PAGE PRIORITIES';
+
+    subtitle.font = {
+      name: 'Aptos',
+      size: 10,
+      bold: true,
+      color: { argb: C.teal }
+    };
+
+    sheet.getRow(2).height = 30;
+
+    // Table headings.
+    const headers = [
+      'Keyword ID',
+      'Category',
+      'Search Keyword',
+      'Working Title',
+      'Page Format',
       'Action',
       'Priority',
-      'Est. monthly volume',
-      'Est. difficulty',
-      'Opportunity score',
-      'Primary buyer',
-      'Suggested URL',
-      'Why it matters',
+      'Est. Monthly Volume',
+      'Difficulty',
+      'Opportunity Score',
+      'Primary Buyer',
+      'Suggested URL'
     ];
-    const lines = rows.map((k) =>
-      [
-        k.id,
-        GROUPS[k.group].label,
-        k.keyword,
-        k.title,
-        k.format,
-        k.action,
-        k.priority,
-        k.volume,
-        k.kd,
-        k.score,
-        BUYERS[k.buyer],
-        k.action === 'Create' ? urlFor(k) : '',
-        k.why,
-      ]
-        .map(csvCell)
-        .join(','),
-    );
-    const blob = new Blob([[head.map(csvCell).join(','), ...lines].join('\n')], {
-      type: 'text/csv;charset=utf-8;',
+
+    const heading = sheet.getRow(4);
+    heading.values = headers;
+    heading.height = 36;
+
+    heading.eachCell(cell => {
+      cell.font = {
+        name: 'Aptos',
+        size: 10,
+        bold: true,
+        color: { argb: C.white }
+      };
+
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: C.teal }
+      };
+
+      cell.alignment = {
+        vertical: 'middle',
+        wrapText: true,
+        indent: 1
+      };
     });
+
+    // Add all 78 keyword records.
+    keywordRows.forEach((keyword, index) => {
+      const row = sheet.addRow([
+        keyword.id,
+        keyword.category,
+        keyword.keyword,
+        keyword.title,
+        keyword.format,
+        keyword.action,
+        keyword.priority,
+        keyword.volume,
+        keyword.difficulty,
+        keyword.score,
+        keyword.buyer,
+        keyword.suggestedUrl
+      ]);
+
+      row.height = 52;
+
+      row.eachCell(cell => {
+        cell.font = {
+          name: 'Aptos',
+          size: 10,
+          color: { argb: C.text }
+        };
+
+        cell.alignment = {
+          vertical: 'middle',
+          wrapText: true,
+          indent: 1
+        };
+
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: {
+            argb: index % 2 === 0
+              ? C.white
+              : C.mint
+          }
+        };
+      });
+
+      // Highlight priority labels.
+      const priorityCell = row.getCell(7);
+
+      const priorityColours: Record<string, string> = {
+        High: 'FCE8E4',
+        Medium: 'FFF2DC',
+        Low: 'EDF1F4'
+      };
+
+      priorityCell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: {
+          argb: priorityColours[keyword.priority]
+        }
+      };
+
+      priorityCell.font = {
+        name: 'Aptos',
+        size: 10,
+        bold: true,
+        color: {
+          argb:
+            keyword.priority === 'High'
+              ? 'A33A2B'
+              : keyword.priority === 'Medium'
+                ? '916014'
+                : '536675'
+        }
+      };
+
+      // Highlight opportunity score.
+      const scoreCell = row.getCell(10);
+
+      scoreCell.font = {
+        name: 'Aptos',
+        size: 11,
+        bold: true,
+        color: { argb: C.teal }
+      };
+    });
+
+    // Format numerical columns.
+    sheet.getColumn(8).numFmt = '#,##0';
+    sheet.getColumn(9).numFmt = '0';
+    sheet.getColumn(10).numFmt = '0';
+
+    // Enable filtering and sorting in Excel.
+    sheet.autoFilter = {
+      from: { row: 4, column: 1 },
+      to: {
+        row: 4 + keywordRows.length,
+        column: 12
+      }
+    };
+
+    // Print settings.
+    sheet.pageSetup = {
+      orientation: 'landscape',
+      fitToPage: true,
+      fitToWidth: 1,
+      fitToHeight: 0
+    };
+
+    // Download the workbook.
+    const buffer = await workbook.xlsx.writeBuffer();
+
+    const blob = new Blob([buffer], {
+      type:
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+
     const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'keyword-priorities.csv';
-    a.click();
-    URL.revokeObjectURL(url);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'Ben-Keyword-Priorities.xlsx';
+
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
+
 
 
   return (
@@ -541,7 +797,7 @@ A breakdown of target keywords, page recommendations, and relative priorities.
     </h2>
 
     <p className="kp-intro-description">
-We’ve organised 78 keywords across six search categories, from vendor comparisons to specific benefits management needs. Each recommendation shows which pages Ben should create or improve and how urgently the work should be prioritised.
+This shortlist covers 78 keywords across six categories, from early research into benefits administration to active vendor evaluation. Use the estimated demand, competition and priority scores to identify the searches worth targeting first. 
     </p>
 
   </div>
@@ -652,37 +908,72 @@ We’ve organised 78 keywords across six search categories, from vendor comparis
 
         <div className="kp-toolbar-row">
           <div className="kp-toggles">
-            <button
-              type="button"
-              className={`kp-toggle${quick ? ' on' : ''}`}
-              aria-pressed={quick}
-              onClick={() => setQuick((v) => !v)}
-              title="Difficulty 35 or lower, and not Low priority"
-            >
-              Quick wins
-            </button>
-            <button
-              type="button"
-              className={`kp-toggle${onlyShort ? ' on' : ''}`}
-              aria-pressed={onlyShort}
-              onClick={() => setOnlyShort((v) => !v)}
-            >
-              ★ Shortlisted ({shortlist.length})
-            </button>
+           
+           
+ 
+<button
+  type="button"
+  className={`kp-toggle${quick ? ' on' : ''}`}
+  aria-pressed={quick}
+  onClick={() => setQuick((v) => !v)}
+>
+  Quick wins
+
+  <span className="kp-action-info" aria-hidden="true">
+    ⓘ
+    <span className="kp-tooltip">
+      Shows keywords with an estimated difficulty score of
+      35 or lower and a High or Medium priority. These are
+      potentially more accessible opportunities, but each
+      still needs validation against search intent, existing
+      page coverage and commercial relevance.
+    </span>
+  </span>
+</button>
+
+
+    
+
+<button
+  type="button"
+  className={`kp-toggle${onlyShort ? ' on' : ''}`}
+  aria-pressed={onlyShort}
+  onClick={() => setOnlyShort((v) => !v)}
+>
+  ★ Shortlisted ({shortlist.length})
+
+  <span className="kp-action-info" aria-hidden="true">
+    ⓘ
+    <span className="kp-tooltip">
+      Shows only the keywords you've saved for further
+      consideration. Star individual searches to build
+      a shortlist, compare their priorities and export
+      the selected keywords for your content planning.
+    </span>
+  </span>
+</button>
+
+
+
+
             {filtersActive && (
               <button type="button" className="kp-reset" onClick={reset}>
                 Reset filters
               </button>
             )}
           </div>
-          <button
-            type="button"
-            className="kp-export"
-            onClick={exportCsv}
-            disabled={!rows.length}
-          >
-            Export CSV ({rows.length})
-          </button>
+
+
+
+     <button
+  type="button"
+  className="kp-export"
+  onClick={exportXlsx}
+  disabled={!rows.length}
+>
+  Export XLSX ({KEYWORDS.length})
+</button>
+
         </div>
 
         <div className="kp-workspace">
@@ -777,10 +1068,7 @@ We’ve organised 78 keywords across six search categories, from vendor comparis
 
 
 
-               <span className="kp-kw">
-  {k.keyword}
-  <span className="kp-row-id"> · {k.id}</span>
-</span>
+                
                       <div className="kp-mobile-meta">
                         <span className={`kp-chip kp-chip--${k.action.toLowerCase()}`}>
                           {k.action}
@@ -933,15 +1221,31 @@ We’ve organised 78 keywords across six search categories, from vendor comparis
 
 
                 <div className="kp-brief-actions" style={{ marginTop: '24px' }}>
-                  <button
-                    type="button"
-                    className={`kp-shortlist${shortlist.includes(selected.id) ? ' on' : ''}`}
-                    onClick={() => toggleShort(selected.id)}
-                  >
-                    {shortlist.includes(selected.id)
-                      ? '★ Shortlisted'
-                      : '☆ Add to shortlist'}
-                  </button>
+                  
+       
+
+<button
+  type="button"
+  className={`kp-shortlist${shortlist.includes(selected.id) ? ' on' : ''}`}
+  onClick={() => toggleShort(selected.id)}
+>
+  {shortlist.includes(selected.id)
+    ? '★ Shortlisted'
+    : '☆ Add to shortlist'}
+
+  <span className="kp-action-info" aria-hidden="true">
+    ⓘ
+    <span className="kp-tooltip">
+      Save this keyword to your shortlist for further
+      evaluation and production planning. Your selections
+      are retained in this browser, and you can use the
+      Shortlisted filter to review them together.
+    </span>
+  </span>
+</button>
+
+
+
                   <div className="kp-pager">
                     <button
                       type="button"

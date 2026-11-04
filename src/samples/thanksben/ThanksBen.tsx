@@ -476,11 +476,11 @@ export default function ThanksBen() {
     [category, priority, query],
   );
   useEffect(() => {
-    document.title = 'Ben | 90-Day SEO Strategy — GrowUp';
+    document.title = 'Ben | 90-Day SEO Plan ';
     const meta = document.querySelector('meta[name="description"]');
     meta?.setAttribute(
       'content',
-      'An illustrative GrowUp organic growth strategy for Ben, with research directions, commercial search priorities and a 90-day roadmap.',
+      'A GrowUp organic growth plan for Ben, with research directions, commercial search priorities and a 90-day roadmap.',
     );
     const robots =
       document.querySelector('meta[name="robots"]') ||
@@ -554,13 +554,13 @@ export default function ThanksBen() {
         <div className="tb-side-bottom">
           <div className="tb-side-line" />
           <span>PREPARED BY GROWUP</span>
-          <p>A commercial SEO strategy, not a traffic forecast.</p>
+   <p>A 90-day SEO plan focused on qualified demand and pipeline growth.</p>
           <a
             href="https://www.seo-growup.com/get-in-touch"
             target="_blank"
             rel="noreferrer"
           >
-            Discuss this strategy <Arrow size={15} />
+            Discuss this plan <Arrow size={15} />
           </a>
         </div>
       </aside>
@@ -650,21 +650,23 @@ This SEO plan sets out how Ben can reach more potential customers and create mor
           <footer className="tb-footer">
             <div className="tb-container">
               <div>
-                <strong>
-                  GrowUp<span>.</span>
-                </strong>
-                <p>Organic growth, measured in qualified demand.</p>
+            <img
+  src="/images/growupblacklogotransparent.png"
+  alt="GrowUp"
+  className="tb-footer-logo"
+/>
+<p>SEO focused on qualified demand, pipeline and revenue.</p>
+
               </div>
               <a
                 href="https://www.seo-growup.com/get-in-touch"
                 target="_blank"
                 rel="noreferrer"
               >
-                Discuss the recommendations <Arrow />
+                Discuss your SEO plan <Arrow />
               </a>
               <small>
-                © {new Date().getFullYear()} GrowUp · Illustrative research
-                sample · Not commissioned or endorsed by Ben
+                © {new Date().getFullYear()} GrowUp 
               </small>
             </div>
           </footer>

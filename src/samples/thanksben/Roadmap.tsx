@@ -1,5 +1,7 @@
 import { useId, useState } from 'react';
+import ExcelJS from 'exceljs';
 import './Roadmap.css';
+ 
 
 type WorkType = 'Content' | 'Evidence' | 'Measurement';
 
@@ -190,7 +192,7 @@ export const ROADMAP_PAGES: Page[] = [
 ];
 
 
-const TASK_HEADINGS: Record<
+export const TASK_HEADINGS: Record<
   string,
   {
     why: string;
@@ -563,71 +565,278 @@ function Icon({ kind }: { kind: WorkType | 'Download' | 'Flag' }) {
   );
 }
 
-function downloadRoadmap() {
-  const rows: string[][] = [
-    [
-      'Phase',
-      'Order',
-      'Deliverable',
-      'Work type',
-      'Suggested owner',
-      'Timing',
-      'Page ID',
-      'Priority page',
-      'Action',
-      'Planning score',
-      'Why now',
-      'Dependencies',
-      'Ready when',
-      'Page brief',
-      'Page evidence',
-      'Page acceptance',
-    ],
-  ];
 
-  ROADMAP_PHASES.forEach((phase) =>
-    phase.tasks.forEach((task) =>
-      task.pages.forEach((id) => {
-        const page = PAGE_BY_ID.get(id)!;
-        rows.push([
-          phase.days,
-          task.id,
-          task.title,
-          task.type,
-          task.owner,
-          task.timing,
-          id,
-          page.title,
-          page.action,
-          String(page.score),
-          task.why,
-          task.needs.join(' | '),
-          task.ready,
-          page.brief,
-          page.evidence.join(' | '),
-          page.ready,
-        ]);
-      })
-    )
+
+
+
+async function downloadRoadmap() {
+  const workbook = new ExcelJS.Workbook();
+
+  workbook.creator = 'GrowUp';
+  workbook.title = 'Ben | 90-Day SEO Plan';
+
+  const C = {
+    navy: '011522',
+    teal: '167273',
+    mint: 'F3F9F5',
+    white: 'FFFFFF',
+    text: '011522'
+  };
+
+  // Preserve existing wording, only replace em dashes.
+  const clean = (value: string) =>
+    value.replace(/\u2014/g, ':');
+
+  type CellValue = string | number;
+
+  function addSheet(
+    name: string,
+    title: string,
+    headers: string[],
+    widths: number[],
+    data: CellValue[][],
+    rowHeight = 65
+  ) {
+    const sheet = workbook.addWorksheet(name, {
+      views: [{ state: 'frozen', ySplit: 4 }]
+    });
+
+    sheet.columns = widths.map(width => ({ width }));
+
+    const totalColumns = headers.length;
+
+    sheet.mergeCells(1, 1, 1, totalColumns);
+
+    const titleCell = sheet.getCell(1, 1);
+    titleCell.value = title;
+    titleCell.font = {
+      name: 'Aptos',
+      size: 18,
+      bold: true,
+      color: { argb: C.white }
+    };
+    titleCell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: C.navy }
+    };
+    titleCell.alignment = {
+      vertical: 'middle',
+      indent: 1
+    };
+    sheet.getRow(1).height = 46;
+
+    sheet.mergeCells(2, 1, 2, totalColumns);
+    sheet.getCell(2, 1).value =
+      'GROWUP / BEN / 90-DAY SEO PLAN';
+
+    sheet.getCell(2, 1).font = {
+      name: 'Aptos',
+      size: 10,
+      bold: true,
+      color: { argb: C.teal }
+    };
+
+    sheet.getRow(2).height = 30;
+
+    const heading = sheet.getRow(4);
+    heading.values = headers;
+    heading.height = 34;
+
+    heading.eachCell(cell => {
+      cell.font = {
+        name: 'Aptos',
+        size: 10,
+        bold: true,
+        color: { argb: C.white }
+      };
+      cell.fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: C.teal }
+      };
+      cell.alignment = {
+        vertical: 'middle',
+        wrapText: true,
+        indent: 1
+      };
+    });
+
+    data.forEach((values, index) => {
+      const row = sheet.addRow(
+        values.map(v =>
+          typeof v === 'string' ? clean(v) : v
+        )
+      );
+
+      row.height = rowHeight;
+
+      row.eachCell(cell => {
+        cell.font = {
+          name: 'Aptos',
+          size: 10,
+          color: { argb: C.text }
+        };
+
+        cell.alignment = {
+          vertical: 'top',
+          wrapText: true,
+          indent: 1
+        };
+
+        cell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: {
+            argb: index % 2 === 0 ? C.white : C.mint
+          }
+        };
+      });
+    });
+
+    sheet.autoFilter = {
+      from: { row: 4, column: 1 },
+      to: {
+        row: 4 + data.length,
+        column: totalColumns
+      }
+    };
+
+    return sheet;
+  }
+
+  // 01. OVERVIEW
+  // Use the phase names and summaries from the website.
+  addSheet(
+    'Overview',
+    '90-Day SEO Plan | Overview',
+    ['Phase', 'Period', 'Focus', 'Tasks'],
+    [35, 22, 75, 14],
+    ROADMAP_PHASES.map((phase, index) => [
+      `0${index + 1} / ${phase.title}`,
+      phase.days,
+      phase.summary,
+      phase.tasks.length
+    ]),
+    55
   );
 
-  const csv =
-    '\uFEFF' +
-    rows
-      .map((row) =>
-        row.map((value) => '"' + value.replace(/"/g, '""') + '"').join(',')
-      )
-      .join('\r\n');
+  // 02. ROADMAP
+  // One row per task, with exact task names and owners.
+  const roadmapSheet = addSheet(
+    'Roadmap',
+    '90-Day SEO Plan | Roadmap',
+    [
+      'Order',
+      'Phase',
+      'Deliverable',
+      'Suggested Owner',
+      'Timing',
+      'Status'
+    ],
+    [12, 22, 75, 28, 22, 22],
+    ROADMAP_PHASES.flatMap(phase =>
+      phase.tasks.map(task => [
+        task.id,
+        phase.days,
+        task.title,
+        task.owner,
+        task.timing,
+        'Not started'
+      ])
+    ),
+    48
+  );
 
-  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8;' }));
-  const anchor = document.createElement('a');
-  anchor.href = url;
-  anchor.download = 'Ben-90-day-roadmap.csv';
-  document.body.appendChild(anchor);
-  anchor.click();
-  anchor.remove();
+  // Editable status dropdown.
+  for (let row = 5; row <= roadmapSheet.rowCount; row++) {
+    roadmapSheet.getCell(`F${row}`).dataValidation = {
+      type: 'list',
+      allowBlank: false,
+      formulae: [
+        '"Not started,In progress,In review,Completed,Blocked"'
+      ]
+    };
+  }
+
+  // 03. PRIORITY PAGES
+  // Only the existing page names, actions and scores.
+  // No additional content directions or invented briefs.
+  addSheet(
+    'Priority Pages',
+    '90-Day SEO Plan | Priority Pages',
+    [
+      'Priority',
+      'Target Page',
+      'Action',
+      'Planning Score'
+    ],
+    [15, 80, 22, 22],
+    ROADMAP_PAGES.map((page, index) => [
+      index + 1,
+      page.title,
+      page.action,
+      page.score
+    ]),
+    48
+  );
+
+  // 04. DELIVERY REQUIREMENTS
+  // Use exact wording from the interactive roadmap.
+  addSheet(
+    'Delivery Requirements',
+    '90-Day SEO Plan | Delivery Requirements',
+    [
+      'Order',
+      'Phase',
+      'Deliverable',
+      'Section Heading',
+      'Description',
+      'Requirements Heading',
+      'Requirements'
+    ],
+    [12, 20, 60, 60, 100, 45, 110],
+    ROADMAP_PHASES.flatMap(phase =>
+      phase.tasks.map(task => {
+        const headings = TASK_HEADINGS[task.id];
+
+        return [
+          task.id,
+          phase.days,
+          task.title,
+          headings?.why ?? 'Why this matters',
+          task.why,
+          headings?.needs ?? 'Delivery requirements',
+          task.needs.join('\n')
+        ];
+      })
+    ),
+    145
+  );
+
+
+  // Download XLSX.
+  const buffer = await workbook.xlsx.writeBuffer();
+
+
+  const blob = new Blob([buffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  });
+
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.href = url;
+  link.download = 'Ben-90-Day-SEO-Plan.xlsx';
+
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+
 
 /** Insert into the existing Ben page shell; the sidebar is intentionally not duplicated. */
 export default function Roadmap({ id = 'roadmap' }: { id?: string }) {
@@ -669,7 +878,7 @@ This plan gives your team a defined publishing schedule for the ten priority pag
           </div>
           <button type="button" className="rm-download" onClick={downloadRoadmap}>
             <Icon kind="Download" />
-            Download roadmap<span className="rm-sr"> as CSV</span>
+            Download Excel plan<span className="rm-sr"> as XLSX</span>
           </button>
         </header>
 

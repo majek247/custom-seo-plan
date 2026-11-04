@@ -1376,7 +1376,7 @@ export default function CompetitorOpportunities() {
           <h2>The strongest content opportunities across Ben’s priority search terms.</h2>
 
           <p className="co-intro-copy">
-            We’ve analysed the leading results for ten priority searches to identify what existing pages cover, which buyer questions remain unanswered, and where Ben can offer more value. Each recommendation outlines the evidence and product details needed to compete for the search.
+            We’ve reviewed the top-ranking pages for ten priority keywords to understand what buyers are finding today and where existing content falls short. For each keyword, we show the current search results and recommend what Ben should include to make its content more competitive.
           </p>
         </header>
 
@@ -1414,20 +1414,22 @@ export default function CompetitorOpportunities() {
                     {String(keyword.order).padStart(2, '0')}
                   </span>
 
-                  <span className="co-item-main">
-                    <strong>{keyword.keyword}</strong>
-                    <small>
-                      {keyword.id} · {keyword.theme} · {keyword.action}
-                    </small>
-                  </span>
+<span className="co-item-main">
+  <strong>{keyword.keyword}</strong>
+</span>
 
-                  <span
-                    className="co-item-score"
-                    aria-label={`Opportunity score ${keyword.score} out of 100`}
-                  >
-                    <b>{keyword.score}</b>
-                    <small>/100</small>
-                  </span>
+
+
+      <span
+  className="co-item-score"
+  aria-label={`Opportunity score ${keyword.score} out of 100`}
+  style={{ display: 'inline-flex', alignItems: 'baseline', gap: '2px' }}
+>
+  <b>{keyword.score}</b>
+  <small style={{ fontSize: '0.75em', marginLeft: '1px' }}>/100</small>
+</span>
+
+
                 </button>
               ))}
             </div>
@@ -1437,8 +1439,7 @@ export default function CompetitorOpportunities() {
              <div className="co-detail-top">
               <span className="co-detail-meta">
                 {String(selected.order).padStart(2, '0')} OF{' '}
-                {rows.length} <span>/</span> {selected.id}{' '}
-                <span>/</span> {selected.theme}
+                {rows.length} <span>/</span> {selected.theme}
               </span>
             </div>
 
@@ -1468,14 +1469,6 @@ export default function CompetitorOpportunities() {
                 <strong>
                   {selected.score}
                   <small>/100</small>
-                </strong>
-              </div>
-
-              <div>
-                <span>Write order</span>
-                <strong>
-                  #{selected.order}
-                  <small>of {rows.length}</small>
                 </strong>
               </div>
             </div>
